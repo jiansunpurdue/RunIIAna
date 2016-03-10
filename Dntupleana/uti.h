@@ -1,3 +1,6 @@
+#ifndef uti_H
+#define uti_H
+
 #include <iostream>
 #include <iomanip>
 #include <utility>
@@ -120,7 +123,7 @@ void get_TH2D_mass_vn(TFile * inputfile, TH2D * h[], int inputNptbin, string hna
 		h[i] = (TH2D *) inputfile->Get(Form("%s_%d", hname.c_str(), i));
 }
 
-void book_hist_vn_inoutplane(TH1D * h[][Nphibin], float inputptbins[], int inputNptbin, int inputNphibin, string hname, int Nmassbin, float hmin, float hmax)
+void book_hist_vn_inoutplane(TH1D * h[][2], float inputptbins[], int inputNptbin, int inputNphibin, string hname, int Nmassbin, float hmin, float hmax)
 {
 	TH1::SetDefaultSumw2();
 
@@ -145,7 +148,7 @@ void book_hist_vn_inoutplane(TH1D * h[][Nphibin], float inputptbins[], int input
 	}
 }
 
-void get_hist_vn_inoutplane(TFile * inputfile, TH1D * h[][Nphibin], int inputNptbin, int inputNphibin, string hname)
+void get_hist_vn_inoutplane(TFile * inputfile, TH1D * h[][2], int inputNptbin, int inputNphibin, string hname)
 {
 	TH1::SetDefaultSumw2();
 
@@ -195,3 +198,5 @@ TLegend* myLegend(Double_t x1, Double_t y1, Double_t x2, Double_t y2)
 	leg->SetFillStyle(0);
 	return leg; 
 }
+
+#endif //  uti_H

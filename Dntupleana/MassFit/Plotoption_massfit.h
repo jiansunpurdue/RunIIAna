@@ -1,3 +1,6 @@
+#ifndef Plotoption_massfit_H
+#define Plotoption_massfit_H
+
 void Plotoption_massfit()
 {
 	gStyle->SetOptTitle(0);
@@ -11,3 +14,5 @@ void Plotoption_massfit()
 	gStyle->SetPadBottomMargin(0.145);
 	gStyle->SetTitleX(.0f);
 }
+
+#endif // Plotoption_massfit_H 

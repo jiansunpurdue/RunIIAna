@@ -1,3 +1,6 @@
+#ifndef EP_resolution_H
+#define EP_resolution_H
+
 #define NCentbin 6
 
 int centbins[NCentbin+1] = { 0, 10, 30, 50, 70, 90, 100};
@@ -36,3 +39,5 @@ int Decide_centbin_for_EPresolution( int centlow, int centhigh )
 
 	return icentbin;
 }
+
+#endif //  EP_resolution_H
