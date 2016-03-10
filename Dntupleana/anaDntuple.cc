@@ -128,7 +128,7 @@ void anaDntuple::FunctionsforAnalysis()
 
 void anaDntuple::readtrees(bool isPbPb, bool isDkpi, bool detailedmoed)
 {
-	if(isPbPb) readevttree(ntHi, isPbPb);
+	readevttree(ntHi, isPbPb);
 	readskimtree(ntSkim);
 	readDntupletree(ntDkpi, isDkpi, detailedmoed);
 	if(isPbPb)
@@ -758,14 +758,14 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 		ntDkpi = (TTree *) inputf->Get("ntDkpi");
 		ntHlt = (TTree *) inputf->Get("ntHlt");
 		ntSkim = (TTree *) inputf->Get("ntSkim");
-		if(isPbPb) ntHi = (TTree *) inputf->Get("ntHi");
+		ntHi = (TTree *) inputf->Get("ntHi");
 		if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 		readtrees(isPbPb);
 
 		ntDkpi->AddFriend(ntHlt);
 		ntDkpi->AddFriend(ntSkim);
-		if(isPbPb) ntDkpi->AddFriend(ntHi);
+		ntDkpi->AddFriend(ntHi);
 		if(isMC) ntDkpi->AddFriend(ntGen);
 
 		LoopOverEvt( ntDkpi );
@@ -812,14 +812,14 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	ntDkpi = (TTree *) inputf->Get("ntDkpi");
 	ntHlt = (TTree *) inputf->Get("ntHlt");
 	ntSkim = (TTree *) inputf->Get("ntSkim");
-	if(isPbPb) ntHi = (TTree *) inputf->Get("ntHi");
+	ntHi = (TTree *) inputf->Get("ntHi");
 	if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 	readtrees(isPbPb);
 
 	ntDkpi->AddFriend(ntHlt);
 	ntDkpi->AddFriend(ntSkim);
-	if(isPbPb) ntDkpi->AddFriend(ntHi);
+	ntDkpi->AddFriend(ntHi);
 	if(isMC) ntDkpi->AddFriend(ntGen);
 
 	LoopOverEvt( ntDkpi, startevt, endevt);
