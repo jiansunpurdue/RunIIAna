@@ -1276,6 +1276,9 @@ void anaDntuple::FillMCMBhisto(int icand, int iptbin)
 	{
 		mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
 		mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+
+		MBmatched_allcuts_D0_pt_noweight->Fill(Dpt[icand]);
+		MBmatched_allcuts_D0_pt_pthatweight->Fill(Dpt[icand], pthatweight);
 	}
 
 	if( MBtrig_part_combined && Dgen[icand] == 23344 )
@@ -1332,6 +1335,9 @@ void anaDntuple::FillMCDtrighisto(int icand, int iptbin)
 	{
 		Dtrig_mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
 		Dtrig_mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+
+		Dtrigmatched_allcuts_D0_pt_noweight->Fill(Dpt[icand]);
+		Dtrigmatched_allcuts_D0_pt_pthatweight->Fill(Dpt[icand], pthatweight);
 	}
 
 	if( Dtrig_combined && Dgen[icand] == 23344 )
