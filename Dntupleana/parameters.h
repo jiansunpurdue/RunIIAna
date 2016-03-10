@@ -1,3 +1,6 @@
+#ifndef parameters_H
+#define parameters_H
+
 #include <TH2D.h>
 #include <TH1D.h>
 #include <TProfile.h>
@@ -167,3 +170,5 @@ TProfile * h_mass_v1_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v2_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v3_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v4_SP_Dtrig_combined[Nptbin];
+
+#endif //  parameters_H
