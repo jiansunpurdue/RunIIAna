@@ -67,6 +67,13 @@ TH1D * mc_matched_kpiswapped_ptweight[Nptbin];
 TH1D * mc_matched_signal_pthatweight[Nptbin];
 TH1D * mc_matched_kpiswapped_pthatweight[Nptbin];
 
+TH1D * Dtrig_mc_matched_signal_noweight[Nptbin];
+TH1D * Dtrig_mc_matched_kpiswapped_noweight[Nptbin];
+TH1D * Dtrig_mc_matched_signal_ptweight[Nptbin];
+TH1D * Dtrig_mc_matched_kpiswapped_ptweight[Nptbin];
+TH1D * Dtrig_mc_matched_signal_pthatweight[Nptbin];
+TH1D * Dtrig_mc_matched_kpiswapped_pthatweight[Nptbin];
+
 //event level trigger decision
 TH2D * hevt_trig_hiBin = new TH2D("hevt_trig_hiBin","hevt_trig_hiBin", 35, 0, 35, 200, 0, 200); //2D histogram for trig vs hiBin
 

@@ -39,9 +39,24 @@ void anaDntuple::FunctionsforAnalysis()
 	h_v3_hiBin_HFm_QAB->Sumw2(); h_v3_hiBin_HFm_QAC->Sumw2(); h_v3_hiBin_HFm_QBC->Sumw2();
 	h_v3_hiBin_HFp_QAB->Sumw2(); h_v3_hiBin_HFp_QAC->Sumw2(); h_v3_hiBin_HFp_QBC->Sumw2();
 
+	Gen_D0_pt_pthatweight->Sumw2(); Gen_D0_pt_ptweight->Sumw2(); Gen_D0_pt_noweight->Sumw2();
+	MBmatched_allcuts_D0_pt_pthatweight->Sumw2(); MBmatched_allcuts_D0_pt_ptweight->Sumw2(); MBmatched_allcuts_D0_pt_noweight->Sumw2();
+	Dtrigmatched_allcuts_D0_pt_pthatweight->Sumw2(); Dtrigmatched_allcuts_D0_pt_ptweight->Sumw2(); Dtrigmatched_allcuts_D0_pt_noweight->Sumw2();
+
 	cout << "Begin book histogram" << endl;
 	book_masshist( mc_matched_signal_noweight, ptbins, Nptbin, "mc_matched_signal_noweight", Nmassbin, massmin, massmax);
 	book_masshist( mc_matched_kpiswapped_noweight, ptbins, Nptbin, "mc_matched_kpiswapped_noweight", Nmassbin, massmin, massmax);
+	book_masshist( mc_matched_signal_ptweight, ptbins, Nptbin, "mc_matched_signal_ptweight", Nmassbin, massmin, massmax);
+	book_masshist( mc_matched_kpiswapped_ptweight, ptbins, Nptbin, "mc_matched_kpiswapped_ptweight", Nmassbin, massmin, massmax);
+	book_masshist( mc_matched_signal_pthatweight, ptbins, Nptbin, "mc_matched_signal_pthatweight", Nmassbin, massmin, massmax);
+	book_masshist( mc_matched_kpiswapped_pthatweight, ptbins, Nptbin, "mc_matched_kpiswapped_pthatweight", Nmassbin, massmin, massmax);
+
+	book_masshist( Dtrig_mc_matched_signal_noweight, ptbins, Nptbin, "Dtrig_mc_matched_signal_noweight", Nmassbin, massmin, massmax);
+	book_masshist( Dtrig_mc_matched_kpiswapped_noweight, ptbins, Nptbin, "Dtrig_mc_matched_kpiswapped_noweight", Nmassbin, massmin, massmax);
+	book_masshist( Dtrig_mc_matched_signal_ptweight, ptbins, Nptbin, "Dtrig_mc_matched_signal_ptweight", Nmassbin, massmin, massmax);
+	book_masshist( Dtrig_mc_matched_kpiswapped_ptweight, ptbins, Nptbin, "Dtrig_mc_matched_kpiswapped_ptweight", Nmassbin, massmin, massmax);
+	book_masshist( Dtrig_mc_matched_signal_pthatweight, ptbins, Nptbin, "Dtrig_mc_matched_signal_pthatweight", Nmassbin, massmin, massmax);
+	book_masshist( Dtrig_mc_matched_kpiswapped_pthatweight, ptbins, Nptbin, "Dtrig_mc_matched_kpiswapped_pthatweight", Nmassbin, massmin, massmax);
 
 	book_masshist( hmass_MB_HFandpart, ptbins, Nptbin, "hmass_MB_HFandpart_trig", Nmassbin, massmin, massmax);
 	book_masshist( hmass_MB_cent30to100_trig, ptbins, Nptbin, "hmass_MB_cent30to100_trig", Nmassbin, massmin, massmax);
@@ -120,6 +135,7 @@ void anaDntuple::readtrees(bool isPbPb, bool isDkpi, bool detailedmoed)
 		readPbPbhlttree(ntHlt);
 	else
 		readpphlttree(ntHlt);
+	if(isMC) readGenDtree(ntGen);
 }
 
 
@@ -743,12 +759,14 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 		ntHlt = (TTree *) inputf->Get("ntHlt");
 		ntSkim = (TTree *) inputf->Get("ntSkim");
 		if(isPbPb) ntHi = (TTree *) inputf->Get("ntHi");
+		if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 		readtrees(isPbPb);
 
 		ntDkpi->AddFriend(ntHlt);
 		ntDkpi->AddFriend(ntSkim);
 		if(isPbPb) ntDkpi->AddFriend(ntHi);
+		if(isMC) ntDkpi->AddFriend(ntGen);
 
 		LoopOverEvt( ntDkpi );
 		inputf->Close();
@@ -795,12 +813,14 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	ntHlt = (TTree *) inputf->Get("ntHlt");
 	ntSkim = (TTree *) inputf->Get("ntSkim");
 	if(isPbPb) ntHi = (TTree *) inputf->Get("ntHi");
+	if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 	readtrees(isPbPb);
 
 	ntDkpi->AddFriend(ntHlt);
 	ntDkpi->AddFriend(ntSkim);
 	if(isPbPb) ntDkpi->AddFriend(ntHi);
+	if(isMC) ntDkpi->AddFriend(ntGen);
 
 	LoopOverEvt( ntDkpi, startevt, endevt);
 
@@ -829,7 +849,7 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		Combine_TrigPart_TrigVersion();
 
 		//event filter
-		if( isPbPbCollision )
+		if( isPbPbCollision && !isMC )
 		{
 			if( ! ( pcollisionEventSelection && pprimaryVertexFilter && phfCoincFilter3 && pclusterCompatibilityFilter ) )  continue;
 		}
@@ -849,21 +869,23 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		FillEvtTrighibin();
 		if( isPbPbCollision ) FillEPresohisto();
 
+		if(isMC) LoopOverGenDs();
+
 		LoopOverDcandidates();
 	}
 }
 
 void anaDntuple::FillEPresohisto_SP(int EP, TProfile * h_QAB, TProfile * h_QAC, TProfile * h_QBC)
 {
-    comp QA (hiEvtPlanesqx[EP],hiEvtPlanesqy[EP]);
-    comp QB (hiEvtPlanesqx[RCMate1[EP]], hiEvtPlanesqy[RCMate1[EP]]);
-    comp QC (hiEvtPlanesqx[RCMate2[EP]], hiEvtPlanesqy[RCMate2[EP]]);
-    comp QAB(0,0);
-    comp QAC(0,0);
-    comp QBC(0,0);
-    QAB =  QA*std::conj(QB);
-    QAC =  QA*std::conj(QC);
-    QBC =  QB*std::conj(QC);
+	comp QA (hiEvtPlanesqx[EP],hiEvtPlanesqy[EP]);
+	comp QB (hiEvtPlanesqx[RCMate1[EP]], hiEvtPlanesqy[RCMate1[EP]]);
+	comp QC (hiEvtPlanesqx[RCMate2[EP]], hiEvtPlanesqy[RCMate2[EP]]);
+	comp QAB(0,0);
+	comp QAC(0,0);
+	comp QBC(0,0);
+	QAB =  QA*std::conj(QB);
+	QAC =  QA*std::conj(QC);
+	QBC =  QB*std::conj(QC);
 
 	h_QAB->Fill( hiBin, QAB.real());
 	h_QAC->Fill( hiBin, QAC.real());
@@ -935,6 +957,18 @@ void anaDntuple::FillEvtTrighibin()
 	}
 }
 
+void anaDntuple::LoopOverGenDs()
+{
+	for( int igend = 0; igend < Gsize; igend++)
+	{
+		if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
+		if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
+
+		Gen_D0_pt_pthatweight->Fill( Gpt[igend], pthatweight);
+		Gen_D0_pt_noweight->Fill( Gpt[igend]);
+	}
+}
+
 void anaDntuple::LoopOverDcandidates()
 {
 	for(int icand = 0; icand<Dsize; icand++)
@@ -990,7 +1024,7 @@ void anaDntuple::LoopOverDcandidates()
 					EP_resolution_v2 = EPm_resolution_v2[icentbin];
 					EP_resolution_v3 = EPm_resolution_v3[icentbin];
 					EP_resolution_v4 = EPm_resolution_v4[icentbin];
-					
+
 					SP_EP_resolution_v1 = 1;
 					SP_EP_resolution_v2 = SP_EPm_resolution_v2[icentbin];
 					SP_EP_resolution_v3 = SP_EPm_resolution_v3[icentbin];
@@ -1002,7 +1036,7 @@ void anaDntuple::LoopOverDcandidates()
 					EP_resolution_v2 = EPp_resolution_v2[icentbin];
 					EP_resolution_v3 = EPp_resolution_v3[icentbin];
 					EP_resolution_v4 = EPp_resolution_v4[icentbin];
-					
+
 					SP_EP_resolution_v1 = 1;
 					SP_EP_resolution_v2 = SP_EPp_resolution_v2[icentbin];
 					SP_EP_resolution_v3 = SP_EPp_resolution_v3[icentbin];
@@ -1015,7 +1049,7 @@ void anaDntuple::LoopOverDcandidates()
 				EP_resolution_v2 = 1;
 				EP_resolution_v3 = 1;
 				EP_resolution_v4 = 1;
-				
+
 				SP_EP_resolution_v1 = 1;
 				SP_EP_resolution_v2 = 1;
 				SP_EP_resolution_v3 = 1;
@@ -1030,7 +1064,7 @@ void anaDntuple::LoopOverDcandidates()
 		///////////////////////////////analysis with MB trig/////////////////////////////////////////
 
 		FillMBhisto( icand, iptbin);
-		if(isMC) FillMCMBhisto( icand, iptbin);
+		if( isMC ) FillMCMBhisto( icand, iptbin);
 
 		////////////////////////////// end analysis with MB trig/////////////////////////////////////
 		//apply trig track pt cut
@@ -1045,10 +1079,11 @@ void anaDntuple::LoopOverDcandidates()
 		FillJettrighisto( icand, iptbin);
 
 		Dtrig_combination( icand );
-		if( isPbPbCollision )  
-			FillDtrighisto_PbPb( icand, iptbin);
-		else 
-			FillDtrighisto_pp( icand, iptbin);
+		if( isMC ) Dtrig_combined = 1;
+
+		if( isPbPbCollision )  FillDtrighisto_PbPb( icand, iptbin);
+		else FillDtrighisto_pp( icand, iptbin);
+		if( isMC ) FillMCDtrighisto( icand, iptbin);
 	}
 }
 
@@ -1238,9 +1273,16 @@ int anaDntuple::Decideinoutplane(float deltaphi, int floworder)
 void anaDntuple::FillMCMBhisto(int icand, int iptbin)
 {
 	if( MBtrig_part_combined && Dgen[icand] == 23333 )
+	{
 		mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
+		mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+	}
+
 	if( MBtrig_part_combined && Dgen[icand] == 23344 )
+	{
 		mc_matched_kpiswapped_noweight[iptbin]->Fill(Dmass[icand]);
+		mc_matched_kpiswapped_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+	}
 }
 
 void anaDntuple::FillMBhisto(int icand, int iptbin)
@@ -1281,6 +1323,21 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 		if( MBtrig_cent70to100_part_combined && !MBtrig_part_combined && !MBtrig_cent30to100_part_combined && !MBtrig_cent50to100_part_combined)  
 			//if( MBtrig_cent70to100_part_combined )  
 			hmass_MB_cent70to100_trig[iptbin]->Fill(Dmass[icand]);
+	}
+}
+
+void anaDntuple::FillMCDtrighisto(int icand, int iptbin)
+{
+	if( Dtrig_combined && Dgen[icand] == 23333 )
+	{
+		Dtrig_mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
+		Dtrig_mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+	}
+
+	if( Dtrig_combined && Dgen[icand] == 23344 )
+	{
+		Dtrig_mc_matched_kpiswapped_noweight[iptbin]->Fill(Dmass[icand]);
+		Dtrig_mc_matched_kpiswapped_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
 	}
 }
 
@@ -1408,12 +1465,6 @@ void anaDntuple::Write()
 		hmass_Dpt70[i]->Write();
 	}
 
-	for(int i = 0; i<Nptbin; i++)
-	{
-		mc_matched_signal_noweight[i]->Write();
-		mc_matched_kpiswapped_noweight[i]->Write();
-	}
-
 	if( isPbPbCollision )
 	{
 		for(int i = 0; i<Nptbin; i++)
@@ -1430,7 +1481,7 @@ void anaDntuple::Write()
 			h_mass_v2_MB_HFandpart[i]->Write();
 			h_mass_v3_MB_HFandpart[i]->Write();
 			h_mass_v4_MB_HFandpart[i]->Write();
-			
+
 			h_mass_v1_SP_MB_HFandpart[i]->Write();
 			h_mass_v2_SP_MB_HFandpart[i]->Write();
 			h_mass_v3_SP_MB_HFandpart[i]->Write();
@@ -1451,7 +1502,7 @@ void anaDntuple::Write()
 			h_mass_v2_Dtrig_combined[i]->Write();
 			h_mass_v3_Dtrig_combined[i]->Write();
 			h_mass_v4_Dtrig_combined[i]->Write();
-			
+
 			h_mass_v1_SP_Dtrig_combined[i]->Write();
 			h_mass_v2_SP_Dtrig_combined[i]->Write();
 			h_mass_v3_SP_Dtrig_combined[i]->Write();
@@ -1465,6 +1516,36 @@ void anaDntuple::Write()
 		hmass_CaloJet60[i]->Write();
 		hmass_CaloJet80[i]->Write();
 		hmass_CaloJet100[i]->Write();
+	}
+
+	if( isMC )
+	{
+		Gen_D0_pt_pthatweight->Write();
+		Gen_D0_pt_ptweight->Write();
+		Gen_D0_pt_noweight->Write();
+		MBmatched_allcuts_D0_pt_pthatweight->Write();
+		MBmatched_allcuts_D0_pt_ptweight->Write();
+		MBmatched_allcuts_D0_pt_noweight->Write();
+		Dtrigmatched_allcuts_D0_pt_pthatweight->Write();
+		Dtrigmatched_allcuts_D0_pt_ptweight->Write();
+		Dtrigmatched_allcuts_D0_pt_noweight->Write();
+
+		for(int i = 0; i<Nptbin; i++)
+		{
+			mc_matched_signal_noweight[i]->Write();
+			mc_matched_kpiswapped_noweight[i]->Write();
+			mc_matched_signal_ptweight[i]->Write();
+			mc_matched_kpiswapped_ptweight[i]->Write();
+			mc_matched_signal_pthatweight[i]->Write();
+			mc_matched_kpiswapped_pthatweight[i]->Write();
+
+			Dtrig_mc_matched_signal_noweight[i]->Write();
+			Dtrig_mc_matched_kpiswapped_noweight[i]->Write();
+			Dtrig_mc_matched_signal_ptweight[i]->Write();
+			Dtrig_mc_matched_kpiswapped_ptweight[i]->Write();
+			Dtrig_mc_matched_signal_pthatweight[i]->Write();
+			Dtrig_mc_matched_kpiswapped_pthatweight[i]->Write();
+		}
 	}
 
 }

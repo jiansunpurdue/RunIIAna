@@ -26,6 +26,8 @@
 #include "RecoHI/HiEvtPlaneAlgos/interface/HiEvtPlaneList.h"
 
 #define MAX_XB       20000
+#define MAX_GEN      6000
+
 #define kMaxEvtPlanes 200
 
 using namespace std;
@@ -49,6 +51,7 @@ class anaDntuple
 		void FunctionsforAnalysis();
 		void LoopOverEvt( TTree * intree, int startevt = 0, int endevt = -1 );
 		void LoopOverDcandidates();
+		void LoopOverGenDs();
 		void Write();
 		void PbPbTrigComb_PDs();
 		void Combine_TrigPart_TrigVersion();
@@ -60,6 +63,7 @@ class anaDntuple
 		void Dtrig_combination(int icand);
 		void FillDtrighisto_PbPb(int icand, int iptbin);
 		void FillDtrighisto_pp(int icand, int iptbin);
+		void FillMCDtrighisto(int icand, int iptbin);
 		void FillJettrighisto(int icand, int iptbin);
 		float Calculatedeltaphi( int icand, int floworder);
 		int  Decideinoutplane(float deltaphi, int floworder);
@@ -75,7 +79,7 @@ class anaDntuple
 		int cent_low;
 		int cent_high;
 		double Evt_weight; //use pthatweight or not
-	
+
 	private:
 		float dcanddeltaphiv1;
 		float dcanddeltaphiv2;
@@ -92,14 +96,14 @@ class anaDntuple
 		float EP_resolution_v3;
 		float EP_resolution_v4;
 
-        double SP_Qmag_v1;
-        double SP_Qmag_v2;
-        double SP_Qmag_v3;
-        double SP_Qmag_v4;
-        float SP_EP_resolution_v1;
-        float SP_EP_resolution_v2;
-        float SP_EP_resolution_v3;
-        float SP_EP_resolution_v4;
+		double SP_Qmag_v1;
+		double SP_Qmag_v2;
+		double SP_Qmag_v3;
+		double SP_Qmag_v4;
+		float SP_EP_resolution_v1;
+		float SP_EP_resolution_v2;
+		float SP_EP_resolution_v3;
+		float SP_EP_resolution_v4;
 
 	private:
 		//version combined trig decision
@@ -120,38 +124,38 @@ class anaDntuple
 		bool Dtrig_combined_Cent0_10;
 		bool Dtrig_combined_Cent30_100;
 		bool Dtrig_combined_Cent50_100;
-	
-        //combinations of real MB trigger decisions	
+
+		//combinations of real MB trigger decisions	
 		bool temp_MBtrig_part_combined;
 		bool temp_MBtrig_cent30to100_part_combined;
 		bool temp_MBtrig_cent50to100_part_combined;
 		bool temp_MBtrig_cent70to100_part_combined;
 
-        //to save real MB trigger decision, used to remove overlap
-        int temp_HLT_HIL1MinimumBiasHF1AND_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part1_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part2_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part3_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part4_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part5_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part6_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part7_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part8_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part9_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part10_v1; 
-        int temp_HLT_HIL1MinimumBiasHF2AND_part11_v1; 
-        int temp_HLT_HIL1Centralityext30100HFplusANDminusTH0_v1; 
-        int temp_HLT_HIL1Centralityext50100HFplusANDminusTH0_v1; 
-        int temp_HLT_HIL1Centralityext70100HFplusANDminusTH0_v1; 
-        int temp_HLT_HIL1Centralityext30100MinimumumBiasHF1AND_v1; 
-        int temp_HLT_HIL1Centralityext50100MinimumumBiasHF1AND_v1; 
-        int temp_HLT_HIL1Centralityext70100MinimumumBiasHF1AND_v1; 
-        int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1; 
-        int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1; 
-        int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1; 
-        int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1; 
-        int temp_HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1; 
+		//to save real MB trigger decision, used to remove overlap
+		int temp_HLT_HIL1MinimumBiasHF1AND_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part1_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part2_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part3_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part4_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part5_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part6_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part7_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part8_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part9_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part10_v1; 
+		int temp_HLT_HIL1MinimumBiasHF2AND_part11_v1; 
+		int temp_HLT_HIL1Centralityext30100HFplusANDminusTH0_v1; 
+		int temp_HLT_HIL1Centralityext50100HFplusANDminusTH0_v1; 
+		int temp_HLT_HIL1Centralityext70100HFplusANDminusTH0_v1; 
+		int temp_HLT_HIL1Centralityext30100MinimumumBiasHF1AND_v1; 
+		int temp_HLT_HIL1Centralityext50100MinimumumBiasHF1AND_v1; 
+		int temp_HLT_HIL1Centralityext70100MinimumumBiasHF1AND_v1; 
+		int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1; 
+		int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1; 
+		int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1; 
+		int temp_HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1; 
+		int temp_HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1; 
 
 	private:
 		//read tree functions
@@ -161,6 +165,7 @@ class anaDntuple
 		void readDntupletree(TTree * Dtree, bool isDkpi = true, bool detailedmoed = false);
 		void readPbPbhlttree(TTree * PbPbhlttree);
 		void readpphlttree(TTree * pphlttree);
+		void readGenDtree(TTree * GenDtree);
 
 	private:
 		//input trees
@@ -234,6 +239,47 @@ class anaDntuple
 		Int_t           pVertexFilterCutGplus;
 		Int_t           pVertexFilterCutE;
 		Int_t           pVertexFilterCutEandG;
+
+		//branches from Gen D tree
+		int     Gsize;
+		float   Gy[MAX_GEN];
+		float   Geta[MAX_GEN];
+		float   Gphi[MAX_GEN];
+		float   Gpt[MAX_GEN];
+		float   GpdgId[MAX_GEN];
+		int     GisSignal[MAX_GEN];
+		float   Gtk1pt[MAX_GEN];
+		float   Gtk1eta[MAX_GEN];
+		float   Gtk1y[MAX_GEN];
+		float   Gtk1phi[MAX_GEN];
+		float   Gtk2pt[MAX_GEN];
+		float   Gtk2eta[MAX_GEN];
+		float   Gtk2y[MAX_GEN];
+		float   Gtk2phi[MAX_GEN];
+		float   Gtk3pt[MAX_GEN];
+		float   Gtk3eta[MAX_GEN];
+		float   Gtk3y[MAX_GEN];
+		float   Gtk3phi[MAX_GEN];
+		float   Gtk4pt[MAX_GEN];
+		float   Gtk4eta[MAX_GEN];
+		float   Gtk4y[MAX_GEN];
+		float   Gtk4phi[MAX_GEN];
+		float   GRestk1pt[MAX_GEN];
+		float   GRestk1eta[MAX_GEN];
+		float   GRestk1y[MAX_GEN];
+		float   GRestk1phi[MAX_GEN];
+		float   GRestk2pt[MAX_GEN];
+		float   GRestk2eta[MAX_GEN];
+		float   GRestk2y[MAX_GEN];
+		float   GRestk2phi[MAX_GEN];
+		float   GRestk3pt[MAX_GEN];
+		float   GRestk3eta[MAX_GEN];
+		float   GRestk3y[MAX_GEN];
+		float   GRestk3phi[MAX_GEN];
+		float   GRestk4pt[MAX_GEN];
+		float   GRestk4eta[MAX_GEN];
+		float   GRestk4y[MAX_GEN];
+		float   GRestk4phi[MAX_GEN];
 
 		//branches from ntDkpi
 		//EvtInfo
@@ -803,6 +849,49 @@ void anaDntuple::readskimtree(TTree * skimtree)
 	}
 }
 
+void anaDntuple::readGenDtree(TTree * GenDtree)
+{
+   GenDtree->SetBranchAddress("Gsize", &Gsize);
+   GenDtree->SetBranchAddress("Gy", Gy);
+   GenDtree->SetBranchAddress("Geta", Geta);
+   GenDtree->SetBranchAddress("Gphi", Gphi);
+   GenDtree->SetBranchAddress("Gpt", Gpt);
+   GenDtree->SetBranchAddress("GpdgId", GpdgId);
+   GenDtree->SetBranchAddress("GisSignal", GisSignal);
+   GenDtree->SetBranchAddress("Gtk1pt", Gtk1pt);
+   GenDtree->SetBranchAddress("Gtk1eta", Gtk1eta);
+   GenDtree->SetBranchAddress("Gtk1y", Gtk1y);
+   GenDtree->SetBranchAddress("Gtk1phi", Gtk1phi);
+   GenDtree->SetBranchAddress("Gtk2pt", Gtk2pt);
+   GenDtree->SetBranchAddress("Gtk2eta", Gtk2eta);
+   GenDtree->SetBranchAddress("Gtk2y", Gtk2y);
+   GenDtree->SetBranchAddress("Gtk2phi", Gtk2phi);
+   GenDtree->SetBranchAddress("Gtk3pt", Gtk3pt);
+   GenDtree->SetBranchAddress("Gtk3eta", Gtk3eta);
+   GenDtree->SetBranchAddress("Gtk3y", Gtk3y);
+   GenDtree->SetBranchAddress("Gtk3phi", Gtk3phi);
+   GenDtree->SetBranchAddress("Gtk4pt", Gtk4pt);
+   GenDtree->SetBranchAddress("Gtk4eta", Gtk4eta);
+   GenDtree->SetBranchAddress("Gtk4y", Gtk4y);
+   GenDtree->SetBranchAddress("Gtk4phi", Gtk4phi);
+   GenDtree->SetBranchAddress("GRestk1pt", GRestk1pt);
+   GenDtree->SetBranchAddress("GRestk1eta", GRestk1eta);
+   GenDtree->SetBranchAddress("GRestk1y", GRestk1y);
+   GenDtree->SetBranchAddress("GRestk1phi", GRestk1phi);
+   GenDtree->SetBranchAddress("GRestk2pt", GRestk2pt);
+   GenDtree->SetBranchAddress("GRestk2eta", GRestk2eta);
+   GenDtree->SetBranchAddress("GRestk2y", GRestk2y);
+   GenDtree->SetBranchAddress("GRestk2phi", GRestk2phi);
+   GenDtree->SetBranchAddress("GRestk3pt", GRestk3pt);
+   GenDtree->SetBranchAddress("GRestk3eta", GRestk3eta);
+   GenDtree->SetBranchAddress("GRestk3y", GRestk3y);
+   GenDtree->SetBranchAddress("GRestk3phi", GRestk3phi);
+   GenDtree->SetBranchAddress("GRestk4pt", GRestk4pt);
+   GenDtree->SetBranchAddress("GRestk4eta", GRestk4eta);
+   GenDtree->SetBranchAddress("GRestk4y", GRestk4y);
+   GenDtree->SetBranchAddress("GRestk4phi", GRestk4phi);
+}
+
 void anaDntuple::readDntupletree(TTree * Dtree, bool isDkpi, bool detailedmoed)
 {
 	Dtree->SetBranchAddress("RunNo", &RunNo);
@@ -952,22 +1041,22 @@ void anaDntuple::readPbPbhlttree(TTree * PbPbhlttree)
 	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet120_Eta5p1_v1_Prescl", &HLT_HIPuAK4CaloJet120_Eta5p1_v1_Prescl);
 	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet150_Eta5p1_v1", &HLT_HIPuAK4CaloJet150_Eta5p1_v1);
 	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet150_Eta5p1_v1_Prescl", &HLT_HIPuAK4CaloJet150_Eta5p1_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1_Prescl);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1);
-//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent30_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent30_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent30_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1_Prescl", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent30_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet40_Eta5p1_Cent50_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet60_Eta5p1_Cent50_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet80_Eta5p1_Cent50_100_v1_Prescl);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1);
+	//	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1_Prescl", &HLT_HIPuAK4CaloJet100_Eta5p1_Cent50_100_v1_Prescl);
 	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_v2", &HLT_HIPuAK4CaloJet40_Eta5p1_v2);
 	PbPbhlttree->SetBranchAddress("HLT_HIPuAK4CaloJet40_Eta5p1_v2_Prescl", &HLT_HIPuAK4CaloJet40_Eta5p1_v2_Prescl);
 
@@ -1022,45 +1111,45 @@ void anaDntuple::readPbPbhlttree(TTree * PbPbhlttree)
 	PbPbhlttree->SetBranchAddress("HLT_HIL1Centralityext70100HFplusANDminusTH0_v1", &HLT_HIL1Centralityext70100HFplusANDminusTH0_v1);
 	PbPbhlttree->SetBranchAddress("HLT_HIL1Centralityext70100HFplusANDminusTH0_v1_Prescl", &HLT_HIL1Centralityext70100HFplusANDminusTH0_v1_Prescl);
 
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_BptxAND", &L1_SingleS1Jet16_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_BptxAND_Prescl", &L1_SingleS1Jet16_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet16_Centrality_ext30_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet16_Centrality_ext30_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet16_Centrality_ext50_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet16_Centrality_ext50_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_BptxAND", &L1_SingleS1Jet28_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_BptxAND_Prescl", &L1_SingleS1Jet28_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet28_Centrality_ext30_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet28_Centrality_ext30_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet28_Centrality_ext50_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet28_Centrality_ext50_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_BptxAND", &L1_SingleS1Jet32_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_BptxAND_Prescl", &L1_SingleS1Jet32_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet32_Centrality_ext30_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet32_Centrality_ext30_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet32_Centrality_ext50_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet32_Centrality_ext50_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet36_BptxAND", &L1_SingleS1Jet36_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet36_BptxAND_Prescl", &L1_SingleS1Jet36_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet40_BptxAND", &L1_SingleS1Jet40_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet40_BptxAND_Prescl", &L1_SingleS1Jet40_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleJet44_BptxAND", &L1_SingleJet44_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleJet44_BptxAND_Prescl", &L1_SingleJet44_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet44_Centrality_ext30_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet44_Centrality_ext30_100_BptxAND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet44_Centrality_ext50_100_BptxAND);
-//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet44_Centrality_ext50_100_BptxAND_Prescl);
-//
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext0_10_MinimumumBiasHF1_AND", &L1_Centrality_ext0_10_MinimumumBiasHF1_AND);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext0_10_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext0_10_MinimumumBiasHF1_AND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_100_MinimumumBiasHF1_AND", &L1_Centrality_ext30_100_MinimumumBiasHF1_AND);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_100_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext30_100_MinimumumBiasHF1_AND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_50_MinimumumBiasHF1_AND", &L1_Centrality_ext30_50_MinimumumBiasHF1_AND);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_50_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext30_50_MinimumumBiasHF1_AND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext50_100_MinimumumBiasHF1_AND", &L1_Centrality_ext50_100_MinimumumBiasHF1_AND);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext50_100_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext50_100_MinimumumBiasHF1_AND_Prescl);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext70_100_MinimumumBiasHF1_AND", &L1_Centrality_ext70_100_MinimumumBiasHF1_AND);
-//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext70_100_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext70_100_MinimumumBiasHF1_AND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_BptxAND", &L1_SingleS1Jet16_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_BptxAND_Prescl", &L1_SingleS1Jet16_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet16_Centrality_ext30_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet16_Centrality_ext30_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet16_Centrality_ext50_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet16_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet16_Centrality_ext50_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_BptxAND", &L1_SingleS1Jet28_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_BptxAND_Prescl", &L1_SingleS1Jet28_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet28_Centrality_ext30_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet28_Centrality_ext30_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet28_Centrality_ext50_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet28_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet28_Centrality_ext50_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_BptxAND", &L1_SingleS1Jet32_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_BptxAND_Prescl", &L1_SingleS1Jet32_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet32_Centrality_ext30_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet32_Centrality_ext30_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet32_Centrality_ext50_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet32_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet32_Centrality_ext50_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet36_BptxAND", &L1_SingleS1Jet36_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet36_BptxAND_Prescl", &L1_SingleS1Jet36_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet40_BptxAND", &L1_SingleS1Jet40_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet40_BptxAND_Prescl", &L1_SingleS1Jet40_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleJet44_BptxAND", &L1_SingleJet44_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleJet44_BptxAND_Prescl", &L1_SingleJet44_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext30_100_BptxAND", &L1_SingleS1Jet44_Centrality_ext30_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext30_100_BptxAND_Prescl", &L1_SingleS1Jet44_Centrality_ext30_100_BptxAND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext50_100_BptxAND", &L1_SingleS1Jet44_Centrality_ext50_100_BptxAND);
+	//	PbPbhlttree->SetBranchAddress("L1_SingleS1Jet44_Centrality_ext50_100_BptxAND_Prescl", &L1_SingleS1Jet44_Centrality_ext50_100_BptxAND_Prescl);
+	//
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext0_10_MinimumumBiasHF1_AND", &L1_Centrality_ext0_10_MinimumumBiasHF1_AND);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext0_10_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext0_10_MinimumumBiasHF1_AND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_100_MinimumumBiasHF1_AND", &L1_Centrality_ext30_100_MinimumumBiasHF1_AND);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_100_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext30_100_MinimumumBiasHF1_AND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_50_MinimumumBiasHF1_AND", &L1_Centrality_ext30_50_MinimumumBiasHF1_AND);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext30_50_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext30_50_MinimumumBiasHF1_AND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext50_100_MinimumumBiasHF1_AND", &L1_Centrality_ext50_100_MinimumumBiasHF1_AND);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext50_100_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext50_100_MinimumumBiasHF1_AND_Prescl);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext70_100_MinimumumBiasHF1_AND", &L1_Centrality_ext70_100_MinimumumBiasHF1_AND);
+	//	PbPbhlttree->SetBranchAddress("L1_Centrality_ext70_100_MinimumumBiasHF1_AND_Prescl", &L1_Centrality_ext70_100_MinimumumBiasHF1_AND_Prescl);
 }
 
 void anaDntuple::readpphlttree(TTree * pphlttree)
