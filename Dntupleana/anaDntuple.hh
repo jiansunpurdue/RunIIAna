@@ -48,7 +48,8 @@ class anaDntuple
 	private:
 		//basic functions
 		void Init( string outfilename );
-		void FunctionsforAnalysis();
+		void Histobookforanalysis();
+		void GetMCPtWeightFunction( TTree * GenDtree );
 		void LoopOverEvt( TTree * intree, int startevt = 0, int endevt = -1 );
 		void LoopOverDcandidates();
 		void LoopOverGenDs();
@@ -79,6 +80,7 @@ class anaDntuple
 		int cent_low;
 		int cent_high;
 		double Evt_weight; //use pthatweight or not
+		TF1 * MCPtWeidhtFunction;
 
 	private:
 		float dcanddeltaphiv1;

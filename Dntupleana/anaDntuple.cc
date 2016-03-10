@@ -26,7 +26,7 @@ void anaDntuple::Init(string outfilename)
 	ntHlt = 0;
 }
 
-void anaDntuple::FunctionsforAnalysis()
+void anaDntuple::Histobookforanalysis()
 {
 	hevt_trig_hiBin->Sumw2();
 	h_v1_hiBin_cosndiffeppepm->Sumw2();
@@ -39,6 +39,7 @@ void anaDntuple::FunctionsforAnalysis()
 	h_v3_hiBin_HFm_QAB->Sumw2(); h_v3_hiBin_HFm_QAC->Sumw2(); h_v3_hiBin_HFm_QBC->Sumw2();
 	h_v3_hiBin_HFp_QAB->Sumw2(); h_v3_hiBin_HFp_QAC->Sumw2(); h_v3_hiBin_HFp_QBC->Sumw2();
 
+	Gen_D0_pt_noweight_forptreweight->Sumw2();
 	Gen_D0_pt_pthatweight->Sumw2(); Gen_D0_pt_ptweight->Sumw2(); Gen_D0_pt_noweight->Sumw2();
 	MBmatched_allcuts_D0_pt_pthatweight->Sumw2(); MBmatched_allcuts_D0_pt_ptweight->Sumw2(); MBmatched_allcuts_D0_pt_noweight->Sumw2();
 	Dtrigmatched_allcuts_D0_pt_pthatweight->Sumw2(); Dtrigmatched_allcuts_D0_pt_ptweight->Sumw2(); Dtrigmatched_allcuts_D0_pt_noweight->Sumw2();
@@ -138,7 +139,55 @@ void anaDntuple::readtrees(bool isPbPb, bool isDkpi, bool detailedmoed)
 	if(isMC) readGenDtree(ntGen);
 }
 
+void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
+{
+	for( int ientry = 0; ientry < GenDtree->GetEntries(); ientry++ )
+	{
+		GenDtree->GetEntry(ientry);
+		for( int igend = 0; igend < Gsize; igend++ )
+		{
+			if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
+			if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
 
+			Gen_D0_pt_noweight_forptreweight->Fill( Gpt[igend] );
+		}
+	}
+
+	divideBinWidth(Gen_D0_pt_noweight_forptreweight);
+
+	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch2/src/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
+	TGraphAsymmErrors* gaeFONLLD0Reference = (TGraphAsymmErrors*) FileFONLLD0->Get("gaeSigmaDzero");
+
+	TH1D * hFONLL = new TH1D( "hFONLL", "hFONLL", bins_reweight, ptmin_reweight, ptmax_reweight);
+	double x,y;
+	for( int i=0; i < bins_reweight; i++)
+	{
+		gaeFONLLD0Reference->GetPoint(i,x,y);
+		hFONLL->SetBinContent(i+1,y);
+	}
+
+	FONLL_over_GenD0Pt_forptreweight = ( TH1D *) hFONLL->Clone("FONLL_over_GenD0Pt_forptreweight");
+	FONLL_over_GenD0Pt_forptreweight->Divide(Gen_D0_pt_noweight_forptreweight);
+
+	//fit w/o draw
+	TF1 * fit_FONLL_over_GenD0Pt = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 150);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+
+	//save fitted function
+	fit_FONLL_over_GenD0Pt->SetLineColor(4.0);
+	FONLL_over_GenD0Pt_forptreweight->GetListOfFunctions()->Add(fit_FONLL_over_GenD0Pt);
+
+	MCPtWeidhtFunction = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 300);
+	MCPtWeidhtFunction->SetParameter( 0, fit_FONLL_over_GenD0Pt->GetParameter(0));
+	MCPtWeidhtFunction->SetParameter( 1, fit_FONLL_over_GenD0Pt->GetParameter(1));
+	MCPtWeidhtFunction->SetParameter( 2, fit_FONLL_over_GenD0Pt->GetParameter(2));
+	MCPtWeidhtFunction->SetParameter( 3, fit_FONLL_over_GenD0Pt->GetParameter(3));
+	MCPtWeidhtFunction->SetParameter( 4, fit_FONLL_over_GenD0Pt->GetParameter(4));
+	MCPtWeidhtFunction->SetParameter( 5, fit_FONLL_over_GenD0Pt->GetParameter(5));
+}
 
 void anaDntuple::PbPbTrigComb_PDs()
 {
@@ -734,7 +783,7 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 	outfilename = "anaDntuple_" + filelist + "_" + oss1.str() + "to" + oss2.str() + "_Cent" + osscentlow.str() + "to" + osscenthigh.str() + ".root";
 	Init(outfilename);
 
-	FunctionsforAnalysis();
+	Histobookforanalysis();
 
 	string inputfilename;
 
@@ -762,6 +811,8 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 		if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 		readtrees(isPbPb);
+		if(isMC) GetMCPtWeightFunction( ntGen ); //actually not work for file loop case because need to get the gen pt of all files
+		//for MC, the file loop won't be used
 
 		ntDkpi->AddFriend(ntHlt);
 		ntDkpi->AddFriend(ntSkim);
@@ -804,7 +855,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	//cout << " outfilename: " << outfilename << endl;
 	Init(outfilename);
 
-	FunctionsforAnalysis();
+	Histobookforanalysis();
 
 	if (!TFile::Open(inputfilename.c_str()))   { cout << " fail to open file" << endl; return;}
 	TFile * inputf = TFile::Open(inputfilename.c_str());
@@ -816,6 +867,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 	readtrees(isPbPb);
+	if(isMC) GetMCPtWeightFunction( ntGen );
 
 	ntDkpi->AddFriend(ntHlt);
 	ntDkpi->AddFriend(ntSkim);
@@ -959,13 +1011,18 @@ void anaDntuple::FillEvtTrighibin()
 
 void anaDntuple::LoopOverGenDs()
 {
+	double GenDptweight;
+
 	for( int igend = 0; igend < Gsize; igend++)
 	{
 		if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
 		if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
 
-		Gen_D0_pt_pthatweight->Fill( Gpt[igend], pthatweight);
 		Gen_D0_pt_noweight->Fill( Gpt[igend]);
+		Gen_D0_pt_pthatweight->Fill( Gpt[igend], pthatweight);
+
+		GenDptweight = MCPtWeidhtFunction->Eval( Gpt[igend] );
+		Gen_D0_pt_ptweight->Fill( Gpt[igend], GenDptweight);
 	}
 }
 
@@ -1272,19 +1329,24 @@ int anaDntuple::Decideinoutplane(float deltaphi, int floworder)
 
 void anaDntuple::FillMCMBhisto(int icand, int iptbin)
 {
+	double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
+
 	if( MBtrig_part_combined && Dgen[icand] == 23333 )
 	{
 		mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
 		mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+		mc_matched_signal_ptweight[iptbin]->Fill( Dmass[icand], Candptweight);
 
 		MBmatched_allcuts_D0_pt_noweight->Fill(Dpt[icand]);
 		MBmatched_allcuts_D0_pt_pthatweight->Fill(Dpt[icand], pthatweight);
+		MBmatched_allcuts_D0_pt_ptweight->Fill(Dpt[icand], Candptweight);
 	}
 
 	if( MBtrig_part_combined && Dgen[icand] == 23344 )
 	{
 		mc_matched_kpiswapped_noweight[iptbin]->Fill(Dmass[icand]);
 		mc_matched_kpiswapped_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+		mc_matched_kpiswapped_ptweight[iptbin]->Fill(Dmass[icand], Candptweight);
 	}
 }
 
@@ -1331,19 +1393,24 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 
 void anaDntuple::FillMCDtrighisto(int icand, int iptbin)
 {
+	double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
+
 	if( Dtrig_combined && Dgen[icand] == 23333 )
 	{
 		Dtrig_mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
 		Dtrig_mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+		Dtrig_mc_matched_signal_ptweight[iptbin]->Fill(Dmass[icand],Candptweight);
 
 		Dtrigmatched_allcuts_D0_pt_noweight->Fill(Dpt[icand]);
 		Dtrigmatched_allcuts_D0_pt_pthatweight->Fill(Dpt[icand], pthatweight);
+		Dtrigmatched_allcuts_D0_pt_ptweight->Fill(Dpt[icand],Candptweight);
 	}
 
 	if( Dtrig_combined && Dgen[icand] == 23344 )
 	{
 		Dtrig_mc_matched_kpiswapped_noweight[iptbin]->Fill(Dmass[icand]);
 		Dtrig_mc_matched_kpiswapped_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
+		Dtrig_mc_matched_kpiswapped_ptweight[iptbin]->Fill(Dmass[icand],Candptweight);
 	}
 }
 
@@ -1423,6 +1490,7 @@ void anaDntuple::FillJettrighisto( int icand, int iptbin )
 void anaDntuple::Write()
 {
 	outputfile->cd();
+
 	hevt_trig_hiBin->Write();
 	h_v1_hiBin_cosndiffeppepm->Write();
 	h_v2_hiBin_cosndiffeppepm->Write();
@@ -1526,6 +1594,8 @@ void anaDntuple::Write()
 
 	if( isMC )
 	{
+		Gen_D0_pt_noweight_forptreweight->Write();
+		FONLL_over_GenD0Pt_forptreweight->Write();
 		Gen_D0_pt_pthatweight->Write();
 		Gen_D0_pt_ptweight->Write();
 		Gen_D0_pt_noweight->Write();

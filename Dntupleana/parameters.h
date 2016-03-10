@@ -49,6 +49,13 @@ const double initialmassbinsize = (massmax - massmin) / Nmassbin;
 const double generalfitrange_masslow = 1.7;
 const double generalfitrange_masshigh = 2.00;
 
+//MC pt reweight parameters
+double ptmin_reweight = 0.0;
+double ptmax_reweight = 100.0;
+int bins_reweight = 50;
+TH1D * Gen_D0_pt_noweight_forptreweight = new TH1D( "Gen_D0_pt_noweight_forptreweight", "Gen_D0_pt_noweight_forptreweight", bins_reweight, ptmin_reweight, ptmax_reweight);
+TH1D * FONLL_over_GenD0Pt_forptreweight;
+
 //mc histograms 
 TH1D * Gen_D0_pt_pthatweight = new TH1D("Gen_D0_pt_pthatweight","Gen_D0_pt_pthatweight",Nptbin,ptbins);
 TH1D * Gen_D0_pt_ptweight = new TH1D("Gen_D0_pt_ptweight","Gen_D0_pt_ptweight",Nptbin,ptbins);
