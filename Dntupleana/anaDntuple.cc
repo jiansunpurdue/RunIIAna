@@ -129,7 +129,7 @@ void anaDntuple::Histobookforanalysis()
 
 void anaDntuple::readtrees(bool isPbPb, bool isDkpi, bool detailedmoed)
 {
-	readevttree(ntHi, isPbPb);
+	if(isPbPb || isMC) readevttree(ntHi, isPbPb);
 	readskimtree(ntSkim);
 	readDntupletree(ntDkpi, isDkpi, detailedmoed);
 	if(isPbPb)
@@ -807,7 +807,7 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 		ntDkpi = (TTree *) inputf->Get("ntDkpi");
 		ntHlt = (TTree *) inputf->Get("ntHlt");
 		ntSkim = (TTree *) inputf->Get("ntSkim");
-		ntHi = (TTree *) inputf->Get("ntHi");
+		if(isPbPb || isMC) ntHi = (TTree *) inputf->Get("ntHi");
 		if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 		readtrees(isPbPb);
@@ -816,7 +816,7 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 
 		ntDkpi->AddFriend(ntHlt);
 		ntDkpi->AddFriend(ntSkim);
-		ntDkpi->AddFriend(ntHi);
+		if(isPbPb || isMC) ntDkpi->AddFriend(ntHi);
 		if(isMC) ntDkpi->AddFriend(ntGen);
 
 		LoopOverEvt( ntDkpi );
@@ -851,6 +851,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	osscentlow<< round(hibin_low*0.5);
 	osscenthigh<< round(hibin_high*0.5);
 	//	cout << " fs::basename(inputfilename): " << fs::basename(inputfilename) << endl;
+	//	centrality ignored for pp
 	outfilename = "anaDntuple_" + fs::basename(inputfilename) + "_Cent" + osscentlow.str() + "to" + osscenthigh.str() + "_Evt" + oss1.str() + "to" + oss2.str() + ".root";
 	//cout << " outfilename: " << outfilename << endl;
 	Init(outfilename);
@@ -863,7 +864,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	ntDkpi = (TTree *) inputf->Get("ntDkpi");
 	ntHlt = (TTree *) inputf->Get("ntHlt");
 	ntSkim = (TTree *) inputf->Get("ntSkim");
-	ntHi = (TTree *) inputf->Get("ntHi");
+	if(isPbPb || isMC) ntHi = (TTree *) inputf->Get("ntHi");
 	if(isMC) ntGen = (TTree *) inputf->Get("ntGen");
 
 	readtrees(isPbPb);
@@ -871,7 +872,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 
 	ntDkpi->AddFriend(ntHlt);
 	ntDkpi->AddFriend(ntSkim);
-	ntDkpi->AddFriend(ntHi);
+	if(isPbPb || isMC) ntDkpi->AddFriend(ntHi);
 	if(isMC) ntDkpi->AddFriend(ntGen);
 
 	LoopOverEvt( ntDkpi, startevt, endevt);

@@ -25,7 +25,7 @@
 
 namespace fs = boost::filesystem;
 
-void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIHardProbes_Dtrig_ForestAOD_D0_deta2p4_tkpt8p0eta2p4_goldenjson_01302016_Cent-0to100.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160127_Dfinder_20151229_Pythia8_prompt_D0_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "Dtrig", int iptstart = 11, int iptend = 23, bool isPbPb = 1, int centlow=0, int centhigh=100)
+void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent-0to100.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 7, int iptend = 8, bool isPbPb = 1, int centlow=0, int centhigh=100)
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
@@ -35,8 +35,8 @@ void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_
     TH1D * mc_matched_signal[Nptbin];
 	TH1D * mc_matched_kpiswapped[Nptbin];
     TFile * inputmcfile = new TFile(Form("%s",inputmcfilename.c_str()));
-	get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_noweight");
-	get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_noweight");
+	get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_ptweight");
+	get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_ptweight");
 
     // Get Data histograms
 	TH1D * hmass_MBorDtrig[Nptbin];

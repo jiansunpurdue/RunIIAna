@@ -24,3 +24,5 @@ hibinhigh=$2
 
 #./Dividejob.sh /mnt/hadoop/store/group/hi/jisun/Run2015analysisfiles/Dntuple_withQvector_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016/Dntuple_crab2_PbPb_HIHardProbes_Dtrig_ForestAOD_highpuritytk_D0_tkpt6p0eta1p5_goldenjson_02222016.root 1 0 2000001 3 $hibinlow $hibinhigh 16
 #./Dividejob.sh /mnt/hadoop/store/group/hi/jisun/Run2015analysisfiles/Dntuple_withQvector_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016/Dntuple_crab2_PbPb_HIHardProbesPeripheral_Dtrig_ForestAOD_highpuritytk_D0_tkpt6p0eta1p5_goldenjson_02222016.root 1 0 1000010 1 $hibinlow $hibinhigh 17
+
+#./Dividejob.sh /mnt/hadoop/store/group/hi/jisun/Run2015analysisfiles/ppRun2015/skim_ncand_D0Dntuple_crab_pp_ALLMinimumBias_AOD_D0_tkpt0p5_Ds_01212016.root 0 0 5000000 7 -0.5 199.5 99
