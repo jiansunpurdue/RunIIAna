@@ -8,7 +8,7 @@ DODrawEPmassvsvn=1
 DODrawSPmassvsvn=1
 DOVncomparison=1
 
-InputMC="./../rootfiles/anaDntuple_ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight_Cent-0to100_Evt0to-1_noweight.root"
+InputMC="./../rootfiles/anaDntuple_ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight_Cent-0to100_Evt0to-1.root"
 
 InputMBdata0to100="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent-0to100.root"
 InputMBdata0to10="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent-0to10.root"
@@ -81,6 +81,10 @@ root -l -b -q 'MassFit_inoutplane.C++("'$InputMBdata30to50'","'$InputMC'","MBtri
 root -l -b -q 'MassFit_inoutplane.C++("'$InputMBdata50to70'","'$InputMC'","MBtrig",2,14,true,50,70)'
 fi
 
+if [ $DoMassFitEPformassvsvn -eq 1 ] || [ $DoMassFitSPformassvsvn -eq 1 ] || [ $DoMassFitEPforinoutplane -eq 1 ]; then
+	mv Massfitplots/PbPb/*.pdf Plots_vn/Massfitforvn
+fi
+
 if [ $DODrawinoutplanevn -eq 1 ]; then
 #root -l -b -q 'Draw_vn_inoutplane.C++("'$InputMB0to100_drawvn_inoutplane'","MBtrig",0,100,1.5,35.0)'
 root -l -b -q 'Draw_vn_inoutplane.C++("'$InputMB0to10_drawvn_inoutplane'","MBtrig",0,10,1.5,35.0)'
@@ -114,3 +118,5 @@ root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_Inoutplane'","'$FileVnMB
 root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_Inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","MBtrig",30,50,1.5,35.0)'
 root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_Inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","MBtrig",50,70,1.5,35.0)'
 fi
+
+./cleanup.sh
