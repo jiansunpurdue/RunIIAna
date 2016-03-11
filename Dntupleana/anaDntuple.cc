@@ -148,6 +148,7 @@ void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
 		{
 			if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
 			if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
+			if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
 
 			Gen_D0_pt_noweight_forptreweight->Fill( Gpt[igend] );
 		}
@@ -1018,6 +1019,7 @@ void anaDntuple::LoopOverGenDs()
 	{
 		if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
 		if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
+		if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
 
 		Gen_D0_pt_noweight->Fill( Gpt[igend]);
 		Gen_D0_pt_pthatweight->Fill( Gpt[igend], pthatweight);
@@ -1032,7 +1034,8 @@ void anaDntuple::LoopOverDcandidates()
 	for(int icand = 0; icand<Dsize; icand++)
 	{
 		if( ! ( Dtrk1highPurity[icand] && Dtrk2highPurity[icand] ) )  continue;
-		if( TMath::Abs(Dtrk1Eta[icand]) > Tketacut || TMath::Abs(Dtrk2Eta[icand]) > Tketacut ) continue;
+		if( isPbPbCollision && ( TMath::Abs(Dtrk1Eta[icand]) > Tketacut_PbPb || TMath::Abs(Dtrk2Eta[icand]) > Tketacut_PbPb ) ) continue;
+		if( !isPbPbCollision && ( TMath::Abs(Dtrk1Eta[icand]) > Tketacut_pp || TMath::Abs(Dtrk2Eta[icand]) > Tketacut_pp ) ) continue;
 		if( TMath::Abs( Dy[icand] ) > Drapiditycut )    continue;
 
 		int iptbin = decideptbin( Dpt[icand], ptbins, Nptbin);
@@ -1119,6 +1122,9 @@ void anaDntuple::LoopOverDcandidates()
 		if( isPbPbCollision && ( Dtrk1Pt[icand] <  MBTkptcut_PbPb || Dtrk2Pt[icand] <  MBTkptcut_PbPb ) ) continue;
 		if( !isPbPbCollision && ( Dtrk1Pt[icand] <  MBTkptcut_pp || Dtrk2Pt[icand] <  MBTkptcut_pp ) )  continue;
 		if( Dtrk1PtErr[icand]/Dtrk1Pt[icand] > TkPtresolution_MB || Dtrk2PtErr[icand]/Dtrk2Pt[icand] > TkPtresolution_MB ) continue;
+		
+		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb ) continue;
+		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp ) continue;
 		///////////////////////////////analysis with MB trig/////////////////////////////////////////
 
 		FillMBhisto( icand, iptbin);

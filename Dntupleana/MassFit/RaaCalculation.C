@@ -42,19 +42,23 @@ void RaaCalculation(TString fileinputppdata = "rootfiles/EfficiencyandCorrectedS
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
+	TH1::SetDefaultSumw2();
 
 	TFile * inputppdata = new TFile(fileinputppdata); 
 	TFile * inputPbPbdata = new TFile(fileinputPbPbdata);
 
 	TH1D * dNdpt_data_corrected_pp = (TH1D *) inputppdata->Get("dNdpt_data_corrected");
+	TH1D * h_accxeff_pp = (TH1D *) inputppdata->Get("h_accxeff");
+
 	TH1D * dNdpt_data_corrected_PbPb = (TH1D *) inputPbPbdata->Get("dNdpt_data_corrected");
+	TH1D * h_accxeff_PbPb = (TH1D *) inputPbPbdata->Get("h_accxeff");
 	TH1D * h_hibin = (TH1D *) inputPbPbdata->Get("h_hiBin");
 	const float LumiMBPbPb = LumiMBPbPbpermillionevt * h_hibin->GetEntries()/1.0e6;
 
 	TH1D * dsigmadpt_data_pp = (TH1D *) dNdpt_data_corrected_pp->Clone("dsigmadpt_data_pp");
 	dsigmadpt_data_pp->Scale( 0.5 * 1.0/BRchain * 1.0/LumiMBpp);
 
-	TH1D * dsigmadpt_data_PbPb_overNcoll = (TH1D *) dNdpt_data_corrected_PbPb->Clone("dNdpt_data_corrected_PbPb");
+	TH1D * dsigmadpt_data_PbPb_overNcoll = (TH1D *) dNdpt_data_corrected_PbPb->Clone("dsigmadpt_data_PbPb_overNcoll");
 	dsigmadpt_data_PbPb_overNcoll->Scale(0.5 * 1.0/BRchain * 1.0/LumiMBPbPb * 1.0/(208*208));
 
 	TH1D * RAAD0 = (TH1D *) dsigmadpt_data_pp->Clone("RAAD0");

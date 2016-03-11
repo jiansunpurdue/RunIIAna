@@ -11,30 +11,32 @@
 float ptbins[Nptbin+1]   =      { 0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0, 16.0, 20.0, 25.0, 30.0, 
                                   35.0, 40.0, 45.0, 50.0, 60.0, 80.0, 100.0, 120.0, 150.0, 200.0};
 
-float vertex3dcut_PbPb[Nptbin]  =  {6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 5.0, 5.0,  4.0,  4.0,  3.0, 3.0, 3.0, 
-                                    3.0,  3.0,  3.0,  3.0,  3.0,   3.0,  3.0,  3.0,  3.0};
-float alphacut_PbPb[Nptbin]  = {0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 
+float vertex3dcut_PbPb[Nptbin]  =  {5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0,  5.0,  5.0,  5.0, 5.0, 5.0, 
+                                    5.0,  5.0,  5.0,  5.0,  5.0,   5.0,  5.0,  5.0,  5.0};
+float alphacut_PbPb[Nptbin]  = {0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 
                                     0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12};
-float vertexprobcut_PbPb[Nptbin] = { 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.2, 0.2, 0.1, 0.1, 0.05, 0.05, 0.05,
+float vertexprobcut_PbPb[Nptbin] = { 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
                                     0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
+float DlxyBScut_PbPb = 1.5;
 
-float vertex3dcut_pp[Nptbin]  =  {4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0,  4.0,  4.0,  3.0, 3.0, 3.0, 
-                                    3.0,  3.0,  3.0,  3.0,  3.0,   3.0,  3.0,  3.0,  3.0};
-float alphacut_pp[Nptbin]  =   {0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 
+float vertex3dcut_pp[Nptbin]  =  {3.5, 3.5, 3.5, 3.5, 3.5, 3.5, 3.5, 3.5, 3.5,  3.5,  3.5,  3.5, 3.5, 3.5, 
+                                    3.5,  3.5,  3.5,  3.5,  3.5,   3.5,  3.5,  3.5,  3.5};
+float alphacut_pp[Nptbin]  =   {0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 
                                     0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12};
-float vertexprobcut_pp[Nptbin] = { 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05,
+float vertexprobcut_pp[Nptbin] = { 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
                                     0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
+float DlxyBScut_pp = 1.5;
 //track cuts
 //PbPb
-//#define MBTkptcut_PbPb 1.0 //1.0 just for RAA study
-#define MBTkptcut_PbPb 0.7
+#define MBTkptcut_PbPb 1.0
 #define TrigTkptcut_PbPb 8.5
+#define Tketacut_PbPb 1.5
 //pp
-#define MBTkptcut_pp 0.7
+#define MBTkptcut_pp 1.0
 #define TrigTkptcut_pp 3.0
+#define Tketacut_pp 2.0
 
 //D rapidity and track eta cuts
-#define Tketacut 1.2
 #define Drapiditycut 1.0
 #define TkPtresolution_MB 0.3
 #define TkPtresolution_Trig 0.1
