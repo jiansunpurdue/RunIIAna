@@ -9,9 +9,6 @@ isPbPb=$5
 centlow=$6
 centhigh=$7
 
-root -l -b <<EOF
-.x MassFit.C+("$inputdatafile", "$inputmcfile", $iptstart, $iptend, $isPbPb, $centlow, $centhigh)
-.q
-EOF
+root -l -b -q 'MassFit.C++("'$inputdatafile'", "'$inputmcfile'", '$iptstart', '$iptend', '$isPbPb', '$centlow', '$centhigh')'
 
 ./cleanup.sh

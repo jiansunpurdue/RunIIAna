@@ -907,7 +907,7 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		{
 			if( ! ( pcollisionEventSelection && pprimaryVertexFilter && phfCoincFilter3 && pclusterCompatibilityFilter ) )  continue;
 		}
-		else
+		if( !isPbPbCollision && !isMC )
 		{
 			if( ! ( pPAprimaryVertexFilter && pBeamScrapingFilter ) ) continue;
 		}
@@ -1122,9 +1122,8 @@ void anaDntuple::LoopOverDcandidates()
 		if( isPbPbCollision && ( Dtrk1Pt[icand] <  MBTkptcut_PbPb || Dtrk2Pt[icand] <  MBTkptcut_PbPb ) ) continue;
 		if( !isPbPbCollision && ( Dtrk1Pt[icand] <  MBTkptcut_pp || Dtrk2Pt[icand] <  MBTkptcut_pp ) )  continue;
 		if( Dtrk1PtErr[icand]/Dtrk1Pt[icand] > TkPtresolution_MB || Dtrk2PtErr[icand]/Dtrk2Pt[icand] > TkPtresolution_MB ) continue;
-		
-		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb ) continue;
-		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp ) continue;
+		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb_MB ) continue;
+		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp_MB ) continue;
 		///////////////////////////////analysis with MB trig/////////////////////////////////////////
 
 		FillMBhisto( icand, iptbin);
@@ -1139,6 +1138,8 @@ void anaDntuple::LoopOverDcandidates()
 					( Dtrk2Algo[icand] > TkAlgoCut_Trig && Dtrk1Algo[icand] != 11 ) ) ) continue;
 		if( Dtrk1PtErr[icand]/Dtrk1Pt[icand] > TkPtresolution_Trig || Dtrk2PtErr[icand]/Dtrk2Pt[icand] > TkPtresolution_Trig ) continue;
 		if( (Dtrk1PixelHit[icand]+Dtrk1StripHit[icand]) < TkHitCut_Trig || (Dtrk2PixelHit[icand]+Dtrk2StripHit[icand]) < TkHitCut_Trig ) continue;
+		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb_Dtrig ) continue;
+		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp_Dtrig ) continue;
 
 		FillJettrighisto( icand, iptbin);
 
