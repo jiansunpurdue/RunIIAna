@@ -26,6 +26,7 @@ float vertexprobcut_pp[Nptbin] = { 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 
                                     0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
 //track cuts
 //PbPb
+//#define MBTkptcut_PbPb 1.0 //1.0 just for RAA study
 #define MBTkptcut_PbPb 0.7
 #define TrigTkptcut_PbPb 8.5
 //pp

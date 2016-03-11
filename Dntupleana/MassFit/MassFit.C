@@ -49,7 +49,7 @@ void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_
 	TH2D * h_trig_hiBin = (TH2D *) inputdatafile->Get("hevt_trig_hiBin");
 	TH1D * h_hiBin = (TH1D *) h_trig_hiBin->ProjectionY("h_hiBin",2,2);
 
-	TH1D * dNdpt_poly3bkg = new TH1D( Form("dNdpt_%s_poly3bkg", MBorDtrig.Data()), Form("dNdpt_%s_poly3bkg", MBorDtrig.Data()), Nptbin, ptbins);
+	TH1D * dNdpt_poly3bkg = new TH1D( "dNdpt_poly3bkg", "dNdpt_poly3bkg", Nptbin, ptbins);
     Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, dNdpt_poly3bkg);
 
 	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_%s.root",(fs::basename(inputdatafilename)).c_str()),"RECREATE");

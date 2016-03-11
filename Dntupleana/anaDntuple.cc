@@ -898,7 +898,7 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		//centrality range
 		if( isPbPbCollision && (hiBin < hibin_cut_low || hiBin > hibin_cut_high) )  continue;
 
-		if( isPbPbCollision ) PbPbTrigComb_PDs();
+		if( isPbPbCollision && !isMC ) PbPbTrigComb_PDs();
 		Combine_TrigPart_TrigVersion();
 
 		//event filter
