@@ -36,8 +36,8 @@ void MassFit_inoutplane(string inputdatafilename = "./../rootfiles/anaDntuple_Dn
 	TH1D * mc_matched_signal[Nptbin];
 	TH1D * mc_matched_kpiswapped[Nptbin];
 	TFile * inputmcfile = new TFile(Form("%s",inputmcfilename.c_str()));
-	get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_noweight");
-	get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_noweight");
+	get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_ptweight");
+	get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_ptweight");
 
 	//get data histo
 	TH1D * hmass_MBorDtrig[Nptbin];

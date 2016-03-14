@@ -32,13 +32,13 @@ float DlxyBScut_pp_Dtrig = 1.5;
 
 //track cuts
 //PbPb
-//#define MBTkptcut_PbPb 0.7
-#define MBTkptcut_PbPb 1.0  //should be lowered a bit when MC sample is produced with lower track pt cut
+#define MBTkptcut_PbPb 0.7
+//#define MBTkptcut_PbPb 1.0  //should be lowered a bit when MC sample is produced with lower track pt cut
 #define Tketacut_PbPb 1.2
 #define TrigTkptcut_PbPb 8.5
 //pp
-//#define MBTkptcut_pp 0.5
-#define MBTkptcut_pp 1.0
+#define MBTkptcut_pp 0.7
+//#define MBTkptcut_pp 1.0
 #define Tketacut_pp 1.2
 #define TrigTkptcut_pp 3.0
 
