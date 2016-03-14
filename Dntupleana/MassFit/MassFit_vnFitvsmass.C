@@ -61,8 +61,16 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 	TH1D * mc_matched_signal[Nptbin];
 	TH1D * mc_matched_kpiswapped[Nptbin];
 	TFile * inputmcfile = new TFile(Form("%s",inputmcfilename.c_str()));
-	get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_ptweight");
-	get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_ptweight");
+    if( MBorDtrig == "MBtrig" )
+    {   
+        get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_ptweight");
+        get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_ptweight");
+    }   
+    else if( MBorDtrig == "Dtrig")
+    {   
+        get_masshist(inputmcfile, mc_matched_signal, Nptbin, "Dtrig_mc_matched_signal_ptweight");
+        get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "Dtrig_mc_matched_kpiswapped_ptweight");
+    } 
 
 	TH1D * hmass_MBorDtrig[Nptbin];
 	TProfile * h_mass_v1_MBorDtrig[Nptbin];

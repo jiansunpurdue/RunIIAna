@@ -25,20 +25,28 @@
 
 namespace fs = boost::filesystem;
 
-void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent-0to100.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 7, int iptend = 8, bool isPbPb = 1, int centlow=0, int centhigh=100)
+void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIHardProbes_Dtrig_ForestAOD_highpuritytk_D0_tkpt6p0eta1p5_goldenjson_02222016_Cent-0to100.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 10, int iptend = 12, bool isPbPb = 1, int centlow=0, int centhigh=100)
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
-    void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt_poly3bkg);
+	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt_poly3bkg);
 
-    // Get MC histograms
-    TH1D * mc_matched_signal[Nptbin];
+	// Get MC histograms
+	TH1D * mc_matched_signal[Nptbin];
 	TH1D * mc_matched_kpiswapped[Nptbin];
-    TFile * inputmcfile = new TFile(Form("%s",inputmcfilename.c_str()));
-	get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_ptweight");
-	get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_ptweight");
+	TFile * inputmcfile = new TFile(Form("%s",inputmcfilename.c_str()));
+	if( MBorDtrig == "MBtrig" )
+	{
+		get_masshist(inputmcfile, mc_matched_signal, Nptbin, "mc_matched_signal_ptweight");
+		get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "mc_matched_kpiswapped_ptweight");
+	}
+	else if( MBorDtrig == "Dtrig")
+	{
+		get_masshist(inputmcfile, mc_matched_signal, Nptbin, "Dtrig_mc_matched_signal_ptweight");
+		get_masshist(inputmcfile, mc_matched_kpiswapped, Nptbin, "Dtrig_mc_matched_kpiswapped_ptweight");
+	}
 
-    // Get Data histograms
+	// Get Data histograms
 	TH1D * hmass_MBorDtrig[Nptbin];
 	TFile * inputdatafile = new TFile(Form("%s",inputdatafilename.c_str()));
 	if( MBorDtrig == "MBtrig" )
@@ -50,7 +58,7 @@ void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_
 	TH1D * h_hiBin = (TH1D *) h_trig_hiBin->ProjectionY("h_hiBin",2,2);
 
 	TH1D * dNdpt_poly3bkg = new TH1D( "dNdpt_poly3bkg", "dNdpt_poly3bkg", Nptbin, ptbins);
-    Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, dNdpt_poly3bkg);
+	Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, dNdpt_poly3bkg);
 
 	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_%s.root",(fs::basename(inputdatafilename)).c_str()),"RECREATE");
 	dNdpt_poly3bkg->Write();
