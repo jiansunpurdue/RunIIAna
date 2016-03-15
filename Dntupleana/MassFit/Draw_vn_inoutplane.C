@@ -81,6 +81,8 @@ void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt
 
 		if( vn_inoutplane->GetBinCenter( ibin+1 )  < ptlow || vn_inoutplane->GetBinCenter( ibin+1 ) > pthigh )  continue;
 
+		if( !( N_in > 0 && N_out > 0 ) ) continue;
+
 		vn_inoutplane->SetBinContent( ibin+1, (N_in - N_out)/(N_in + N_out) );
 		error_from_Nin = ( 2.0 * N_out / ( ( N_in + N_out ) * ( N_in + N_out ) ) ) * ( 2.0 * N_out / ( ( N_in + N_out ) * ( N_in + N_out ) ) ) * error_N_in * error_N_in;
 		error_from_Nout = ( 2.0 * N_in / ( ( N_in + N_out ) * ( N_in + N_out ) ) ) * ( 2.0 * N_in / ( ( N_in + N_out ) * ( N_in + N_out ) ) ) * error_N_out * error_N_out; 

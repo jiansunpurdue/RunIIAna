@@ -9,7 +9,7 @@ DODrawSPmassvsvn=1
 DOVncomparison=1
 
 ptbinstart=10
-ptbinend=16
+ptbinend=15
 ptmin=20.0
 ptmax=100.0
 MBorDtrig="Dtrig"

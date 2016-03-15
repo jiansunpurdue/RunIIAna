@@ -2,8 +2,8 @@
 
 DoMassFitEPformassvsvn=1
 DoMassFitSPformassvsvn=1
-DoMassFitEPforinoutplane=0
-DODrawinoutplanevn=0
+DoMassFitEPforinoutplane=1
+DODrawinoutplanevn=1
 DODrawEPmassvsvn=1
 DODrawSPmassvsvn=1
 DOVncomparison=1
