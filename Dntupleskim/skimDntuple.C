@@ -73,6 +73,8 @@ void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analys
 	TTree *ntGen = (TTree*)inf->Get("ntGen");
 
 	ntHlt->SetBranchStatus("HLT_HIL1Centralityext010HFplusANDminusTH0ForZS_v*",0);
+	ntHlt->SetBranchStatus("HLT_HIPuAK4CaloJet*_Eta5p1_v*",0);
+	ntHlt->SetBranchStatus("HLT_HIPuAK4CaloDJet*_Eta2p1_v*",0);
 	ntHi->SetBranchStatus("hiEvtPlanes*",0);
 
 	forest.push_back(ntDkpi);
@@ -92,7 +94,22 @@ void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analys
 
 	// You only need the branches which can help you decide if you want to keep the event
 	int Dsize;   
+	float Dpt[15000];
+	float Dy[15000];
+	float Dtrk1Pt[15000];
+	float Dtrk2Pt[15000];
+	float Dalpha[15000];
+	float DsvpvDistance[15000];
+	float DsvpvDisErr[15000];
+
 	ntDkpi->SetBranchAddress("Dsize",&Dsize);
+	ntDkpi->SetBranchAddress("Dpt",Dpt);
+	ntDkpi->SetBranchAddress("Dy",Dy);
+	ntDkpi->SetBranchAddress("Dtrk1Pt",Dtrk1Pt);
+	ntDkpi->SetBranchAddress("Dtrk2Pt",Dtrk2Pt);
+	ntDkpi->SetBranchAddress("Dalpha",Dalpha);
+	ntDkpi->SetBranchAddress("DsvpvDistance",DsvpvDistance);
+	ntDkpi->SetBranchAddress("DsvpvDisErr",DsvpvDisErr);
 
 	Int_t           HLT_HIL1MinimumBiasHF2AND_part1_v1; //MB2
 	Int_t           HLT_HIL1MinimumBiasHF2AND_part2_v1; //MB3
@@ -119,9 +136,6 @@ void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analys
 		ntDkpi->GetEntry(i);
 		ntHlt->GetEntry(i);
 
-		// if pass the selection -> accept this event
-		//if ( Dsize<=0 )  continue;
-
 		int HLT_HIL1MinimumBiasHF2AND_part_combined = HLT_HIL1MinimumBiasHF2AND_part1_v1 || HLT_HIL1MinimumBiasHF2AND_part2_v1 || HLT_HIL1MinimumBiasHF2AND_part3_v1;
 		int HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part_combined = HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 || HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 || HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1;
 		if( PbPbPD == 2 && !HLT_HIL1MinimumBiasHF2AND_part1_v1 ) continue;
@@ -131,6 +145,25 @@ void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analys
 		if( PbPbPD == 6 && !( HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 && !HLT_HIL1MinimumBiasHF2AND_part_combined ) ) continue;
 		if( PbPbPD == 7 && !( HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 && !HLT_HIL1MinimumBiasHF2AND_part_combined ) ) continue;
 		if( PbPbPD == 1 && !( HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1 && !HLT_HIL1MinimumBiasHF2AND_part_combined && !HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part_combined ) ) continue;
+
+		//if pass the selection -> accept this event
+		if ( Dsize<=0 )  continue;
+
+		int ncand=0;
+		for (int j=0;j<Dsize;j++) {
+			if ( 
+				( Dpt[j] > 1.0 && Dpt[j] < 4.0 && Dtrk1Pt[j]>1.0 && Dtrk2Pt[j]>1.0 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>5.5) || 
+				( Dpt[j] >= 4.0 && Dpt[j] < 8.0 && Dtrk1Pt[j]>1.0 && Dtrk2Pt[j]>1.0 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>4.5) || 
+				( Dpt[j] >= 8.0 && Dpt[j] < 40.0 && Dtrk1Pt[j]>1.0 && Dtrk2Pt[j]>1.0 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>3.0)
+			   ) 
+			{
+				ncand++;
+				break;
+			}
+		}
+
+		if (ncand <= 0) continue;
+
 
 		GetEntry(forest,i);
 		FillOutput(cloneForest);
