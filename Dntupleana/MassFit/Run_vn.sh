@@ -1,11 +1,12 @@
 #!/bin/sh
 
-DoMassFitEPformassvsvn=0
-DoMassFitSPformassvsvn=0
-DoMassFitEPforinoutplane=0
+DoMassFitEPformassvsvn=1
+DoMassFitSPformassvsvn=1
+DoMassFitEPforinoutplane=1
 DODrawinoutplanevn=1
 DODrawEPmassvsvn=1
 DODrawSPmassvsvn=1
+DOVnvsmasscomparison=1
 DOVncomparison=1
 
 ptbinstart=1
@@ -117,6 +118,13 @@ root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB0to10_drawvn_vnvsmass_SP'","'$MBor
 root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB10to30_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",10,30,'$ptmin','$ptmax')'
 root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB30to50_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",30,50,'$ptmin','$ptmax')'
 root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB50to70_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",50,70,'$ptmin','$ptmax')'
+fi
+
+if [ $DOVnvsmasscomparison -eq 1 ]; then
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB0to10_drawvn_vnvsmass_EP'","'$InputMB0to10_drawvn_vnvsmass_SP'","'$MBorDtrig'",0,10,'$ptbinstart','$ptbinend')'
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB10to30_drawvn_vnvsmass_EP'","'$InputMB10to30_drawvn_vnvsmass_SP'","'$MBorDtrig'",10,30,'$ptbinstart','$ptbinend')'
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB30to50_drawvn_vnvsmass_EP'","'$InputMB30to50_drawvn_vnvsmass_SP'","'$MBorDtrig'",30,50,'$ptbinstart','$ptbinend')'
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB50to70_drawvn_vnvsmass_EP'","'$InputMB50to70_drawvn_vnvsmass_SP'","'$MBorDtrig'",50,70,'$ptbinstart','$ptbinend')'
 fi
 
 Drawchargedparticle=0

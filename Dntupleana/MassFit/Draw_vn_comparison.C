@@ -21,10 +21,10 @@
 
 void Draw_vn_comparison(TString input_inoutplane = "rootfiles/vn_inoutplane_MBtrig_cent30to50.root", TString input_vnvmass_EP = "rootfiles/vn_vnvsmass_MBtrig_EP_cent30to50.root", TString input_vnvmass_SP = "rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 1.5, double pthigh = 35.0, bool Drawchargedparticle = false)
 {
-	void Drawcomparison(TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsmass_SP, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false);
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
+	void Drawcomparison(TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsmass_SP, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false);
 
 	if( Drawchargedparticle ) HIN_11_012();
 
