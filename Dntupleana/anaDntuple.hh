@@ -68,6 +68,7 @@ class anaDntuple
 		void FillJettrighisto(int icand, int iptbin);
 		float Calculatedeltaphi( int icand, int floworder);
 		int  Decideinoutplane(float deltaphi, int floworder);
+		int  Decidephibin_morephibin(float deltaphi, int floworder);
 
 	private:
 		bool isPbPbCollision;
@@ -93,6 +94,9 @@ class anaDntuple
 		int dcandiphiv3;
 		int dcandiphiv4;
 
+		int dcandiphiv2_morephibin;
+		int dcandiphiv3_morephibin;
+		
 		float EP_resolution_v1;
 		float EP_resolution_v2;
 		float EP_resolution_v3;

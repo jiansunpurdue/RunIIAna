@@ -98,6 +98,9 @@ void anaDntuple::Histobookforanalysis()
 		book_hist_vn_inoutplane( hmass_MB_HFandpart_v2, ptbins, Nptbin, Nphibin, "hmass_MB_HFandpart_v2", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_MB_HFandpart_v3, ptbins, Nptbin, Nphibin, "hmass_MB_HFandpart_v3", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_MB_HFandpart_v4, ptbins, Nptbin, Nphibin, "hmass_MB_HFandpart_v4", Nmassbin, massmin, massmax);
+		
+		book_hist_vn_morephibin( hmass_MB_HFandpart_v2_morephibin, ptbins, Nptbin, Nphibinmore, h_phibins_v2, "hmass_MB_HFandpart_v2_morephibin", Nmassbin, massmin, massmax);
+		book_hist_vn_morephibin( hmass_MB_HFandpart_v3_morephibin, ptbins, Nptbin, Nphibinmore, h_phibins_v3, "hmass_MB_HFandpart_v3_morephibin", Nmassbin, massmin, massmax);
 
 		book_TProfile_mass_vn( h_mass_v1_MB_HFandpart, ptbins, Nptbin, "h_mass_v1_MB_HFandpart", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v2_MB_HFandpart, ptbins, Nptbin, "h_mass_v2_MB_HFandpart", Nmassbin, massmin, massmax);
@@ -113,6 +116,9 @@ void anaDntuple::Histobookforanalysis()
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v2, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v2", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v3, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v3", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v4, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v4", Nmassbin, massmin, massmax);
+		
+		book_hist_vn_morephibin( hmass_Dtrig_combined_v2_morephibin, ptbins, Nptbin, Nphibinmore, h_phibins_v2, "hmass_Dtrig_combined_v2_morephibin", Nmassbin, massmin, massmax);
+		book_hist_vn_morephibin( hmass_Dtrig_combined_v3_morephibin, ptbins, Nptbin, Nphibinmore, h_phibins_v3, "hmass_Dtrig_combined_v3_morephibin", Nmassbin, massmin, massmax);
 
 		book_TProfile_mass_vn( h_mass_v1_Dtrig_combined, ptbins, Nptbin, "h_mass_v1_Dtrig_combined", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v2_Dtrig_combined, ptbins, Nptbin, "h_mass_v2_Dtrig_combined", Nmassbin, massmin, massmax);
@@ -1067,11 +1073,18 @@ void anaDntuple::LoopOverDcandidates()
 			dcandiphiv2 = Decideinoutplane( dcanddeltaphiv2, 2);
 			dcandiphiv3 = Decideinoutplane( dcanddeltaphiv3, 3);
 			dcandiphiv4 = Decideinoutplane( dcanddeltaphiv4, 4);
+			
+			dcandiphiv2_morephibin = Decidephibin_morephibin( dcanddeltaphiv2, 2);
+			dcandiphiv3_morephibin = Decidephibin_morephibin( dcanddeltaphiv3, 3);
 
-			if( dcandiphiv1 < 0 || dcandiphiv2 < 0 || dcandiphiv3 < 0 || dcandiphiv4 < 0)
+			//cout << "dcanddeltaphiv2: " << dcanddeltaphiv2 << " dcandiphiv2_morephibin: " << dcandiphiv2_morephibin << endl;
+			//cout << "dcanddeltaphiv3: " << dcanddeltaphiv3 << " dcandiphiv3_morephibin: " << dcandiphiv3_morephibin << endl;
+
+			if( dcandiphiv1 < 0 || dcandiphiv2 < 0 || dcandiphiv3 < 0 || dcandiphiv4 < 0 || dcandiphiv2_morephibin < 0 || dcandiphiv3_morephibin < 0 )
 			{
 				cout << " dcandiphi is wrong!!!!!!" << "  icand: " << icand << endl;
 				cout << " dcandiphiv1: " << dcandiphiv1 << " dcandiphiv2: " << dcandiphiv2 << " dcandiphiv3: " << dcandiphiv3 << " dcandiphiv4: " << dcandiphiv4 << endl;
+				cout << " dcandiphiv2_morephibin: " << dcandiphiv2_morephibin << " dcandiphiv3_morephibin: " << dcandiphiv3_morephibin << endl;
 				exit(2);
 			}
 
@@ -1288,9 +1301,56 @@ float anaDntuple::Calculatedeltaphi( int icand, int floworder )
 	return -99.;
 }
 
+int anaDntuple::Decidephibin_morephibin(float deltaphi, int floworder)
+{
+	if( floworder < 2 || floworder > 3 )    { cout << "more phi bin, floworder out of range!!!!!!!!!" << endl; return -1; }
+
+	int iphi = -1;
+
+	if( floworder == 2 )
+	{
+		//limit the deltaphi to [0, PI]
+		while( deltaphi < 0 )
+			deltaphi = deltaphi + PI;
+
+		while( deltaphi > PI )
+			deltaphi = deltaphi - PI;
+
+		//limit deltaphi to [0, PI/2.]
+		if( deltaphi > PI/2. && deltaphi <= PI )
+			deltaphi = PI - deltaphi;
+		else if( deltaphi > PI )
+			cout << "error, there is something wong!!!!!, deltaphi v2: " << deltaphi << endl;
+
+		iphi = h_phibins_v2->FindBin( deltaphi ) - 1;
+		return iphi;
+	}
+
+	if( floworder == 3 )
+	{
+		//limit the deltaphi to [0, PI*2/3]
+		while( deltaphi < 0 )
+			deltaphi = deltaphi + PI * 2./3.;
+
+		while( deltaphi > PI * 2./3. )
+			deltaphi = deltaphi - PI * 2./3.;
+
+		//limit deltaphi to [0, PI/3.]
+		if( deltaphi > PI/3. && deltaphi <= PI * 2./3. )
+			deltaphi = PI * 2./3. - deltaphi;
+		else if( deltaphi > PI * 2./3. )
+			cout << "error, there is something wong!!!!!, deltaphi v3: " << deltaphi << endl;
+
+		iphi = h_phibins_v3->FindBin( deltaphi ) - 1;
+		return iphi;
+	}
+
+	return -1;
+}
+
 int anaDntuple::Decideinoutplane(float deltaphi, int floworder)
 {
-	if( floworder < 1 || floworder > 5 )    { cout << "floworder out of range!!!!!!!!!" << endl; return -1; }
+	if( floworder < 1 || floworder > 4 )    { cout << "floworder out of range!!!!!!!!!" << endl; return -1; }
 
 	int iphi = -1;
 
@@ -1370,6 +1430,9 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 			hmass_MB_HFandpart_v2[iptbin][dcandiphiv2]->Fill(Dmass[icand]);
 			hmass_MB_HFandpart_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
 			hmass_MB_HFandpart_v4[iptbin][dcandiphiv4]->Fill(Dmass[icand]);
+
+			hmass_MB_HFandpart_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
+			hmass_MB_HFandpart_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
 
 			h_mass_v1_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(dcanddeltaphiv1)/EP_resolution_v1);
 			h_mass_v2_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
@@ -1469,6 +1532,9 @@ void anaDntuple::FillDtrighisto_PbPb(int icand, int iptbin)
 		hmass_Dtrig_combined_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
 		hmass_Dtrig_combined_v4[iptbin][dcandiphiv4]->Fill(Dmass[icand]);
 
+		hmass_Dtrig_combined_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
+		hmass_Dtrig_combined_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
+
 		h_mass_v1_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(dcanddeltaphiv1)/EP_resolution_v1);
 		h_mass_v2_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
 		h_mass_v3_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
@@ -1559,6 +1625,12 @@ void anaDntuple::Write()
 				hmass_MB_HFandpart_v4[i][j]->Write();
 			}
 
+			for(int j = 0; j<Nphibinmore; j++)
+			{
+				hmass_MB_HFandpart_v2_morephibin[i][j]->Write();
+				hmass_MB_HFandpart_v3_morephibin[i][j]->Write();
+			}
+
 			h_mass_v1_MB_HFandpart[i]->Write();
 			h_mass_v2_MB_HFandpart[i]->Write();
 			h_mass_v3_MB_HFandpart[i]->Write();
@@ -1578,6 +1650,12 @@ void anaDntuple::Write()
 				hmass_Dtrig_combined_v2[i][j]->Write();
 				hmass_Dtrig_combined_v3[i][j]->Write();
 				hmass_Dtrig_combined_v4[i][j]->Write();
+			}
+
+			for(int j = 0; j<Nphibinmore; j++)
+			{
+				hmass_Dtrig_combined_v2_morephibin[i][j]->Write();
+				hmass_Dtrig_combined_v3_morephibin[i][j]->Write();
 			}
 
 			h_mass_v1_Dtrig_combined[i]->Write();

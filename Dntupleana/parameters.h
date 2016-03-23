@@ -5,7 +5,7 @@
 #include <TH1D.h>
 #include <TProfile.h>
 
-#define PI 3.14159265
+#define PI 3.1415926536
 
 #define Nptbin 15
 
@@ -161,6 +161,17 @@ TH1D * hmass_Dtrig_combined_v1[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v2[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v3[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v4[Nptbin][Nphibin];
+
+//more delta phi bins
+#define Nphibinmore 6
+TH1D * h_phibins_v2 = new TH1D( "h_phibins_v2", "h_phibins_v2", Nphibinmore, 0, PI/2.);
+TH1D * h_phibins_v3 = new TH1D( "h_phibins_v3", "h_phibins_v3", Nphibinmore, 0, PI/3.);
+
+TH1D * hmass_MB_HFandpart_v2_morephibin[Nptbin][Nphibinmore];
+TH1D * hmass_MB_HFandpart_v3_morephibin[Nptbin][Nphibinmore];
+
+TH1D * hmass_Dtrig_combined_v2_morephibin[Nptbin][Nphibinmore];
+TH1D * hmass_Dtrig_combined_v3_morephibin[Nptbin][Nphibinmore];
 
 //#define Vn_low -1.5
 //#define Vn_high 1.5
