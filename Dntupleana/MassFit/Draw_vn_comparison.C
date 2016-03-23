@@ -80,9 +80,9 @@ void Drawcomparison(TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsm
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 
-	vn_inoutplane->Draw();
-	vn_vnvsmass_EP->Draw("same");
+	vn_vnvsmass_EP->Draw();
 	vn_vnvsmass_SP->Draw("same");
+	vn_inoutplane->Draw("same");
 
 	if( vnname == "v2" && Drawchargedparticle && cent_low == 0 && cent_high == 10 ) grHIN_v2pt[0]->Draw("psame");
 	if( vnname == "v2" && Drawchargedparticle && cent_low == 10 && cent_high == 30 ) grHIN_v2pt[1]->Draw("psame");
@@ -102,9 +102,9 @@ void Drawcomparison(TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsm
 	else leg = new TLegend(0.45, 0.75, 0.65, 0.90);
 	leg->SetTextSize(0.04);
 	leg->SetTextFont(42);
-	leg->AddEntry(vn_inoutplane, "In and out plane method");
 	leg->AddEntry(vn_vnvsmass_EP, Form("%s vs mass method {EP}", Ytitle.Data()));
 	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
+	leg->AddEntry(vn_inoutplane, "In and out plane method");
 	if( vnname == "v2" && Drawchargedparticle )
 		leg->AddEntry(grHIN_v2pt[0], "Charged particle", "p");
 	if( vnname == "v2" && Drawchargedparticle && cent_low == 0 && cent_high == 10 ) 

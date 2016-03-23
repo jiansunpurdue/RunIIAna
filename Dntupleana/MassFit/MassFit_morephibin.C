@@ -25,7 +25,7 @@
 
 namespace fs = boost::filesystem;
 
-void MassFit_morephibin(string inputdatafilename = "./../anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 4, int iptend = 5, bool isPbPb = 1, int centlow=30, int centhigh=50)
+void MassFit_morephibin(string inputdatafilename = "./../anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 2, int iptend = 11, bool isPbPb = 1, int centlow=30, int centhigh=50)
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();

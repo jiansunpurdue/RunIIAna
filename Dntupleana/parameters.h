@@ -163,7 +163,7 @@ TH1D * hmass_Dtrig_combined_v3[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v4[Nptbin][Nphibin];
 
 //more delta phi bins
-#define Nphibinmore 6
+#define Nphibinmore 5
 TH1D * h_phibins_v2 = new TH1D( "h_phibins_v2", "h_phibins_v2", Nphibinmore, 0, PI/2.);
 TH1D * h_phibins_v3 = new TH1D( "h_phibins_v3", "h_phibins_v3", Nphibinmore, 0, PI/3.);
 

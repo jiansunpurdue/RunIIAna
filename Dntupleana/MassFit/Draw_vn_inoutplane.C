@@ -108,10 +108,10 @@ void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt
 	vn_inoutplane->GetYaxis()->SetTitleSize(0.05);
 	vn_inoutplane->GetXaxis()->SetTitleSize(0.05);
 
-	vn_inoutplane->SetMarkerColor(2.0);
-	vn_inoutplane->SetMarkerStyle(20);
+	vn_inoutplane->SetMarkerColor(8.0);
+	vn_inoutplane->SetMarkerStyle(33);
 	vn_inoutplane->SetMarkerSize(1.0);
-	vn_inoutplane->SetLineColor(2.0);
+	vn_inoutplane->SetLineColor(8.0);
 	vn_inoutplane->Draw();
 
 	TLatex Tl; 

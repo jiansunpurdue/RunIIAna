@@ -30,6 +30,8 @@
 #include <TROOT.h>
 #include <TStyle.h>
 
+#include "parameters.h"
+
 // Remove error
 void removeError(TH1* h)
 {
@@ -123,11 +125,11 @@ void get_TH2D_mass_vn(TFile * inputfile, TH2D * h[], int inputNptbin, string hna
 		h[i] = (TH2D *) inputfile->Get(Form("%s_%d", hname.c_str(), i));
 }
 
-void book_hist_vn_morephibin(TH1D * h[][6], float inputptbins[], int inputNptbin, int inputNphibin, TH1D * input_phibins, string hname, int Nmassbin, float hmin, float hmax)
+void book_hist_vn_morephibin(TH1D * h[][Nphibinmore], float inputptbins[], int inputNptbin, int inputNphibin, TH1D * input_phibins, string hname, int Nmassbin, float hmin, float hmax)
 {
 	TH1::SetDefaultSumw2();
 
-	if( inputNphibin != 6 )
+	if( inputNphibin != Nphibinmore )
 	{
 		cout << "inputNphibinmore out of range!!!  inputNphibin = " << inputNphibin << endl;
 		exit(1);
@@ -149,11 +151,11 @@ void book_hist_vn_morephibin(TH1D * h[][6], float inputptbins[], int inputNptbin
 	}
 }
 
-void get_hist_vn_morephibin(TFile * inputfile, TH1D * h[][6], int inputNptbin, int inputNphibin, string hname)
+void get_hist_vn_morephibin(TFile * inputfile, TH1D * h[][Nphibinmore], int inputNptbin, int inputNphibin, string hname)
 {
 	TH1::SetDefaultSumw2();
 
-	if( inputNphibin != 6 )
+	if( inputNphibin != Nphibinmore )
 	{
 		cout << "inputNphibinmore out of range!!!  inputNphibin = " << inputNphibin << endl;
 		exit(2);
