@@ -94,6 +94,20 @@ TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm",
 TProfile * h_v3_hiBin_cosndiffeppepm = new TProfile("h_v3_hiBin_cosndiffeppepm","h_v3_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v4_hiBin_cosndiffeppepm = new TProfile("h_v4_hiBin_cosndiffeppepm","h_v4_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 
+TProfile * h_v2_hiBin_HFm_cosndiffepAB = new TProfile("h_v2_hiBin_HFm_cosndiffepAB","h_v2_hiBin_HFm_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFm_cosndiffepAC = new TProfile("h_v2_hiBin_HFm_cosndiffepAC","h_v2_hiBin_HFm_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFm_cosndiffepBC = new TProfile("h_v2_hiBin_HFm_cosndiffepBC","h_v2_hiBin_HFm_cosndiffepBC", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFp_cosndiffepAB = new TProfile("h_v2_hiBin_HFp_cosndiffepAB","h_v2_hiBin_HFp_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFp_cosndiffepAC = new TProfile("h_v2_hiBin_HFp_cosndiffepAC","h_v2_hiBin_HFp_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFp_cosndiffepBC = new TProfile("h_v2_hiBin_HFp_cosndiffepBC","h_v2_hiBin_HFp_cosndiffepBC", NCentbins, hibinbins);
+
+TProfile * h_v3_hiBin_HFm_cosndiffepAB = new TProfile("h_v3_hiBin_HFm_cosndiffepAB","h_v3_hiBin_HFm_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFm_cosndiffepAC = new TProfile("h_v3_hiBin_HFm_cosndiffepAC","h_v3_hiBin_HFm_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFm_cosndiffepBC = new TProfile("h_v3_hiBin_HFm_cosndiffepBC","h_v3_hiBin_HFm_cosndiffepBC", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFp_cosndiffepAB = new TProfile("h_v3_hiBin_HFp_cosndiffepAB","h_v3_hiBin_HFp_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFp_cosndiffepAC = new TProfile("h_v3_hiBin_HFp_cosndiffepAC","h_v3_hiBin_HFp_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFp_cosndiffepBC = new TProfile("h_v3_hiBin_HFp_cosndiffepBC","h_v3_hiBin_HFp_cosndiffepBC", NCentbins, hibinbins);
+
 TProfile * h_v2_hiBin_HFm_QAB = new TProfile("h_v2_hiBin_HFm_QAB","h_v2_hiBin_HFm_QAB", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_HFm_QAC = new TProfile("h_v2_hiBin_HFm_QAC","h_v2_hiBin_HFm_QAC", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_HFm_QBC = new TProfile("h_v2_hiBin_HFm_QBC","h_v2_hiBin_HFm_QBC", NCentbins, hibinbins);
