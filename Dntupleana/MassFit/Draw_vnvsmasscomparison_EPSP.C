@@ -93,13 +93,13 @@ void Draw_vnvsmasscomparison( TH1D * h_mass_meanvn_MBorDtrig_EP, TH1D * h_mass_m
 	h_mass_meanvn_MBorDtrig_EP->Draw();
 	h_mass_meanvn_MBorDtrig_SP->Draw("same");
 
-	TLatex Tl; 
-	Tl.SetNDC();
-	Tl.SetTextAlign(12);
-	Tl.SetTextSize(0.04);
-	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.125,0.96, "#scale[1.25]{CMS} Preliminary");
-	Tl.DrawLatex(0.57,0.96, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
+    TLatex Tl; 
+    Tl.SetNDC();
+    Tl.SetTextAlign(12);
+    Tl.SetTextSize(0.05);
+    Tl.SetTextFont(42);
+    Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLegend * leg = new TLegend(0.60, 0.75, 0.80, 0.85);
 	leg->SetTextFont(42);

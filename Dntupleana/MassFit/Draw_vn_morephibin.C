@@ -81,7 +81,8 @@ void Get_vn_morephibin( TH1D * vn_morephibin, TH1D * dNdpt_phibins_in_oneptbin[]
 
     TCanvas * cfg_vn = new TCanvas(Form("cfg_%s_%s", trigname.Data(), vnname.Data()));
 
-    vn_morephibin->GetXaxis()->SetRangeUser(ptbins[iptstart]+0.05, ptbins[iptend]-0.05);
+    //vn_morephibin->GetXaxis()->SetRangeUser(ptbins[iptstart]+0.05, ptbins[iptend]-0.05);
+    vn_morephibin->GetXaxis()->SetRangeUser(0+0.05, ptbins[iptend]-0.05);
     vn_morephibin->GetYaxis()->SetRangeUser(-0.2, 0.4);
     vn_morephibin->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
     vn_morephibin->GetYaxis()->SetTitle(Ytitle);
@@ -98,10 +99,10 @@ void Get_vn_morephibin( TH1D * vn_morephibin, TH1D * dNdpt_phibins_in_oneptbin[]
     TLatex Tl; 
     Tl.SetNDC();
     Tl.SetTextAlign(12);
-    Tl.SetTextSize(0.04);
+    Tl.SetTextSize(0.05);
     Tl.SetTextFont(42);
-    Tl.DrawLatex(0.125,0.96, "#scale[1.25]{CMS} Preliminary");
-    Tl.DrawLatex(0.57,0.96, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
+    Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
     TLatex* tex;
     tex = new TLatex(0.20,0.83,"|y| < 1.0");
@@ -159,13 +160,13 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 	vn_morephibin->SetBinContent( ipt+1, fit_dNdpt_phibins_in_oneptbin->GetParameter(1));
 	vn_morephibin->SetBinError( ipt+1, fit_dNdpt_phibins_in_oneptbin->GetParError(1));
 
-	TLatex Tl; 
-	Tl.SetNDC();
-	Tl.SetTextAlign(12);
-	Tl.SetTextSize(0.04);
-	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.20,0.96, "#scale[1.25]{CMS} Preliminary");
-	Tl.DrawLatex(0.57,0.96, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
+    TLatex Tl; 
+    Tl.SetNDC();
+    Tl.SetTextAlign(12);
+    Tl.SetTextSize(0.05);
+    Tl.SetTextFont(42);
+    Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLatex* tex;
 	tex = new TLatex(0.50,0.83,"|y| < 1.0");

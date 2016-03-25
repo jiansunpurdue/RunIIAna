@@ -71,13 +71,13 @@ void Draw_vn( TH1D * h_vn_pt, TString trigname = "MBtrig", TString EPorSP = "EP"
 
 	h_vn_pt->Draw();
 
-	TLatex Tl;
-	Tl.SetNDC();
-	Tl.SetTextAlign(12);
-	Tl.SetTextSize(0.04);
-	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.125,0.96, "#scale[1.25]{CMS} Preliminary");
-	Tl.DrawLatex(0.57,0.96, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
+    TLatex Tl; 
+    Tl.SetNDC();
+    Tl.SetTextAlign(12);
+    Tl.SetTextSize(0.05);
+    Tl.SetTextFont(42);
+    Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLatex* tex;
 	tex = new TLatex(0.20,0.83,"|y| < 1.0");

@@ -172,18 +172,18 @@ TF1* fit_histo_expobkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH
 	leg->AddEntry(background,"Combinatorial","l");
 	leg->Draw("same");
 
-	TLatex Tl;
-	Tl.SetNDC();
-	Tl.SetTextAlign(12);
-	Tl.SetTextSize(0.04);
-	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.18,0.93, "#scale[1.25]{CMS} Preliminary");
-	if( isPbPb )
-		Tl.DrawLatex(0.61,0.93, "PbPb #sqrt{s_{NN}} = 5.02 TeV");
-	else
-		Tl.DrawLatex(0.65,0.93, "pp #sqrt{s_{NN}} = 5.02 TeV");
-    TLatex* tex;
+    TLatex Tl; 
+    Tl.SetNDC();
+    Tl.SetTextAlign(12);
+    Tl.SetTextSize(0.05);
+    Tl.SetTextFont(42);
+    Tl.DrawLatex(0.18,0.93, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    if( isPbPb )
+        Tl.DrawLatex(0.61,0.93, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
+    else
+        Tl.DrawLatex(0.65,0.93, "#scale[0.8]{pp #sqrt{s_{NN}} = 5.02 TeV}");
 
+    TLatex* tex;
     if( isPbPb )
     {   
         tex = new TLatex(0.22,0.83,"|y| < 1.0");

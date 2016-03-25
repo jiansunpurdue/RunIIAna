@@ -1,21 +1,21 @@
 #!/bin/sh
 
-DoMassFitEPformassvsvn=0
-DoMassFitSPformassvsvn=0
-DoMassFitEPforinoutplane=0
+DoMassFitEPformassvsvn=1
+DoMassFitSPformassvsvn=1
+DoMassFitEPforinoutplane=1
 DoMassFitMorephibin=1
 
-DODrawinoutplanevn=0
-DODrawEPmassvsvn=0
-DODrawSPmassvsvn=0
+DODrawinoutplanevn=1
+DODrawEPmassvsvn=1
+DODrawSPmassvsvn=1
 DODrawmorephibinvn=1
+DOVnvsmasscomparison=1
 
-DOVnvsmasscomparison=0
-DOVncomparison=0
+DOVncomparison=1
 
-ptbinstart=1
+ptbinstart=2
 ptbinend=12
-ptmin=1.0
+ptmin=0.0
 ptmax=45.0
 MBorDtrig="MBtrig"
 
@@ -161,19 +161,33 @@ root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB50to70_drawvn_vnvsmass
 fi
 
 Drawchargedparticle=0
+Drawvnvsmass=1
+Drawinoutplane=0
 if [ $DOVncomparison -eq 1 ]; then
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB0to10_inoutplane'","'$FileVnMB0to10_EP_Vnvsmass'","'$FileVnMB0to10_SP_Vnvsmass'","'$MBorDtrig'",0,10,'$ptmin','$ptmax', '$Drawchargedparticle')'
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_inoutplane'","'$FileVnMB10to30_EP_Vnvsmass'","'$FileVnMB10to30_SP_Vnvsmass'","'$MBorDtrig'",10,30,'$ptmin','$ptmax', '$Drawchargedparticle')'
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawchargedparticle')'
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB0to10_morephibin'","'$FileVnMB0to10_inoutplane'","'$FileVnMB0to10_EP_Vnvsmass'","'$FileVnMB0to10_SP_Vnvsmass'","'$MBorDtrig'",0,10,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_morephibin'","'$FileVnMB10to30_inoutplane'","'$FileVnMB10to30_EP_Vnvsmass'","'$FileVnMB10to30_SP_Vnvsmass'","'$MBorDtrig'",10,30,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_morephibin'","'$FileVnMB30to50_inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_morephibin'","'$FileVnMB50to70_inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
 fi
 
 Drawchargedparticle=1
+Drawvnvsmass=1
+Drawinoutplane=0
 if [ $DOVncomparison -eq 1 ]; then
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB0to10_inoutplane'","'$FileVnMB0to10_EP_Vnvsmass'","'$FileVnMB0to10_SP_Vnvsmass'","'$MBorDtrig'",0,10,'$ptmin','$ptmax', '$Drawchargedparticle')'
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_inoutplane'","'$FileVnMB10to30_EP_Vnvsmass'","'$FileVnMB10to30_SP_Vnvsmass'","'$MBorDtrig'",10,30,'$ptmin','$ptmax', '$Drawchargedparticle')'
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawchargedparticle')'
-root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB0to10_morephibin'","'$FileVnMB0to10_inoutplane'","'$FileVnMB0to10_EP_Vnvsmass'","'$FileVnMB0to10_SP_Vnvsmass'","'$MBorDtrig'",0,10,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_morephibin'","'$FileVnMB10to30_inoutplane'","'$FileVnMB10to30_EP_Vnvsmass'","'$FileVnMB10to30_SP_Vnvsmass'","'$MBorDtrig'",10,30,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_morephibin'","'$FileVnMB30to50_inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_morephibin'","'$FileVnMB50to70_inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+fi
+
+Drawchargedparticle=0
+Drawvnvsmass=0
+Drawinoutplane=1
+if [ $DOVncomparison -eq 1 ]; then
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB0to10_morephibin'","'$FileVnMB0to10_inoutplane'","'$FileVnMB0to10_EP_Vnvsmass'","'$FileVnMB0to10_SP_Vnvsmass'","'$MBorDtrig'",0,10,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_morephibin'","'$FileVnMB10to30_inoutplane'","'$FileVnMB10to30_EP_Vnvsmass'","'$FileVnMB10to30_SP_Vnvsmass'","'$MBorDtrig'",10,30,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_morephibin'","'$FileVnMB30to50_inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
+root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_morephibin'","'$FileVnMB50to70_inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawvnvsmass', '$Drawinoutplane', '$Drawchargedparticle')'
 fi
 
 ./cleanup.sh
