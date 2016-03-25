@@ -19,7 +19,7 @@
 #include <./../uti.h>
 #include <./../EP_resolution.h>
 
-void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent30to50.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, int iptstart = 2, int iptend = 11 )
+void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, int iptstart = 7, int iptend = 8 )
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetHistMinimumZero(kFALSE);
@@ -169,14 +169,14 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
     Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLatex* tex;
-	tex = new TLatex(0.50,0.83,"|y| < 1.0");
+	tex = new TLatex(0.55,0.83,"|y| < 1.0");
 	tex->SetNDC();
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
 	tex->SetLineWidth(2);
 	tex->Draw();
 
-	tex = new TLatex(0.50,0.78,Form("Cent. %d-%d%%", cent_low, cent_high));
+	tex = new TLatex(0.55,0.78,Form("Cent. %d-%d%%", cent_low, cent_high));
 	tex->SetNDC();
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
@@ -186,7 +186,7 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 	float ptmin = ptbins[ipt];
 	float ptmax = ptbins[ipt+1];
 
-	tex = new TLatex(0.50,0.73,Form("%.1f < p_{T} < %.1f GeV/c",ptmin,ptmax));
+	tex = new TLatex(0.55,0.73,Form("%.1f < p_{T} < %.1f GeV/c",ptmin,ptmax));
 	tex->SetNDC();
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
@@ -194,9 +194,9 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 	tex->Draw();
 
 	if( vnname == "v2" ) 
-		tex = new TLatex(0.50,0.68,Form("v_{2}^{obs} = %.3f #pm %.3f",fit_dNdpt_phibins_in_oneptbin->GetParameter(1), fit_dNdpt_phibins_in_oneptbin->GetParError(1)));
+		tex = new TLatex(0.55,0.68,Form("v_{2}^{obs} = %.3f #pm %.3f",fit_dNdpt_phibins_in_oneptbin->GetParameter(1), fit_dNdpt_phibins_in_oneptbin->GetParError(1)));
 	else if( vnname == "v3" )
-		tex = new TLatex(0.50,0.68,Form("v_{3}^{obs} = %.3f #pm %.3f",fit_dNdpt_phibins_in_oneptbin->GetParameter(1), fit_dNdpt_phibins_in_oneptbin->GetParError(1)));
+		tex = new TLatex(0.55,0.68,Form("v_{3}^{obs} = %.3f #pm %.3f",fit_dNdpt_phibins_in_oneptbin->GetParameter(1), fit_dNdpt_phibins_in_oneptbin->GetParError(1)));
 
 	tex->SetNDC();
 	tex->SetTextFont(42);
@@ -209,8 +209,8 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 //	int noffitpoints = fit_dNdpt_phibins_in_oneptbin->GetNumberFitPoints();
     int NDFfit = fit_dNdpt_phibins_in_oneptbin->GetNDF();
 
-//	tex = new TLatex(0.50,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, (noffitpoints-noffreepara)));
-    tex = new TLatex(0.50,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, NDFfit));
+//	tex = new TLatex(0.55,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, (noffitpoints-noffreepara)));
+    tex = new TLatex(0.55,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, NDFfit));
 	tex->SetNDC();
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
