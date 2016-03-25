@@ -19,7 +19,7 @@
 #define NCentbins 6
 double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
 
-void EP_resolution_3subevent(TString infilename = "anaDntuple_Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100.root")
+void EP_resolution_3subevent(TString infilename = "rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100.root")
 {
 	TH1::SetDefaultSumw2();
 	TH2::SetDefaultSumw2();
