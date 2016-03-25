@@ -205,10 +205,12 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 	tex->Draw();
 
 	float fitchi2 = fit_dNdpt_phibins_in_oneptbin->GetChisquare();
-	int noffreepara = fit_dNdpt_phibins_in_oneptbin->GetNumberFreeParameters();
-	int noffitpoints = fit_dNdpt_phibins_in_oneptbin->GetNumberFitPoints();
+//	int noffreepara = fit_dNdpt_phibins_in_oneptbin->GetNumberFreeParameters();
+//	int noffitpoints = fit_dNdpt_phibins_in_oneptbin->GetNumberFitPoints();
+    int NDFfit = fit_dNdpt_phibins_in_oneptbin->GetNDF();
 
-	tex = new TLatex(0.50,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, (noffitpoints-noffreepara)));
+//	tex = new TLatex(0.50,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, (noffitpoints-noffreepara)));
+    tex = new TLatex(0.50,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, NDFfit));
 	tex->SetNDC();
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
