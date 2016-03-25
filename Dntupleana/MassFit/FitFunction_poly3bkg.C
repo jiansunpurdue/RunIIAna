@@ -138,7 +138,7 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 	histo->GetXaxis()->CenterTitle();
 	histo->GetYaxis()->CenterTitle();
 	histo->SetAxisRange(0,histo->GetMaximum()*1.4*1.2,"Y");
-	histo->GetXaxis()->SetRangeUser(fit_range_low+0.005,fit_range_high-0.005);
+	histo->GetXaxis()->SetRangeUser(fit_range_low+0.0001,fit_range_high-0.0001);
 	histo->GetXaxis()->SetTitleOffset(1.3);
 	histo->GetYaxis()->SetTitleOffset(1.8);
 	histo->GetXaxis()->SetLabelOffset(0.007);
