@@ -11,7 +11,7 @@ DODrawSPmassvsvn=1
 DODrawmorephibinvn=1
 DOVnvsmasscomparison=1
 
-DOVncomparison=0
+DOVncomparison=1
 
 ptbinstart=2
 ptbinend=12

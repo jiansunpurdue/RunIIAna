@@ -29,7 +29,7 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 
 	double fit_range_low = generalfitrange_masslow;
 	double fit_range_high = generalfitrange_masshigh;
-    double histomassbinsize = histo->GetBinWidth(10);
+	double histomassbinsize = histo->GetBinWidth(10);
 
 	float ptmin = ptbins[ipt];
 	float ptmax = ptbins[ipt+1];
@@ -249,10 +249,6 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 
 	if( get_sig_bkg_ratio )
 	{
-		//TF1 * Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt), TString::Format("1.0 - background_%s_%d/f_%s_%d", cfgname.Data(),ipt, cfgname.Data(),ipt).Data(), fit_range_low,fit_range_high);
-		//Func_Ratio_signal_foreground->SetLineColor(2.0);
-		//Ratio_signal_foreground->GetListOfFunctions()->Add(Func_Ratio_signal_foreground);
-
 		for(int ibin = 0; ibin < histo->GetNbinsX(); ibin++)
 		{
 			double foreground = 0.;
@@ -292,6 +288,15 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 			Ratio_signal_foreground->SetBinContent(ibin+1, ratio);
 			Ratio_signal_foreground->SetBinError(ibin+1, ratioError);
 		}
+
+		TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] + [8]*x + [9]*x*x + [10]*x*x*x)", generalfitrange_masslow, generalfitrange_masshigh);
+		for( int ipar = 0; ipar < 11; ipar++ )
+		{
+			Func_Ratio_signal_foreground->SetParameter( ipar, f->GetParameter(ipar));
+			Func_Ratio_signal_foreground->SetParError(ipar, f->GetParError(ipar));
+		}
+		Func_Ratio_signal_foreground->SetLineColor(2.0);
+		Ratio_signal_foreground->GetListOfFunctions()->Add(Func_Ratio_signal_foreground);
 	}
 
 	if(isPbPb)
