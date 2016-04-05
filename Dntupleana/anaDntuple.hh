@@ -959,6 +959,10 @@ void anaDntuple::readDntupletree(TTree * Dtree, bool isDkpi, bool detailedmoed)
 	Dtree->SetBranchAddress("Dtrk2PixelHit", Dtrk2PixelHit);
 	Dtree->SetBranchAddress("Dtrk1StripHit", Dtrk1StripHit);
 	Dtree->SetBranchAddress("Dtrk2StripHit", Dtrk2StripHit);
+	Dtree->SetBranchAddress("Dtrk1nPixelLayer", Dtrk1nPixelLayer);
+	Dtree->SetBranchAddress("Dtrk2nPixelLayer", Dtrk2nPixelLayer);
+	Dtree->SetBranchAddress("Dtrk1nStripLayer", Dtrk1nStripLayer);
+	Dtree->SetBranchAddress("Dtrk2nStripLayer", Dtrk2nStripLayer);
 	Dtree->SetBranchAddress("Dtrk1Chi2ndf", Dtrk1Chi2ndf);
 	Dtree->SetBranchAddress("Dtrk2Chi2ndf", Dtrk2Chi2ndf);
 	Dtree->SetBranchAddress("Dtrk1MassHypo", Dtrk1MassHypo);

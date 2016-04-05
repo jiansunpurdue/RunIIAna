@@ -26,13 +26,13 @@ float DlxyBScut_pp_Dtrig = 1.5;
 //track cuts
 //PbPb
 #define MBTkptcut_PbPb 0.7
-//#define MBTkptcut_PbPb 1.0  //should be lowered a bit when MC sample is produced with lower track pt cut
 #define Tketacut_PbPb 1.2
+//#define Tketacut_PbPb 1.5
 #define TrigTkptcut_PbPb 8.5
 //pp
 #define MBTkptcut_pp 0.7
-//#define MBTkptcut_pp 1.0
 #define Tketacut_pp 1.2
+//#define Tketacut_pp 1.5
 #define TrigTkptcut_pp 3.0
 
 //D rapidity and track eta cuts
@@ -40,6 +40,7 @@ float DlxyBScut_pp_Dtrig = 1.5;
 #define TkPtresolution_MB 0.3
 #define TkPtresolution_Trig 0.1
 #define TkHitCut_Trig 10.5 //>=
+#define Tknorchi2overlayers_Trig 0.15 //<
 #define TkAlgoCut_Trig 7.5 //<=
 
 //histograms to be filled

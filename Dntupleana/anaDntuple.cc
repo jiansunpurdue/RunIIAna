@@ -1158,6 +1158,12 @@ void anaDntuple::LoopOverDcandidates()
 		if( Dtrk1PtErr[icand]/Dtrk1Pt[icand] > TkPtresolution_MB || Dtrk2PtErr[icand]/Dtrk2Pt[icand] > TkPtresolution_MB ) continue;
 		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb_MB ) continue;
 		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp_MB ) continue;
+
+		//tight track cuts as used in trigger data
+		if( Dtrk1PtErr[icand]/Dtrk1Pt[icand] > TkPtresolution_Trig || Dtrk2PtErr[icand]/Dtrk2Pt[icand] > TkPtresolution_Trig ) continue;
+		if( (Dtrk1PixelHit[icand]+Dtrk1StripHit[icand]) < TkHitCut_Trig || (Dtrk2PixelHit[icand]+Dtrk2StripHit[icand]) < TkHitCut_Trig ) continue;
+		if( Dtrk1Chi2ndf[icand]/(Dtrk1nStripLayer[icand]+Dtrk1nPixelLayer[icand]) > Tknorchi2overlayers_Trig || 
+			Dtrk2Chi2ndf[icand]/(Dtrk2nStripLayer[icand]+Dtrk2nPixelLayer[icand]) > Tknorchi2overlayers_Trig ) continue;
 		///////////////////////////////analysis with MB trig/////////////////////////////////////////
 
 		FillMBhisto( icand, iptbin);
@@ -1172,6 +1178,9 @@ void anaDntuple::LoopOverDcandidates()
 					( Dtrk2Algo[icand] > TkAlgoCut_Trig && Dtrk1Algo[icand] != 11 ) ) ) continue;
 		if( Dtrk1PtErr[icand]/Dtrk1Pt[icand] > TkPtresolution_Trig || Dtrk2PtErr[icand]/Dtrk2Pt[icand] > TkPtresolution_Trig ) continue;
 		if( (Dtrk1PixelHit[icand]+Dtrk1StripHit[icand]) < TkHitCut_Trig || (Dtrk2PixelHit[icand]+Dtrk2StripHit[icand]) < TkHitCut_Trig ) continue;
+		if( Dtrk1Chi2ndf[icand]/(Dtrk1nStripLayer[icand]+Dtrk1nPixelLayer[icand]) > Tknorchi2overlayers_Trig || 
+			Dtrk2Chi2ndf[icand]/(Dtrk2nStripLayer[icand]+Dtrk2nPixelLayer[icand]) > Tknorchi2overlayers_Trig ) continue;
+
 		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb_Dtrig ) continue;
 		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp_Dtrig ) continue;
 
