@@ -17,7 +17,7 @@ extern float ptbins[Nptbin+1];
 extern const double generalfitrange_masslow;
 extern const double generalfitrange_masshigh;
 
-TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL)
+TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL)
 {
 	Double_t setparam0=100.;
 	Double_t setparam1=1.8648;
@@ -37,7 +37,7 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	TH1F* histo_copy_nofitfun = ( TH1F * ) histo->Clone("histo_copy_nofitfun");
 	TCanvas* cfg= new TCanvas(Form("cfg_%s_%d",cfgname.Data(),ipt),Form("cfg_%s_%d",cfgname.Data(),ipt),600,600);
 
-	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] * exp([8]*x + [9]*x*x)", fit_range_low, fit_range_high);
+	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[11]))/(sqrt(2*3.14159)*[2]*(1.0 +[11]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[11]))/(sqrt(2*3.14159)*[3]*(1.0 +[11])))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] + [8]*x + [9]*x*x + [10]*x*x*x", fit_range_low, fit_range_high);
 
 
 	f->SetParLimits(8,-1000,1000);
@@ -59,6 +59,8 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	f->FixParameter(7,0);
 	f->FixParameter(8,0);
 	f->FixParameter(9,0);
+	f->FixParameter(10,0);
+	f->FixParameter(11,0);
 
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"q","",fit_range_low,fit_range_high);
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"q","",fit_range_low,fit_range_high);
@@ -85,33 +87,39 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	f->ReleaseParameter(7);
 	f->ReleaseParameter(8);
 	f->ReleaseParameter(9);
+	f->ReleaseParameter(10);
 
 	f->SetLineColor(kRed);
 
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"q","",fit_range_low,fit_range_high);
 	f->ReleaseParameter(1);
+	f->ReleaseParameter(11);
+	f->SetParameter(11,0);
+	f->SetParLimits(11,-1.0,1.0);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
 
-	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[0] * exp([1]*x + [2]*x*x)");
+	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[0]+[1]*x+[2]*x*x+[3]*x*x*x");
 	background->SetParameter(0,f->GetParameter(7));
 	background->SetParameter(1,f->GetParameter(8));
 	background->SetParameter(2,f->GetParameter(9));
+	background->SetParameter(3,f->GetParameter(10));
 	background->SetLineColor(4);
 	background->SetRange(fit_range_low,fit_range_high);
 	background->SetLineStyle(2);
 
-	TF1* mass = new TF1(Form("fmass_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3])))");
-	mass->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(2),f->GetParameter(3),f->GetParameter(4),f->GetParameter(5));
+	TF1* mass = new TF1(Form("fmass_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6]))))");
+	mass->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(2),f->GetParameter(3),f->GetParameter(4),f->GetParameter(5),f->GetParameter(11));
 	mass->SetParError(0,f->GetParError(0));
 	mass->SetParError(1,f->GetParError(1));
 	mass->SetParError(2,f->GetParError(2));
 	mass->SetParError(3,f->GetParError(3));
 	mass->SetParError(4,f->GetParError(4));
 	mass->SetParError(5,f->GetParError(5));
+	mass->SetParError(6,f->GetParError(11));
 	mass->SetFillColor(kOrange-3);
 	mass->SetFillStyle(3002);
 	mass->SetLineColor(kOrange-3);
@@ -286,8 +294,8 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 			Ratio_signal_foreground->SetBinError(ibin+1, ratioError);
 		}
 
-		TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] * exp([8]*x + [9]*x*x))", generalfitrange_masslow, generalfitrange_masshigh);
-		for( int ipar = 0; ipar < 10; ipar++ )
+		TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[11]))/(sqrt(2*3.14159)*[2]*(1.0 +[11]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[11]))/(sqrt(2*3.14159)*[3]*(1.0 +[11])))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[11]))/(sqrt(2*3.14159)*[2]*(1.0 +[11]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[11]))/(sqrt(2*3.14159)*[3]*(1.0 +[11])))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] + [8]*x + [9]*x*x + [10]*x*x*x)", generalfitrange_masslow, generalfitrange_masshigh);
+		for( int ipar = 0; ipar < 12; ipar++ )
 		{
 			Func_Ratio_signal_foreground->SetParameter( ipar, f->GetParameter(ipar));
 			Func_Ratio_signal_foreground->SetParError(ipar, f->GetParError(ipar));
@@ -298,13 +306,13 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 
 	if(isPbPb)
 	{
-		cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_expobkg_2nd.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
-		//cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_expobkg_2nd.png", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
+		cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
+		//cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.png", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 	}
 	else
 	{
-		cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_expobkg_2nd.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
-		//cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_expobkg_2nd.png", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
+		cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
+		//cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.png", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 	}
 
 	return mass;

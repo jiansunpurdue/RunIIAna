@@ -96,7 +96,7 @@ TF1* fit_histo_poly2bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
 
-	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[7] + [8]*x + [9]*x*x");
+	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[0] + [1]*x + [2]*x*x");
 	background->SetParameter(0,f->GetParameter(7));
 	background->SetParameter(1,f->GetParameter(8));
 	background->SetParameter(2,f->GetParameter(9));
