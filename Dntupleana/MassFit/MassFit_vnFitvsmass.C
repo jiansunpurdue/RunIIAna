@@ -21,7 +21,7 @@
 #include <./../uti.h>
 #include <./Plotoption_massfit.h>
 
-#include <./FitFunction_expobkg.C>
+#include <./FitFunction_expobkg_2nd.C>
 #include <./FitFunction_poly3bkg.C>
 
 //#include <./../EP_resolution.h>
