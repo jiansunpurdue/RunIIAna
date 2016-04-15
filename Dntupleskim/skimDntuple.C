@@ -50,7 +50,7 @@ void AddCloneTree(vector<TTree*> &cloneForest,TFile *outf, TTree* t, const char 
 }
 
 // main routine
-void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analysisfiles/Dntuple_withQvector_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016/Dntuple_crab_PbPb_HIMinimumBias2_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root", int PbPbPD = 2, int startevt = 0, int endevt = 50000, char* outputdir = "./")
+void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analysisfiles/Dntuple_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015/Dntuple_crab_PbPb_HIMinimumBias3_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015.root", int PbPbPD = 2, int startevt = 0, int endevt = 50000, char* outputdir = "./")
 {
 	string outfilename;
 	ostringstream oss1;
@@ -152,9 +152,9 @@ void skimDntuple(char* infname = "/mnt/hadoop/store/group/hi/jisun/Run2015analys
 		int ncand=0;
 		for (int j=0;j<Dsize;j++) {
 			if ( 
-				( Dpt[j] > 1.0 && Dpt[j] < 4.0 && Dtrk1Pt[j]>1.0 && Dtrk2Pt[j]>1.0 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>5.5) || 
-				( Dpt[j] >= 4.0 && Dpt[j] < 8.0 && Dtrk1Pt[j]>1.0 && Dtrk2Pt[j]>1.0 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>4.5) || 
-				( Dpt[j] >= 8.0 && Dpt[j] < 40.0 && Dtrk1Pt[j]>1.0 && Dtrk2Pt[j]>1.0 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>3.0)
+				( Dpt[j] > 0.0 && Dpt[j] < 4.0 && Dtrk1Pt[j]>0.7 && Dtrk2Pt[j]>0.7 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>5.5) || 
+				( Dpt[j] >= 4.0 && Dpt[j] < 8.0 && Dtrk1Pt[j]>0.7 && Dtrk2Pt[j]>0.7 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>4.5) || 
+				( Dpt[j] >= 8.0 && Dpt[j] < 50.0 && Dtrk1Pt[j]>0.7 && Dtrk2Pt[j]>0.7 && Dy[j]>-1.1 && Dy[j]<1.1 && Dalpha[j] < 0.12 && DsvpvDistance[j]/DsvpvDisErr[j]>3.0)
 			   ) 
 			{
 				ncand++;

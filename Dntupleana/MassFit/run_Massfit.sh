@@ -3,12 +3,13 @@
 
 inputdatafile=$1
 inputmcfile=$2
-iptstart=$3
-iptend=$4
-isPbPb=$5
-centlow=$6
-centhigh=$7
+MBorDtrig=$3
+iptstart=$4
+iptend=$5
+isPbPb=$6
+centlow=$7
+centhigh=$8
 
-root -l -b -q 'MassFit.C++("'$inputdatafile'", "'$inputmcfile'", '$iptstart', '$iptend', '$isPbPb', '$centlow', '$centhigh')'
+root -l -b -q 'MassFit.C++("'$inputdatafile'", "'$inputmcfile'", "'$MBorDtrig'", '$iptstart', '$iptend', '$isPbPb', '$centlow', '$centhigh')'
 
 ./cleanup.sh
