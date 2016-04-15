@@ -31,6 +31,7 @@ void test()
 	hf->Fill(2.3, 60);
 
 	cout << "bin entries: " << hf->GetBinEntries(1) << " " << hf->GetBinEntries(2) << " " << hf->GetBinEntries(3) << endl;
+	cout << "test done" << endl;
 
 	//hf->Rebin(4);
 
