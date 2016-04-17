@@ -35,7 +35,7 @@ TF1* fit_histo_poly2bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 	float ptmax = ptbins[ipt+1];
 
 	TH1F* histo_copy_nofitfun = ( TH1F * ) histo->Clone("histo_copy_nofitfun");
-	TCanvas* cfg= new TCanvas(Form("cfg_%s_%d",cfgname.Data(),ipt),Form("cfg_%s_%d",cfgname.Data(),ipt),600,600);
+	TCanvas* cfg= new TCanvas(Form("cfg_poly2bkg_%s_%d",cfgname.Data(),ipt),Form("cfg_poly2bkg_%s_%d",cfgname.Data(),ipt),600,600);
 
 	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] + [8]*x + [9]*x*x", fit_range_low, fit_range_high);
 

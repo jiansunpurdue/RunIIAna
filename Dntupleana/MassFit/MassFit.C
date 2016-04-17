@@ -20,16 +20,18 @@
 #include <./../uti.h>
 #include <./Plotoption_massfit.h>
 
-#include <./FitFunction_expobkg_2nd.C>
 #include <./FitFunction_poly3bkg.C>
+#include <./FitFunction_expobkg_2nd.C>
+#include <./FitFunction_poly2bkg.C>
+#include <./FitFunction_poly3bkg_floatwidth.C>
 
 namespace fs = boost::filesystem;
 
-void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIHardProbes_Dtrig_ForestAOD_highpuritytk_D0_tkpt6p0eta1p5_goldenjson_02222016_Cent-0to100.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 10, int iptend = 12, bool isPbPb = 1, int centlow=0, int centhigh=100)
+void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 4, int iptend = 6, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg")
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
-	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt_poly3bkg);
+	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt, TString fitoption);
 
 	// Get MC histograms
 	TH1D * mc_matched_signal[Nptbin];
@@ -57,22 +59,22 @@ void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_
 	TH2D * h_trig_hiBin = (TH2D *) inputdatafile->Get("hevt_trig_hiBin");
 	TH1D * h_hiBin = (TH1D *) h_trig_hiBin->ProjectionY("h_hiBin",2,2);
 
-	TH1D * dNdpt_poly3bkg = new TH1D( "dNdpt_poly3bkg", "dNdpt_poly3bkg", Nptbin, ptbins);
-	Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, dNdpt_poly3bkg);
+	TH1D * dNdpt = new TH1D( Form("dNdpt_%s", fitoption.Data()), Form("dNdpt_%s", fitoption.Data()), Nptbin, ptbins);
+	Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, dNdpt, fitoption);
 
-	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_%s.root",(fs::basename(inputdatafilename)).c_str()),"RECREATE");
-	dNdpt_poly3bkg->Write();
+	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_%s_%s.root",(fs::basename(inputdatafilename)).c_str(), fitoption.Data()),"RECREATE");
+	dNdpt->Write();
 	h_hiBin->Write();
 	output->Close();
 
 	return;
 }
 
-void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt_poly3bkg)
+void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt, TString fitoption)
 {
 	for(int ipt = iptstart; ipt < iptend; ipt++)
 	{
-		TF1* signalfittedfunc;
+		TF1* signalfittedfunc = NULL;
 
 		int iptmc;
 		if( ipt > 3 ) 
@@ -80,12 +82,22 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 		else
 			iptmc = 4;
 
-		signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+		if( fitoption == "poly3bkg")
+			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+		if( fitoption == "expobkg_2nd")
+			signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+		if( fitoption == "poly2bkg")
+			signalfittedfunc = fit_histo_poly2bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+		if( fitoption == "poly3bkg_floatwidth")
+			signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
 
 		double histomassbinsize = histo[ipt]->GetBinWidth(10);
 		double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;
 		double yieldErr = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize * signalfittedfunc->GetParError(0)/signalfittedfunc->GetParameter(0);
-		dNdpt_poly3bkg->SetBinContent(ipt+1,yield/(ptbins[ipt+1]-ptbins[ipt]));
-		dNdpt_poly3bkg->SetBinError(ipt+1,yieldErr/(ptbins[ipt+1]-ptbins[ipt]));
+		dNdpt->SetBinContent(ipt+1,yield/(ptbins[ipt+1]-ptbins[ipt]));
+		dNdpt->SetBinError(ipt+1,yieldErr/(ptbins[ipt+1]-ptbins[ipt]));
 	}
 }

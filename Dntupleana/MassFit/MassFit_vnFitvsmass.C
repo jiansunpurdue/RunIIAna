@@ -21,8 +21,10 @@
 #include <./../uti.h>
 #include <./Plotoption_massfit.h>
 
-#include <./FitFunction_expobkg_2nd.C>
 #include <./FitFunction_poly3bkg.C>
+#include <./FitFunction_expobkg_2nd.C>
+#include <./FitFunction_poly2bkg.C>
+#include <./FitFunction_poly3bkg_floatwidth.C>
 
 //#include <./../EP_resolution.h>
 
@@ -33,14 +35,14 @@ const int Rebin_vnmass = 3;
 
 TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
-void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 8, bool isPbPb = true, int centlow=30, int centhigh=50)
+void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg")
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
 	Double_t signalweight( Double_t * x, Double_t *par);
 	Double_t bkg_liner( Double_t * x, Double_t *par);
 	Double_t fitfunction( Double_t * x, Double_t *par);
-	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt_poly3bkg, bool Get_signal_bkg_ratio, TH1D * Ratio_signal_foreground[]);
+	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt, bool Get_signal_bkg_ratio, TH1D * Ratio_signal_foreground[], TString fitoption);
 	void Fit_vnvsmass(TH1D * histo[], TString MBorDtrig, int iptstart, int iptend, TH1D * vsig_fitted);
 	void plot_signal_foreground(TH1D * ratio[], TString MBorDtrig, int iptstart, int iptend);
 
@@ -144,15 +146,15 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 	}
 
 	// mass spectrum fit and get signal ratio bin by bin
-	TH1D * dNdpt_poly3bkg = new TH1D( "dNdpt_poly3bkg", "dNdpt_poly3bkg", Nptbin, ptbins);
-	TH1D * fitmean_poly3bkg = new TH1D( "fitmean_poly3bkg", "fitmean_poly3bkg", Nptbin, ptbins);
-	TH1D * fitsigma_poly3bkg = new TH1D( "fitsigma_poly3bkg", "fitsigma_poly3bkg", Nptbin, ptbins);
+	TH1D * dNdpt= new TH1D( Form("dNdpt_%s", fitoption.Data()), Form("dNdpt_%s", fitoption.Data()), Nptbin, ptbins);
+	TH1D * fitmean= new TH1D( Form("fitmean_%s", fitoption.Data()), Form("fitmean_%s", fitoption.Data()), Nptbin, ptbins);
+	TH1D * fitsigma= new TH1D( Form("fitsigma_%s", fitoption.Data()), Form("fitsigma_%s", fitoption.Data()), Nptbin, ptbins);
 
 	//mass fit spectrum fit
 	bool Get_signal_bkg_ratio = true;
 	TH1D * Ratio_signal_foreground[Nptbin];
 	book_masshist( Ratio_signal_foreground, ptbins, Nptbin, "Ratio_signal_foreground", Nmassbin/Rebin_mass, massmin, massmax);
-	Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig+"vn", iptstart, iptend, isPbPb, centlow, centhigh, dNdpt_poly3bkg, Get_signal_bkg_ratio, Ratio_signal_foreground);
+	Fithistograms( hmass_MBorDtrig, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig+"vn", iptstart, iptend, isPbPb, centlow, centhigh, dNdpt, Get_signal_bkg_ratio, Ratio_signal_foreground, fitoption);
 	//get signal background ratio function
 	for( int ipt = iptstart; ipt < iptend; ipt++)
 		Func_Ratio_signal_foreground[ipt] = Ratio_signal_foreground[ipt]->GetFunction(Form("Func_Ratio_signal_foreground_%s_%d", (MBorDtrig+"vn").Data(), ipt));
@@ -168,11 +170,11 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 	Fit_vnvsmass(h_mass_meanv3_MBorDtrig, MBorDtrig+"v3", iptstart, iptend, h_v3_pt);
 //	Fit_vnvsmass(h_mass_meanv4_MBorDtrig, MBorDtrig+"v4", iptstart, iptend, h_v4_pt);
 
-	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_vnvsmass_%s_%s.root", EPorSP.Data(), (fs::basename(inputdatafilename)).c_str()),"RECREATE");
+	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_vnvsmass_%s_%s_%s.root", EPorSP.Data(), (fs::basename(inputdatafilename)).c_str(), fitoption.Data()),"RECREATE");
 
-	dNdpt_poly3bkg->Write();
-	fitmean_poly3bkg->Write();
-	fitsigma_poly3bkg->Write();
+	dNdpt->Write();
+	fitmean->Write();
+	fitsigma->Write();
 
 	h_v1_pt->Write();
 	h_v2_pt->Write();
@@ -195,11 +197,11 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 	return;
 }
 
-void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt_poly3bkg, bool Get_signal_bkg_ratio, TH1D * Ratio_signal_foreground[])
+void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt, bool Get_signal_bkg_ratio, TH1D * Ratio_signal_foreground[], TString fitoption)
 {
 	for(int ipt = iptstart; ipt < iptend; ipt++)
 	{       
-		TF1* signalfittedfunc;
+		TF1* signalfittedfunc = NULL;
 
 		int iptmc;
 		if( ipt > 3 ) 
@@ -207,13 +209,23 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 		else    
 			iptmc = 4;
 
-		signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
+        if( fitoption == "poly3bkg")
+            signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
+
+        if( fitoption == "expobkg_2nd")
+            signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
+
+        if( fitoption == "poly2bkg")
+            signalfittedfunc = fit_histo_poly2bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
+
+        if( fitoption == "poly3bkg_floatwidth")
+            signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
 
 		double histomassbinsize = histo[ipt]->GetBinWidth(10);
 		double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;
 		double yieldErr = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize * signalfittedfunc->GetParError(0)/signalfittedfunc->GetParameter(0);
-		dNdpt_poly3bkg->SetBinContent(ipt+1,yield/(ptbins[ipt+1]-ptbins[ipt]));
-		dNdpt_poly3bkg->SetBinError(ipt+1,yieldErr/(ptbins[ipt+1]-ptbins[ipt]));
+		dNdpt->SetBinContent(ipt+1,yield/(ptbins[ipt+1]-ptbins[ipt]));
+		dNdpt->SetBinError(ipt+1,yieldErr/(ptbins[ipt+1]-ptbins[ipt]));
 	}   
 }
 

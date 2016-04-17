@@ -35,12 +35,12 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	float ptmax = ptbins[ipt+1];
 
 	TH1F* histo_copy_nofitfun = ( TH1F * ) histo->Clone("histo_copy_nofitfun");
-	TCanvas* cfg= new TCanvas(Form("cfg_%s_%d",cfgname.Data(),ipt),Form("cfg_%s_%d",cfgname.Data(),ipt),600,600);
+	TCanvas* cfg= new TCanvas(Form("cfg_expobkg_2nd_%s_%d",cfgname.Data(),ipt),Form("cfg_expobkg_2nd_%s_%d",cfgname.Data(),ipt),600,600);
 
 	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2])/(sqrt(2*3.14159)*[2])+(1-[4])*TMath::Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3]))+(1-[5])*TMath::Gaus(x,[1],[6])/(sqrt(2*3.14159)*[6])) + [7] * exp([8]*x + [9]*x*x)", fit_range_low, fit_range_high);
 
 
-	f->SetParLimits(8,-1000,1000);
+	//f->SetParLimits(8,-1000,1000);
 	f->SetParLimits(3,0.001,0.05);
 	f->SetParLimits(2,0.01,0.1);
 	f->SetParLimits(6,0.02,0.2);
@@ -85,6 +85,10 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	f->ReleaseParameter(7);
 	f->ReleaseParameter(8);
 	f->ReleaseParameter(9);
+	f->SetParLimits(7,0,5.e+13);
+	f->SetParameter(7,9.e+2);
+	f->SetParameter(8,-5.);
+	f->SetParameter(9,2.);
 
 	f->SetLineColor(kRed);
 
