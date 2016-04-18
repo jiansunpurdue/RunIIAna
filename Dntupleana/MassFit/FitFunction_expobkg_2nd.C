@@ -85,10 +85,12 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	f->ReleaseParameter(7);
 	f->ReleaseParameter(8);
 	f->ReleaseParameter(9);
-	f->SetParLimits(7,0,5.e+13);
-	f->SetParameter(7,9.e+2);
-	f->SetParameter(8,-5.);
-	f->SetParameter(9,2.);
+	//f->SetParLimits(7,-500.,5.e+11);
+	f->SetParameter(7,1.e+3);
+	//f->SetParLimits(8,-100.,100.);
+	f->SetParameter(8,-1.);
+	//f->SetParLimits(9,-100.,100.);
+	f->SetParameter(9,1.0);
 
 	f->SetLineColor(kRed);
 
@@ -97,7 +99,9 @@ TF1* fit_histo_expobkg_2nd( bool isPbPb, int centlow, int centhigh, TH1D * histo
 	f->ReleaseParameter(1);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
-	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
+	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q m","",fit_range_low,fit_range_high);
+	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q m","",fit_range_low,fit_range_high);
+	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q m","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
 
 	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[0] * exp([1]*x + [2]*x*x)");
