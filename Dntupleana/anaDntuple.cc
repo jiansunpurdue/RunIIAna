@@ -167,7 +167,7 @@ void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
 
 	divideBinWidth(Gen_D0_pt_noweight_forptreweight);
 
-	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch2/src/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
+	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
 	TGraphAsymmErrors* gaeFONLLD0Reference = (TGraphAsymmErrors*) FileFONLLD0->Get("gaeSigmaDzero");
 
 	TH1D * hFONLL = new TH1D( "hFONLL", "hFONLL", bins_reweight, ptmin_reweight, ptmax_reweight);

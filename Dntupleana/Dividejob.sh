@@ -32,7 +32,7 @@ cat > condor_${startevt}to${endevt}.job <<EOF
 universe             = vanilla
 executable           = run_anaDntuple_partevt.sh
 Arguments = $INFILE $isPbPb $isMC $startevt $endevt $hibin_low $hibin_high $PbPbMBPD
-initialdir           = /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch2/src/Dntupleana 
+initialdir           = /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana 
 should_Transfer_Files = NO
 Requirements   = Arch == "X86_64" && TARGET.UidDomain == "rcac.purdue.edu" && TARGET.Machine != "airplay-render1.rcac.purdue.edu" && TARGET.Machine != "airplay-render2.rcac.purdue.edu"
 #======================================================================

@@ -3,8 +3,8 @@ echo `hostname`
 export SCRAM_ARCH=slc6_amd64_gcc491
 source /apps/osg/cmssoft/cmsset_default.sh
 export X509_USER_PROXY=/home/sun229/.myproxy
-DIR="Dntupleana"
-cd /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch2/src 
+DIR="RunIIAna/Dntupleana"
+cd /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src 
 eval `scramv1 runtime -sh`
 cd $DIR
 
