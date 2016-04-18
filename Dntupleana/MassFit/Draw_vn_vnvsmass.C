@@ -15,9 +15,9 @@
 #include <TLatex.h>
 #include <TLegend.h>
 
-void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent30to50.root", TString trigname = "MBtrig", TString EPorSP = "SP", int cent_low = 30, int cent_high = 50, double ptlow = 1.5, double pthigh = 35.0)
+void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016_Cent30to50.root", TString trigname = "MBtrig", TString EPorSP = "SP", int cent_low = 30, int cent_high = 50, double ptlow = 1.5, double pthigh = 35.0, TString fitoption = "poly3bkg")
 {
-	void Draw_vn( TH1D * h_vn_pt, TString trigname = "MBtrig", TString EPorSP = "EP", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0);
+	void Draw_vn( TH1D * h_vn_pt, TString trigname = "MBtrig", TString EPorSP = "EP", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, TString fitoption = "poly3bkg");
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -34,7 +34,7 @@ void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_S
 	Draw_vn( h_v3_pt, trigname, EPorSP, "v3_"+EPorSP, Form("v_{3}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh);
 	//	Draw_vn( h_v4_pt, trigname, EPorSP, "v4_"+EPorSP, Form("v_{4}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh);
 
-	TFile * output = new TFile(Form("rootfiles/vn_vnvsmass_%s_%s_cent%dto%d.root", trigname.Data(), EPorSP.Data(), cent_low, cent_high),"RECREATE");
+	TFile * output = new TFile(Form("rootfiles/vn_vnvsmass_%s_%s_cent%dto%d_%s.root", trigname.Data(), EPorSP.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 	h_v1_pt->Write();
 	h_v2_pt->Write();
 	h_v3_pt->Write();
@@ -42,7 +42,7 @@ void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_S
 	output->Close();
 }
 
-void Draw_vn( TH1D * h_vn_pt, TString trigname = "MBtrig", TString EPorSP = "EP", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0)
+void Draw_vn( TH1D * h_vn_pt, TString trigname = "MBtrig", TString EPorSP = "EP", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, TString fitoption = "poly3bkg")
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_%s_%s", trigname.Data(), vnname.Data()));
 
@@ -100,6 +100,6 @@ void Draw_vn( TH1D * h_vn_pt, TString trigname = "MBtrig", TString EPorSP = "EP"
 	fun->SetLineWidth(1);
 	fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_vnvsmass_%s_%s_cent%dto%d.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high));
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_vnvsmass_%s_%s_cent%dto%d_%s.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, fitoption.Data()));
 	//cfg_vn->SaveAs(Form("Plots_vn/cfg_vnvsmass_%s_%s_cent%dto%d.png", trigname.Data(), vnname.Data(), cent_low, cent_high));
 }

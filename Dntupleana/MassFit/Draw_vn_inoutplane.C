@@ -19,9 +19,9 @@
 
 #define PI 3.14159265
 
-void Draw_vn_inoutplane( TString inputfilename = "rootfiles/Raw_spectrum_inoutplane_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to6_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016_Cent-0to100.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 100, double ptlow = 1.5, double pthigh = 35.0)
+void Draw_vn_inoutplane( TString inputfilename = "rootfiles/Raw_spectrum_inoutplane_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to6_ForestAOD_D0_tkpt0p7eta1p5_goldenjson_01292016_Cent-0to100.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 100, double ptlow = 1.5, double pthigh = 35.0, TString fitoption = "poly3bkg")
 {
-	void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt_outplane, double EPresolution, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0);
+	void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt_outplane, double EPresolution, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, TString fitoption = "poly3bkg");
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -40,26 +40,26 @@ void Draw_vn_inoutplane( TString inputfilename = "rootfiles/Raw_spectrum_inoutpl
 
 	TFile * inputdata = new TFile(inputfilename);
 
-	TH1D * dNdpt_v1_inplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v1_inplane_poly3bkg");
-	TH1D * dNdpt_v1_outplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v1_outplane_poly3bkg");
-	TH1D * dNdpt_v2_inplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v2_inplane_poly3bkg");
-	TH1D * dNdpt_v2_outplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v2_outplane_poly3bkg");
-	TH1D * dNdpt_v3_inplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v3_inplane_poly3bkg");
-	TH1D * dNdpt_v3_outplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v3_outplane_poly3bkg");
-	TH1D * dNdpt_v4_inplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v4_inplane_poly3bkg");
-	TH1D * dNdpt_v4_outplane_poly3bkg = (TH1D *) inputdata->Get("dNdpt_v4_outplane_poly3bkg");
+	TH1D * dNdpt_v1_inplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v1_inplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v1_outplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v1_outplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v2_inplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v2_inplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v2_outplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v2_outplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v3_inplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v3_inplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v3_outplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v3_outplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v4_inplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v4_inplane_%s", fitoption.Data()));
+	TH1D * dNdpt_v4_outplane_poly3bkg = (TH1D *) inputdata->Get(Form("dNdpt_v4_outplane_%s", fitoption.Data()));
 
 	TH1D * v1_inoutplane = (TH1D *) dNdpt_v1_inplane_poly3bkg->Clone("v1_inoutplane");
 	TH1D * v2_inoutplane = (TH1D *) dNdpt_v2_inplane_poly3bkg->Clone("v2_inoutplane");
 	TH1D * v3_inoutplane = (TH1D *) dNdpt_v3_inplane_poly3bkg->Clone("v3_inoutplane");
 	TH1D * v4_inoutplane = (TH1D *) dNdpt_v4_inplane_poly3bkg->Clone("v4_inoutplane");
 
-	//Get_vn_inoutplane( v1_inoutplane, dNdpt_v1_inplane_poly3bkg, dNdpt_v1_outplane_poly3bkg, resolution_EP_v1, trigname, "v1", "v_{1}", cent_low, cent_high, ptlow, pthigh);
-	Get_vn_inoutplane( v2_inoutplane, dNdpt_v2_inplane_poly3bkg, dNdpt_v2_outplane_poly3bkg, resolution_EP_v2, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh);
-	Get_vn_inoutplane( v3_inoutplane, dNdpt_v3_inplane_poly3bkg, dNdpt_v3_outplane_poly3bkg, resolution_EP_v3, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh);
-	//Get_vn_inoutplane( v4_inoutplane, dNdpt_v4_inplane_poly3bkg, dNdpt_v4_outplane_poly3bkg, resolution_EP_v4, trigname, "v4", "v_{4}", cent_low, cent_high, ptlow, pthigh);
+	//Get_vn_inoutplane( v1_inoutplane, dNdpt_v1_inplane_poly3bkg, dNdpt_v1_outplane_poly3bkg, resolution_EP_v1, trigname, "v1", "v_{1}", cent_low, cent_high, ptlow, pthigh, fitoption);
+	Get_vn_inoutplane( v2_inoutplane, dNdpt_v2_inplane_poly3bkg, dNdpt_v2_outplane_poly3bkg, resolution_EP_v2, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, fitoption);
+	Get_vn_inoutplane( v3_inoutplane, dNdpt_v3_inplane_poly3bkg, dNdpt_v3_outplane_poly3bkg, resolution_EP_v3, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, fitoption);
+	//Get_vn_inoutplane( v4_inoutplane, dNdpt_v4_inplane_poly3bkg, dNdpt_v4_outplane_poly3bkg, resolution_EP_v4, trigname, "v4", "v_{4}", cent_low, cent_high, ptlow, pthigh, fitoption);
 
-	TFile * output = new TFile(Form("rootfiles/vn_inoutplane_%s_cent%dto%d.root", trigname.Data(), cent_low, cent_high),"RECREATE");
+	TFile * output = new TFile(Form("rootfiles/vn_inoutplane_%s_cent%dto%d_%s.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 	v1_inoutplane->Write();
 	v2_inoutplane->Write();
 	v3_inoutplane->Write();
@@ -67,7 +67,7 @@ void Draw_vn_inoutplane( TString inputfilename = "rootfiles/Raw_spectrum_inoutpl
 	output->Close();
 }
 
-void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt_outplane, double EPresolution, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0)
+void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt_outplane, double EPresolution, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, TString fitoption = "poly3bkg")
 {
 	double N_in, error_N_in;
 	double N_out, error_N_out;
@@ -143,6 +143,6 @@ void Get_vn_inoutplane( TH1D * vn_inoutplane, TH1D * dNdpt_inplane, TH1D * dNdpt
     fun->SetLineWidth(1);
     fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_inoutplane_%s_%s_cent%dto%d.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high));
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_inoutplane_%s_%s_cent%dto%d_%s.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, fitoption.Data()));
 	//cfg_vn->SaveAs(Form("Plots_vn/cfg_inoutplane_%s_%s_cent%dto%d.png", trigname.Data(), vnname.Data(), cent_low, cent_high));
 }
