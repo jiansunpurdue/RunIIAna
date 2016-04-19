@@ -15,6 +15,7 @@
 #include <TStyle.h>
 #include <TLatex.h>
 #include <TLegend.h>
+#include <TRandom.h>
 #include <boost/filesystem.hpp>
 
 #include <./../parameters.h>
@@ -35,7 +36,7 @@ const int Rebin_vnmass = 3;
 
 TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
-void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg")
+void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg", bool doStatisticalerr_from_signalfractionfunc = false, int toyMCnumber = 1000)
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
@@ -45,6 +46,7 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt, bool Get_signal_bkg_ratio, TH1D * Ratio_signal_foreground[], TString fitoption);
 	void Fit_vnvsmass(TH1D * histo[], TString MBorDtrig, int iptstart, int iptend, TH1D * vsig_fitted);
 	void plot_signal_foreground(TH1D * ratio[], TString MBorDtrig, int iptstart, int iptend);
+	void ToyMC_Get_Statisticalerr_from_signalfractionfunc( TH1D * h_v1_pt, TH1D * h_v2_pt, TH1D * h_v3_pt, TH1D * h_v4_pt, TH1D * h_mass_meanv1[], TH1D * h_mass_meanv2_MBorDtrig[], TH1D * h_mass_meanv3_MBorDtrig[], TH1D * h_mass_meanv4_MBorDtrig[], TString MBorDtrig, TString EPorSP, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TString fitoption, int toyMCnumber );
 
 	//decide event plane resolution, applied when fill histogram
 	//double resolution_EP_v1 = 1., resolution_EP_v2 = 1., resolution_EP_v3 = 1., resolution_EP_v4 = 1.;
@@ -170,6 +172,12 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 	Fit_vnvsmass(h_mass_meanv3_MBorDtrig, MBorDtrig+"v3", iptstart, iptend, h_v3_pt);
 //	Fit_vnvsmass(h_mass_meanv4_MBorDtrig, MBorDtrig+"v4", iptstart, iptend, h_v4_pt);
 
+	if( doStatisticalerr_from_signalfractionfunc )
+	{
+		ToyMC_Get_Statisticalerr_from_signalfractionfunc( h_v1_pt, h_v2_pt, h_v3_pt, h_v4_pt, h_mass_meanv1_MBorDtrig, h_mass_meanv2_MBorDtrig, h_mass_meanv3_MBorDtrig, h_mass_meanv4_MBorDtrig, MBorDtrig, EPorSP, iptstart, iptend, isPbPb, centlow, centhigh, fitoption, toyMCnumber);
+		return;
+	}
+
 	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_vnvsmass_%s_%s_%s.root", EPorSP.Data(), (fs::basename(inputdatafilename)).c_str(), fitoption.Data()),"RECREATE");
 
 	dNdpt->Write();
@@ -280,4 +288,35 @@ void plot_signal_foreground(TH1D * ratio[], TString MBorDtrig, int iptstart, int
 		ratio[ipt]->GetYaxis()->SetRangeUser(0, 1.0);
 		ratio[ipt]->Draw();
 	}
+}
+
+void ToyMC_Get_Statisticalerr_from_signalfractionfunc( TH1D * h_v1_pt, TH1D * h_v2_pt, TH1D * h_v3_pt, TH1D * h_v4_pt, TH1D * h_mass_meanv1[], TH1D * h_mass_meanv2_MBorDtrig[], TH1D * h_mass_meanv3_MBorDtrig[], TH1D * h_mass_meanv4_MBorDtrig[], TString MBorDtrig, TString EPorSP, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TString fitoption, int toyMCnumber )
+{
+	TH1D * h_v1_toy_oneptbin[Nptbin];
+	TH1D * h_v2_toy_oneptbin[Nptbin];
+	TH1D * h_v3_toy_oneptbin[Nptbin];
+	TH1D * h_v4_toy_oneptbin[Nptbin];
+
+	for( int ipt = iptstart; ipt < iptend; ipt++ )
+	{
+	}
+
+	TH1D * h_v2_pt_toyMC = new TH1D("h_v2_pt_toyMC", "h_v2_pt_toyMC", Nptbin, ptbins);
+	TH1D * h_v3_pt_toyMC = new TH1D("h_v3_pt_toyMC", "h_v3_pt_toyMC", Nptbin, ptbins);
+
+	for( int itoyMC = 0; itoyMC < toyMCnumber; itoyMC++ )
+	{
+		for( int ipt = iptstart; ipt < iptend; ipt++ )
+		{
+			for( int ipar = 0; ipar < Func_Ratio_signal_foreground[ipt]->GetNpar(); ipar++)
+			{
+				Func_Ratio_signal_foreground[ipt]->SetParameter( ipar, gRandom->Gaus( Func_Ratio_signal_foreground[ipt]->GetParameter(ipar), Func_Ratio_signal_foreground[ipt]->GetParError(ipar) ) );
+			}
+		}
+		
+		Fit_vnvsmass(h_mass_meanv2_MBorDtrig, MBorDtrig+"v2", iptstart, iptend, h_v2_pt_toyMC);
+		Fit_vnvsmass(h_mass_meanv3_MBorDtrig, MBorDtrig+"v3", iptstart, iptend, h_v3_pt_toyMC);
+	}
+
+	return;
 }
