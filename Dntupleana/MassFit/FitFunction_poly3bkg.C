@@ -17,7 +17,7 @@ extern float ptbins[Nptbin+1];
 extern const double generalfitrange_masslow;
 extern const double generalfitrange_masshigh;
 
-TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL)
+TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool SavePdfplot = true, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL)
 {
 	Double_t setparam0=100.;
 	Double_t setparam1=1.8648;
@@ -301,12 +301,14 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 
 	if(isPbPb)
 	{
-		cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
+		if(SavePdfplot) 
+			cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 		//cfg->SaveAs(Form("Massfitplots/PbPb/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg.png", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 	}
 	else
 	{
-		cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
+		if(SavePdfplot)
+			cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 		//cfg->SaveAs(Form("Massfitplots/pp/DMass_isPbPb%d_%s_cent%dto%d_%d_poly3bkg.png", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 	}
 

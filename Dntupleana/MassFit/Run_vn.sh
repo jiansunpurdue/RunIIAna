@@ -4,6 +4,8 @@ DoMassFitEPformassvsvn=1
 DoMassFitSPformassvsvn=1
 DoMassFitEPforinoutplane=1
 DoMassFitMorephibin=1
+DoStatisticalerr_from_signalfractionfunc_SP=1
+DoStatisticalerr_from_signalfractionfunc_EP=1
 
 DODrawinoutplanevn=1
 DODrawEPmassvsvn=1
@@ -97,6 +99,40 @@ root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata10to30'","'$InputMC'","'$MB
 root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'")'
 root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'")'
 fi
+
+echo "#############################################"
+date
+echo "statistics error from signal fraction start"
+
+EPorSP="EP"
+if [ $DoStatisticalerr_from_signalfractionfunc_EP -eq 1 ]; then
+
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption'",1)'
+date
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption'",1)'
+date
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'",1)'
+date
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'",1)'
+date
+fi
+
+EPorSP="SP"
+if [ $DoStatisticalerr_from_signalfractionfunc_SP -eq 1 ]; then
+
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption'",1)'
+date
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption'",1)'
+date
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'",1)'
+date
+root -l -b -q 'MassFit_vnFitvsmass.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'",1)'
+date
+fi
+
+echo "statistics error from signal fraction end"
+date
+echo "*****************************************"
 
 if [ $DoMassFitMorephibin -eq 1 ]; then
 #
