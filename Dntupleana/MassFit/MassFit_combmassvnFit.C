@@ -148,7 +148,10 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 			iptmc = 4;
 
 		if( fitoption == "poly3bkg")
-			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", SavePdfplot, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], "v2", EPorSP);
+		{
+			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", SavePdfplot, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
+			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", SavePdfplot, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+		}
 
 	//	if( fitoption == "expobkg_2nd")
 	//		signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);

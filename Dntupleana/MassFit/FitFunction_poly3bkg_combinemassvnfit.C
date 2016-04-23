@@ -48,7 +48,7 @@ struct GlobalChi2 {
 	const  ROOT::Math::IMultiGenFunction * fChi2_2;
 };
 
-TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool SavePdfplot = true, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL, TH1D * h_vnvsmass = NULL, TString vnorder = "v2", TString EPorSP = "SP")
+TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool SavePdfplot = true, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL, TH1D * h_vnvsmass = NULL, TH1D * h_vnvspt = NULL, TString vnorder = "v2", TString EPorSP = "SP")
 {
 	Double_t setparam0=100.;
 	Double_t setparam1=1.8648;
@@ -412,6 +412,9 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 	fvn_combinemassvnfit->SetLineColor(6.0);
 	fvn_combinemassvnfit->SetLineStyle(2);
 	h_vnvsmass->GetListOfFunctions()->Add(fvn_combinemassvnfit);
+
+	h_vnvspt->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(11));
+	h_vnvspt->SetBinError( ipt+1, fvn_combinemassvnfit->GetParError(11));
 
 	TCanvas* cfg_massfit_combinemassvn = new TCanvas(Form("cfg_poly3bkg_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),Form("cfg_poly3bkg_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),600,600);
 
