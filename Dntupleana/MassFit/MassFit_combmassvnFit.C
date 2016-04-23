@@ -36,7 +36,11 @@ TF1 *  Func_Ratio_signal_foreground[Nptbin];
 void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg")
 {
 	TH1::SetDefaultSumw2();
-	Plotoption_massfit();
+	gStyle->SetOptTitle(0);
+	gStyle->SetOptStat(0);
+	gStyle->SetTextFont(42);
+	gStyle->SetTextSize(0.05);
+	gStyle->SetTitleX(.0f);
 
 	TH1D * mc_matched_signal[Nptbin];
 	TH1D * mc_matched_kpiswapped[Nptbin];
@@ -146,6 +150,8 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 			iptmc = ipt;
 		else    
 			iptmc = 4;
+
+		hmass_MBorDtrig[ipt]->SetAxisRange(0,hmass_MBorDtrig[ipt]->GetMaximum()*1.4*1.2,"Y");
 
 		if( fitoption == "poly3bkg")
 		{
