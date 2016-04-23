@@ -72,7 +72,7 @@ void Draw_vnvsmasscomparison( TH1D * h_mass_meanvn_MBorDtrig_EP, TH1D * h_mass_m
 	h_mass_meanvn_MBorDtrig_EP->GetYaxis()->SetTitleSize(0.05);
 	h_mass_meanvn_MBorDtrig_SP->GetYaxis()->SetRangeUser(-0.2, 0.6);
 	h_mass_meanvn_MBorDtrig_SP->GetYaxis()->SetTitle(Ytitle);
-	h_mass_meanvn_MBorDtrig_SP->GetYaxis()->SetTitle("m_{#piK} (GeV/c^{2})");
+	h_mass_meanvn_MBorDtrig_SP->GetXaxis()->SetTitle("m_{#piK} (GeV/c^{2})");
 	h_mass_meanvn_MBorDtrig_SP->GetXaxis()->SetTitleSize(0.05);
 	h_mass_meanvn_MBorDtrig_SP->GetYaxis()->SetTitleSize(0.05);
 
