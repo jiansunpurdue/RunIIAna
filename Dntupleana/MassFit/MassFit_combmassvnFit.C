@@ -143,7 +143,7 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 	for(int ipt = iptstart; ipt < iptend; ipt++)
 	{       
 		TF1* signalfittedfunc = NULL;
-		bool SavePdfplot = false;
+		bool SavePdfplot = true;
 
 		int iptmc;
 		if( ipt > 3 ) 

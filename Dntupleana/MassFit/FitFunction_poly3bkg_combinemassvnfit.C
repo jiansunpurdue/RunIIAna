@@ -375,9 +375,9 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 
 			if( massbinleftedge > (fit_range_low - 0.0002) && massbinrightedge < (fit_range_high + 0.0002) )
 			{
-				//foreground = f->Integral(massbinleftedge, massbinrightedge)/histomassbinsize;
+				foreground = f->Integral(massbinleftedge, massbinrightedge)/histomassbinsize;
 				//foregroundErr = f->IntegralError(massbinleftedge, massbinrightedge)/histomassbinsize;
-				foreground =  histo->Integral(ibin, ibin);
+				//foreground =  histo->Integral(ibin+1, ibin+1);
 				signal = mass->Integral(massbinleftedge, massbinrightedge)/histomassbinsize + massSwap->Integral(massbinleftedge, massbinrightedge)/histomassbinsize;
 				//signal = mass->Integral(massbinleftedge, massbinrightedge)/histomassbinsize;
 				//signal = foreground - background->Integral(massbinleftedge, massbinrightedge)/histomassbinsize;
@@ -414,7 +414,7 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 	}
 
 	if(isPbPb && SavePdfplot)
-		cfg->SaveAs(Form("Massfitplots/PbPb/DMass_combinemassvnfit_isPbPb%d_%s_cent%dto%d_%d_%s_%s_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt, vnorder.Data(),EPorSP.Data()));
+		cfg->SaveAs(Form("Plots_vn/combinemassvnfit/DMass_combinemassvnfit_isPbPb%d_%s_cent%dto%d_%d_%s_%s_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt, vnorder.Data(),EPorSP.Data()));
 
 	TCanvas* cfg_vnfit_combinemassvn = new TCanvas(Form("cfg_poly3bkg_vnfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),Form("cfg_poly3bkg_vnfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),600,600);
 
@@ -459,6 +459,20 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
     tex->SetTextSize(0.04);
     tex->SetLineWidth(2);
     tex->Draw();
+
+    if( vnorder == "v2" ) 
+        tex = new TLatex(0.55,0.83,Form("v_{2}^{sig} = %.3f #pm %.3f",fvn_combinemassvnfit->GetParameter(11), fvn_combinemassvnfit->GetParError(11)));
+    else if( vnorder == "v3" )
+        tex = new TLatex(0.55,0.83,Form("v_{3}^{sig} = %.3f #pm %.3f",fvn_combinemassvnfit->GetParameter(11), fvn_combinemassvnfit->GetParError(11)));
+
+    tex->SetNDC();
+    tex->SetTextFont(42);
+    tex->SetTextSize(0.04);
+    tex->SetLineWidth(2);
+    tex->Draw();
+	
+	if(isPbPb && SavePdfplot)
+		cfg_vnfit_combinemassvn->SaveAs(Form("Plots_vn/combinemassvnfit/cfg_vnfit_combinemassvn_poly3bkg_%s_cent%dto%d_%d_%s_%s",cfgname.Data(),centlow,centhigh,ipt,vnorder.Data(),EPorSP.Data()));
 
 	return mass;
 }
