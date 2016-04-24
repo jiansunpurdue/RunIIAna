@@ -203,7 +203,9 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 		h_mass_meanv4_MBorDtrig[ipt]->Write();
 	}
 
-//	output->Close();
+	//when random the mass spectrum, it is ONLY ok to close the output file if the signal fraction function is removed in line 403
+	//don't understand why it is the case yet
+	if(!doStatisticalerr_from_signalfractionfunc) output->Close();
 
 	return;
 }
@@ -375,8 +377,8 @@ void ToyMC_Get_Statisticalerr_from_signalfractionfunc( TFile * output, TH1D * hm
 		////get signal background ratio function
 		for( int ipt = iptstart; ipt < iptend; ipt++)
 		{
-			if( Ratio_signal_foreground_toyMC[ipt]->GetFunction(Form("Func_Ratio_signal_foreground_%s_%d", Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC), ipt)) )
-				Func_Ratio_signal_foreground[ipt] = Ratio_signal_foreground_toyMC[ipt]->GetFunction(Form("Func_Ratio_signal_foreground_%s_%d", Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC), ipt));
+			if( Ratio_signal_foreground_toyMC[ipt]->GetListOfFunctions()->FindObject(Form("Func_Ratio_signal_foreground_%s_%d", Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC), ipt)) )
+				Func_Ratio_signal_foreground[ipt] = (TF1 *) Ratio_signal_foreground_toyMC[ipt]->GetListOfFunctions()->FindObject(Form("Func_Ratio_signal_foreground_%s_%d", Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC), ipt));
 			else
 				cout << "Cannot get signal fraction function!!!!!!!!" << endl;
 			//cout <<"!!!!!!!!!!!! parameters, ipt: " << ipt;
@@ -396,10 +398,10 @@ void ToyMC_Get_Statisticalerr_from_signalfractionfunc( TFile * output, TH1D * hm
 
 		for( int ipt = iptstart; ipt < iptend; ipt++ )
 		{
-			hmass_MBorDtrig_toyMC[ipt]->GetFunction(Form("f_%s_%d",Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC),ipt))->Delete();
-			h_mass_meanv2_toyMC[ipt]->GetFunction(Form("f_vn_mass_%s_%d", Form("%s_v2_toyMC%d", MBorDtrig.Data(), itoyMC),ipt))->Delete();
-			h_mass_meanv3_toyMC[ipt]->GetFunction(Form("f_vn_mass_%s_%d", Form("%s_v3_toyMC%d", MBorDtrig.Data(), itoyMC),ipt))->Delete();
-			//Ratio_signal_foreground_toyMC[ipt]->GetFunction(Form("Func_Ratio_signal_foreground_%s_%d", Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC), ipt))->Delete();
+			hmass_MBorDtrig_toyMC[ipt]->GetListOfFunctions()->Remove(hmass_MBorDtrig_toyMC[ipt]->GetListOfFunctions()->FindObject(Form("f_%s_%d",Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC),ipt)));
+			h_mass_meanv2_toyMC[ipt]->GetListOfFunctions()->Remove(h_mass_meanv2_toyMC[ipt]->GetListOfFunctions()->FindObject(Form("f_vn_mass_%s_%d", Form("%s_v2_toyMC%d", MBorDtrig.Data(), itoyMC),ipt)));
+			h_mass_meanv3_toyMC[ipt]->GetListOfFunctions()->Remove(h_mass_meanv3_toyMC[ipt]->GetListOfFunctions()->FindObject(Form("f_vn_mass_%s_%d", Form("%s_v3_toyMC%d", MBorDtrig.Data(), itoyMC),ipt)));
+			//Ratio_signal_foreground_toyMC[ipt]->GetListOfFunctions()->Remove(Ratio_signal_foreground_toyMC[ipt]->GetListOfFunctions()->FindObject(Form("Func_Ratio_signal_foreground_%s_%d", Form("%svn_toyMC%d",MBorDtrig.Data(),itoyMC), ipt)));
 		}
 	}
 
