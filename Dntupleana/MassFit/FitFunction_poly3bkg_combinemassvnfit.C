@@ -472,7 +472,7 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
     tex->Draw();
 	
 	if(isPbPb && SavePdfplot)
-		cfg_vnfit_combinemassvn->SaveAs(Form("Plots_vn/combinemassvnfit/cfg_vnfit_combinemassvn_poly3bkg_%s_cent%dto%d_%d_%s_%s",cfgname.Data(),centlow,centhigh,ipt,vnorder.Data(),EPorSP.Data()));
+		cfg_vnfit_combinemassvn->SaveAs(Form("Plots_vn/combinemassvnfit/cfg_vnfit_combinemassvn_%s_cent%dto%d_%d_%s_%s_poly3bkg.pdf",cfgname.Data(),centlow,centhigh,ipt,vnorder.Data(),EPorSP.Data()));
 
 	return mass;
 }
