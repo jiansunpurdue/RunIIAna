@@ -7,8 +7,8 @@
 #include <TString.h>
 #include <iostream>
 
-void mergeForest_test_nodirectory(TString fname = "/depot/cms/users/sun229/Dntuple_crab2_PbPb_HIMinimumBias6_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016/*.root",
-		TString outfile="/depot/fqwang/data/sun229/Dntuple_crab2_PbPb_HIMinimumBias6_ForestAOD_highpuritytk_D0_tkpt0p7eta1p5_goldenjson_02222016.root",
+void mergeForest_test_nodirectory(TString fname = "/depot/cms/users/sun229/*.root",
+		TString outfile="/depot/fqwang/data/sun229/Dntuple_crab_pp_MinimumBias1to20_AOD_D0Dsy1p1_tkpt0p5eta2p0_04122016.root",
 		bool failOnError = false)
 {
 	TTree::SetMaxTreeSize(1LL*1024*1024*1024*1024);

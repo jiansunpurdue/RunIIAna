@@ -165,7 +165,7 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
     Tl.SetTextAlign(12);
     Tl.SetTextSize(0.05);
     Tl.SetTextFont(42);
-    Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl.DrawLatex(0.20,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
     Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLatex* tex;

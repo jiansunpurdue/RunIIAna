@@ -2,15 +2,17 @@
 
 DoMassFitEPformassvsvn=1
 DoMassFitSPformassvsvn=1
-DoMassFitEPforinoutplane=1
 DoMassFitMorephibin=1
-DoStatisticalerr_from_signalfractionfunc_SP=1
-DoStatisticalerr_from_signalfractionfunc_EP=1
+DoMassFitEPforinoutplane=1
+DoStatisticalerr_from_signalfractionfunc_SP=0 #pretty time consuming, ~6 hours for one centrality bin
+DoStatisticalerr_from_signalfractionfunc_EP=0 #pretty time consuming, ~6 hours for one centrality bin
 
-DODrawinoutplanevn=1
+Do_combinestaterror_sigfractionfunc_SP_poly3bkg=1 #just for SP and poly3 bkg
+
 DODrawEPmassvsvn=1
 DODrawSPmassvsvn=1
 DODrawmorephibinvn=1
+DODrawinoutplanevn=1
 DOVnvsmasscomparison=1
 
 DOVncomparison=1
@@ -21,9 +23,11 @@ ptmin=0.0
 ptmax=45.0
 MBorDtrig="MBtrig"
 Fitoption="poly3bkg"
+#Fitoption="poly3bkg_floatwidth"
+#Fitoption="expobkg_2nd"
+#Fitoption="poly2bkg"
 
 InputMC="./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root"
-#InputMC="./../rootfiles/anaDntuple_ntD_EvtBase_20160303_Dfinder_20160302_pp_Pythia8_prompt_D0_dPt0tkPt0p5_pthatweight_Cent-0to100_Evt0to-1.root"
 
 InputMBdata0to100="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100.root"
 InputMBdata0to10="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10.root"
@@ -54,6 +58,13 @@ InputMB0to10_drawvn_vnvsmass_SP="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_D
 InputMB10to30_drawvn_vnvsmass_SP="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent10to30_${Fitoption}.root"
 InputMB30to50_drawvn_vnvsmass_SP="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_${Fitoption}.root"
 InputMB50to70_drawvn_vnvsmass_SP="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_${Fitoption}.root"
+
+#just files for poly3 bkg and SP
+InputMB0to10_drawvn_vnvsmass_SP_randommass="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10_${Fitoption}_staterrsigfrfunc.root"
+InputMB10to30_drawvn_vnvsmass_SP_randommass="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent10to30_${Fitoption}_staterrsigfrfunc.root"
+InputMB30to50_drawvn_vnvsmass_SP_randommass="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_${Fitoption}_staterrsigfrfunc.root"
+InputMB50to70_drawvn_vnvsmass_SP_randommass="rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_${Fitoption}_staterrsigfrfunc.root"
+
 
 FileVnMB0to100_inoutplane="rootfiles/vn_inoutplane_MBtrig_cent0to100_${Fitoption}.root"
 FileVnMB0to10_inoutplane="rootfiles/vn_inoutplane_MBtrig_cent0to10_${Fitoption}.root"
@@ -183,11 +194,10 @@ fi
 
 EPorSP="SP"
 if [ $DODrawSPmassvsvn -eq 1 ]; then
-#root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB0to100_drawvn_vnvsmass_SP'","'$MBorDtrig'",0,100,1.5,35.0)'
-root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB0to10_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",0,10,'$ptmin','$ptmax',"'$Fitoption'")'
-root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB10to30_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",10,30,'$ptmin','$ptmax',"'$Fitoption'")'
-root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB30to50_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",30,50,'$ptmin','$ptmax',"'$Fitoption'")'
-root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB50to70_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",50,70,'$ptmin','$ptmax',"'$Fitoption'")'
+root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB0to10_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",0,10,'$ptmin','$ptmax',"'$Fitoption'",'$Do_combinestaterror_sigfractionfunc_SP_poly3bkg',"'$InputMB0to10_drawvn_vnvsmass_SP_randommass'")'
+root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB10to30_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",10,30,'$ptmin','$ptmax',"'$Fitoption'",'$Do_combinestaterror_sigfractionfunc_SP_poly3bkg',"'$InputMB10to30_drawvn_vnvsmass_SP_randommass'")'
+root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB30to50_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",30,50,'$ptmin','$ptmax',"'$Fitoption'",'$Do_combinestaterror_sigfractionfunc_SP_poly3bkg',"'$InputMB30to50_drawvn_vnvsmass_SP_randommass'")'
+root -l -b -q 'Draw_vn_vnvsmass.C++("'$InputMB50to70_drawvn_vnvsmass_SP'","'$MBorDtrig'","'$EPorSP'",50,70,'$ptmin','$ptmax',"'$Fitoption'",'$Do_combinestaterror_sigfractionfunc_SP_poly3bkg',"'$InputMB50to70_drawvn_vnvsmass_SP_randommass'")'
 fi
 
 if [ $DOVnvsmasscomparison -eq 1 ]; then
