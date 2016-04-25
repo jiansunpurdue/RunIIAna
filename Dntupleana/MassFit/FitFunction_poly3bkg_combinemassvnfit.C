@@ -414,7 +414,7 @@ TF1* fit_histo_poly3bkg( bool isPbPb, int centlow, int centhigh, TH1D * histo, T
 	}
 
 	if(isPbPb && SavePdfplot)
-		cfg->SaveAs(Form("Plots_vn/combinemassvnfit/DMass_combinemassvnfit_isPbPb%d_%s_cent%dto%d_%d_%s_%s_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt, vnorder.Data(),EPorSP.Data()));
+		cfg_massfit_combinemassvn->SaveAs(Form("Plots_vn/combinemassvnfit/DMass_combinemassvnfit_isPbPb%d_%s_cent%dto%d_%d_%s_%s_poly3bkg.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt, vnorder.Data(),EPorSP.Data()));
 
 	TCanvas* cfg_vnfit_combinemassvn = new TCanvas(Form("cfg_poly3bkg_vnfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),Form("cfg_poly3bkg_vnfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),600,600);
 
