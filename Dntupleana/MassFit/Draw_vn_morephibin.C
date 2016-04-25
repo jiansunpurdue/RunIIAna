@@ -165,7 +165,7 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
     Tl.SetTextAlign(12);
     Tl.SetTextSize(0.05);
     Tl.SetTextFont(42);
-    Tl.DrawLatex(0.20,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
     Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLatex* tex;
@@ -205,17 +205,14 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 	tex->Draw();
 
 	float fitchi2 = fit_dNdpt_phibins_in_oneptbin->GetChisquare();
-//	int noffreepara = fit_dNdpt_phibins_in_oneptbin->GetNumberFreeParameters();
-//	int noffitpoints = fit_dNdpt_phibins_in_oneptbin->GetNumberFitPoints();
     int NDFfit = fit_dNdpt_phibins_in_oneptbin->GetNDF();
 
-//	tex = new TLatex(0.55,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, (noffitpoints-noffreepara)));
     tex = new TLatex(0.55,0.63,Form("#chi^{2}#/NDF: %.1f/%d", fitchi2, NDFfit));
 	tex->SetNDC();
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
 	tex->SetLineWidth(2);
-	//tex->Draw();
+	tex->Draw();
 	
 	cfg->SaveAs(Form("Plots_vn/fitmorephibin/cfg_fit_dNdpt_phibins_in_oneptbin_%s_cent%dto%d_%d_%s.pdf", (trigname+vnname).Data(), cent_low, cent_high, ipt, fitoption.Data()));
 }
