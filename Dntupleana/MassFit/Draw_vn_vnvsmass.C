@@ -18,7 +18,7 @@
 #include <./../parameters.h>
 #include <./../uti.h>
 
-void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_poly3bkg.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 45.0, TString fitoption = "poly3bkg", bool get_staterror_signalfraction = false, TString inputfilename_staterrorfraction = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_poly3bkg_staterrsigfrfunc.root")
+void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_poly3bkg.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int cent_low = 50, int cent_high = 70, double ptlow = 0.0, double pthigh = 45.0, TString fitoption = "poly3bkg", bool get_staterror_signalfraction = false, TString inputfilename_staterrorfraction = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_poly3bkg_staterrsigfrfunc.root")
 {
 	void Draw_vn( TH1D * h_vn_pt, TString MBorDtrig = "MBtrig", TString EPorSP = "EP", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, TString fitoption = "poly3bkg");
 	void Get_vn_pt_staterror_signalfraction( TH1D * h_vn_pt_staterror_signalfraction, TH1D * h_vn_toyMC_oneptbin[], TString MBorDtrig, TString EPorSP, TString vnname, int cent_low, int cent_high, int iptstart, int iptend, TString fitoption);
@@ -171,12 +171,12 @@ void Get_vn_pt_staterror_signalfraction( TH1D * h_vn_pt_staterror_signalfraction
 			fitrangehigh = vn_mean + 0.2 * v3_staterror;
 		}
 
-		//cout << "ipt: " << ipt << "  vn_mean: " << vn_mean << "  v3_staterror: " << v3_staterror << endl;
+		cout << "ipt: " << ipt << "  vn_mean: " << vn_mean << "  v3_staterror: " << v3_staterror << endl;
 
 		TF1 * fit = new TF1( Form("f_staterror_signalfraction_%s_%s_%d", MBorDtrig.Data(), vnname.Data(), ipt), "gaus(0)", fitrangelow, fitrangehigh);
 		fit->SetParameter( 0, 30.);
 		fit->SetParameter( 1, vn_mean);
-		fit->SetParameter( 2, 0.2 * v3_staterror);
+		fit->SetParameter( 2, 0.05 * v3_staterror);
 		fit->SetLineColor(2);
 
 		h_vn_toyMC_oneptbin[ipt]->Fit( Form("f_staterror_signalfraction_%s_%s_%d", MBorDtrig.Data(), vnname.Data(), ipt), "q", "", fitrangelow, fitrangehigh);
@@ -222,7 +222,7 @@ void Get_vn_pt_staterror_signalfraction( TH1D * h_vn_pt_staterror_signalfraction
 		tex->SetLineWidth(2);
 		tex->Draw();
 		
-		cfg_fit_staterror_signalfraction->SaveAs(Form("Plots_vn/plots_fit_staterror_signalfraction/cfg_staterror_signalfraction_%s_%s_%d_%s_%s.pdf", MBorDtrig.Data(), vnname.Data(), ipt, EPorSP.Data(), fitoption.Data()));
+		cfg_fit_staterror_signalfraction->SaveAs(Form("Plots_vn/plots_fit_staterror_signalfraction/cfg_staterror_signalfraction_%s_%s_%d_%s_cent%dto%d_%s.pdf", MBorDtrig.Data(), vnname.Data(), ipt, EPorSP.Data(), cent_low, cent_high, fitoption.Data()));
 	}
 }
 void Combine_staterror( TH1D * h_vn_pt, TH1D * h_vn_pt_nostaterror_signalfraction, TH1D * h_vn_pt_staterror_signalfraction, int iptstart, int iptend)
