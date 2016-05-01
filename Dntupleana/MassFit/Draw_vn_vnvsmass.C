@@ -18,11 +18,13 @@
 #include <./../parameters.h>
 #include <./../uti.h>
 
-void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_poly3bkg.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int cent_low = 50, int cent_high = 70, double ptlow = 0.0, double pthigh = 45.0, TString fitoption = "poly3bkg", bool get_staterror_signalfraction = false, TString inputfilename_staterrorfraction = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_poly3bkg_staterrsigfrfunc.root")
+void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_poly3bkg.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 45.0, TString fitoption = "poly3bkg", bool get_staterror_signalfraction = true, TString inputfilename_staterrorfraction = "rootfiles/Raw_spectrum_vnvsmass_SP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_poly3bkg_staterrsigfrfunc.root")
 {
 	void Draw_vn( TH1D * h_vn_pt, TString MBorDtrig = "MBtrig", TString EPorSP = "EP", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, TString fitoption = "poly3bkg");
 	void Get_vn_pt_staterror_signalfraction( TH1D * h_vn_pt_staterror_signalfraction, TH1D * h_vn_toyMC_oneptbin[], TString MBorDtrig, TString EPorSP, TString vnname, int cent_low, int cent_high, int iptstart, int iptend, TString fitoption);
 	void Combine_staterror( TH1D * h_vn_pt, TH1D * h_vn_pt_nostaterror_signalfraction, TH1D * h_vn_pt_staterror_signalfraction, int iptstart, int iptend);
+	void Get_errorratio_signalfractiononly_over_no( TH1D * h_vn_pt_errorratio_signalfraction_over_no, TH1D * h_vn_pt_nostaterror_signalfraction, TH1D * h_vn_pt_staterror_signalfraction, int iptstart, int iptend, TString MBorDtrig, TString EPorSP, TString vnname, int cent_low, int cent_high);
+
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -41,6 +43,8 @@ void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_S
 	TH1D * h_v3_pt_staterror_signalfraction = NULL;
 	TH1D * h_v2_pt_nostaterror_signalfraction = NULL;
 	TH1D * h_v3_pt_nostaterror_signalfraction = NULL;
+	TH1D * h_v2_pt_errorratio_signalfraction_over_no = NULL;
+	TH1D * h_v3_pt_errorratio_signalfraction_over_no = NULL;
 
 	if( get_staterror_signalfraction && fitoption == "poly3bkg")
 	{
@@ -58,12 +62,17 @@ void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_S
 		h_v3_pt_staterror_signalfraction = (TH1D *) h_v3_pt->Clone("h_v3_pt_staterror_signalfraction");
 		h_v2_pt_nostaterror_signalfraction = (TH1D *) h_v2_pt->Clone("h_v2_pt_nostaterror_signalfraction");
 		h_v3_pt_nostaterror_signalfraction = (TH1D *) h_v3_pt->Clone("h_v3_pt_nostaterror_signalfraction");
+		h_v2_pt_errorratio_signalfraction_over_no = (TH1D *) h_v2_pt->Clone("h_v2_pt_errorratio_signalfraction_over_no");
+		h_v3_pt_errorratio_signalfraction_over_no = (TH1D *) h_v3_pt->Clone("h_v3_pt_errorratio_signalfraction_over_no");
 
 		Get_vn_pt_staterror_signalfraction( h_v2_pt_staterror_signalfraction, h_v2_toyMC_oneptbin, MBorDtrig, EPorSP, "v2", cent_low, cent_high, iptstart, iptend, fitoption);
 		Get_vn_pt_staterror_signalfraction( h_v3_pt_staterror_signalfraction, h_v3_toyMC_oneptbin, MBorDtrig, EPorSP, "v3", cent_low, cent_high, iptstart, iptend, fitoption);
 
 		Combine_staterror( h_v2_pt, h_v2_pt_nostaterror_signalfraction, h_v2_pt_staterror_signalfraction, iptstart, iptend);
 		Combine_staterror( h_v3_pt, h_v3_pt_nostaterror_signalfraction, h_v3_pt_staterror_signalfraction, iptstart, iptend);
+
+		Get_errorratio_signalfractiononly_over_no( h_v2_pt_errorratio_signalfraction_over_no, h_v2_pt_nostaterror_signalfraction, h_v2_pt_staterror_signalfraction, iptstart, iptend, MBorDtrig, EPorSP, "v2", cent_low, cent_high);
+		Get_errorratio_signalfractiononly_over_no( h_v3_pt_errorratio_signalfraction_over_no, h_v3_pt_nostaterror_signalfraction, h_v3_pt_staterror_signalfraction, iptstart, iptend, MBorDtrig, EPorSP, "v3", cent_low, cent_high);
 	}
 
 	//	Draw_vn( h_v1_pt, MBorDtrig, EPorSP, "v1_"+EPorSP, Form("v_{1}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh);
@@ -84,6 +93,8 @@ void Draw_vn_vnvsmass(TString inputfilename = "rootfiles/Raw_spectrum_vnvsmass_S
 		h_v3_pt_staterror_signalfraction->Write();
 		h_v2_pt_nostaterror_signalfraction->Write();
 		h_v3_pt_nostaterror_signalfraction->Write();
+		h_v2_pt_errorratio_signalfraction_over_no->Write();
+		h_v3_pt_errorratio_signalfraction_over_no->Write();
 	}
 
 	output->Close();
@@ -231,4 +242,43 @@ void Combine_staterror( TH1D * h_vn_pt, TH1D * h_vn_pt_nostaterror_signalfractio
 	{
 		h_vn_pt->SetBinError( ipt+1, TMath::Sqrt( h_vn_pt_nostaterror_signalfraction->GetBinError(ipt+1) * h_vn_pt_nostaterror_signalfraction->GetBinError(ipt+1) + h_vn_pt_staterror_signalfraction->GetBinError(ipt+1) * h_vn_pt_staterror_signalfraction->GetBinError(ipt+1) ));
 	}
+}
+
+void Get_errorratio_signalfractiononly_over_no( TH1D * h_vn_pt_errorratio_signalfraction_over_no, TH1D * h_vn_pt_nostaterror_signalfraction, TH1D * h_vn_pt_staterror_signalfraction, int iptstart, int iptend, TString MBorDtrig, TString EPorSP, TString vnname, int cent_low, int cent_high)
+{
+	for( int ipt = iptstart; ipt < iptend; ipt++ )
+	{
+		h_vn_pt_errorratio_signalfraction_over_no->SetBinContent( ipt+1, h_vn_pt_staterror_signalfraction->GetBinError(ipt+1) / h_vn_pt_nostaterror_signalfraction->GetBinError(ipt+1) );
+		h_vn_pt_errorratio_signalfraction_over_no->SetBinError( ipt+1, 0.0);
+	}
+	
+	TCanvas * cfg_errorratio_signalfractiononly_over_no = new TCanvas( Form("cfg_errorratio_signalfractiononly_over_no_%s_%s_cent%dto%d", MBorDtrig.Data(), vnname.Data(), cent_low, cent_high), Form("cfg_errorratio_signalfractiononly_over_no_%s_%s_cent%dto%d", MBorDtrig.Data(), vnname.Data(), cent_low, cent_high), 600, 600);
+
+    h_vn_pt_errorratio_signalfraction_over_no->GetXaxis()->SetRangeUser(0.+0.05, 38.-0.05);
+    h_vn_pt_errorratio_signalfraction_over_no->GetYaxis()->SetRangeUser(0.0, 0.3);
+    h_vn_pt_errorratio_signalfraction_over_no->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
+    h_vn_pt_errorratio_signalfraction_over_no->GetYaxis()->SetTitle("Error Ratio");
+
+    h_vn_pt_errorratio_signalfraction_over_no->GetYaxis()->SetTitleSize(0.05);
+    h_vn_pt_errorratio_signalfraction_over_no->GetXaxis()->SetTitleSize(0.05);
+	
+	h_vn_pt_errorratio_signalfraction_over_no->Draw("hist");
+	h_vn_pt_errorratio_signalfraction_over_no->Draw("psame");
+	
+	TLatex* tex;
+	tex = new TLatex(0.55,0.83,"|y| < 1.0");
+	tex->SetNDC();
+	tex->SetTextFont(42);
+	tex->SetTextSize(0.04);
+	tex->SetLineWidth(2);
+	tex->Draw();
+
+	tex = new TLatex(0.55,0.78,Form("Cent. %d-%d%%", cent_low, cent_high));
+	tex->SetNDC();
+	tex->SetTextFont(42);
+	tex->SetTextSize(0.04);
+	tex->SetLineWidth(2);
+	tex->Draw();
+
+	cfg_errorratio_signalfractiononly_over_no->SaveAs(Form("Plots_vn/plots_fit_staterror_signalfraction/cfg_errorratio_signalfractiononly_over_no_%s_%s_cent%dto%d.pdf", MBorDtrig.Data(), vnname.Data(), cent_low, cent_high));
 }
