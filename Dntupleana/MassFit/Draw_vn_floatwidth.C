@@ -85,11 +85,12 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly3bkg_floatwidth, TString vn
     fun->SetLineWidth(1);
     fun->Draw("same");
 
-	TLegend *  leg = new TLegend(0.45, 0.67, 0.65, 0.90);
+	TLegend *  leg = new TLegend(0.45, 0.70, 0.65, 0.90);
 	leg->SetTextSize(0.04);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
 	leg->SetFillStyle(0);
+	leg->AddEntry( (TObject*)0, Form("Cent. %d-%d%%", cent_low, cent_high) , "");
 	leg->AddEntry( vn_default, "Default");
 	leg->AddEntry( vn_poly3bkg_floatwidth, "Float width");
 	leg->Draw();
