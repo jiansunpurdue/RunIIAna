@@ -22,7 +22,7 @@
 #include <./../uti.h>
 #include <./Plotoption_massfit.h>
 
-#include <./FitFunction_poly3bkg_combinemassvnfit.C>
+#include <./FitFunction_poly3bkg_floatwidth_combinemassvnfit.C>
 
 //#include <./../EP_resolution.h>
 
@@ -33,7 +33,7 @@ const int Rebin_vnmass = 3;
 
 TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
-void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg")
+void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -143,7 +143,6 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 	for(int ipt = iptstart; ipt < iptend; ipt++)
 	{       
 		TF1* signalfittedfunc = NULL;
-		bool SavePdfplot = true;
 
 		int iptmc;
 		if( ipt > 3 ) 
@@ -153,20 +152,11 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 
 		hmass_MBorDtrig[ipt]->SetAxisRange(0,hmass_MBorDtrig[ipt]->GetMaximum()*1.4*1.2,"Y");
 
-		if( fitoption == "poly3bkg")
+		if( fitoption == "poly3bkg_floatwidth")
 		{
-			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", SavePdfplot, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
-			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", SavePdfplot, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+			signalfittedfunc = fit_histo_poly3bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
+			signalfittedfunc = fit_histo_poly3bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
 		}
-
-	//	if( fitoption == "expobkg_2nd")
-	//		signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
-
-	//	if( fitoption == "poly2bkg")
-	//		signalfittedfunc = fit_histo_poly2bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
-
-	//	if( fitoption == "poly3bkg_floatwidth")
-	//		signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);
 
 		double histomassbinsize = hmass_MBorDtrig[ipt]->GetBinWidth(10);
 		double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;
