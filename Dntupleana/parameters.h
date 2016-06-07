@@ -23,6 +23,9 @@ float vertexprobcut_pp[Nptbin] = { 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.0
 float DlxyBScut_pp_MB = -1.5;
 float DlxyBScut_pp_Dtrig = 1.5;
 
+//vertex vz cut
+#define vz_cut 15.0
+
 //track cuts
 //PbPb
 #define MBTkptcut_PbPb 0.7
@@ -37,7 +40,10 @@ float DlxyBScut_pp_Dtrig = 1.5;
 
 //D rapidity and track eta cuts
 #define Drapiditycut 1.0
-#define TkPtresolution_MB 0.3
+#define TkPtresolution_MB 0.1
+#define TkHitCut_MB 10.5 //>=
+#define Tknorchi2overlayers_MB 100000. //no cut //<
+
 #define TkPtresolution_Trig 0.1
 #define TkHitCut_Trig 10.5 //>=
 #define Tknorchi2overlayers_Trig 0.15 //<
