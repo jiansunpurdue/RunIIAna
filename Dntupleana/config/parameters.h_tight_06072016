@@ -5,40 +5,34 @@
 #include <TH1D.h>
 #include <TProfile.h>
 
-#define PI 3.14159265
+#define PI 3.1415926536
 
-#define Nptbin 22
+#define Nptbin 15
 
-float ptbins[Nptbin+1]   =      { 0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0, 16.0, 20.0, 25.0, 30.0, 
-                                  35.0, 40.0, 45.0, 50.0, 60.0, 80.0, 100.0, 120.0, 150.0, 200.0};
+float ptbins[Nptbin+1]   =      { 0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0, 16.0, 25.0, 35.0, 45.0, 65.0, 100.0, 200.0};
 
-float vertex3dcut_PbPb[Nptbin] = {6.0, 6.0, 6.0, 5.86, 5.86, 4.86, 4.54, 4.42, 4.06, 3.71, 3.25, 3.0, 3.0, 
-                                    3.0,  3.0,  3.0,  3.0,  3.0,   3.0,  3.0,  3.0,  3.0};
-float alphacut_PbPb[Nptbin]  = {0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 
-                                    0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12};
-float vertexprobcut_PbPb[Nptbin] = {0.25, 0.25, 0.25, 0.224, 0.224, 0.170, 0.125, 0.091, 0.069, 0.056, 0.054, 0.05, 0.05,
-                                    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
+float vertex3dcut_PbPb[Nptbin] = {6.0, 6.0, 6.0, 5.86, 5.86, 4.86, 4.54, 4.42, 4.06, 3.50, 3.0, 3.0,  3.0,  3.0,  3.0};
+float alphacut_PbPb[Nptbin]  = {0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12};
+float vertexprobcut_PbPb[Nptbin] = {0.25, 0.25, 0.25, 0.224, 0.224, 0.170, 0.125, 0.091, 0.069, 0.054, 0.05, 0.05, 0.05, 0.05, 0.05};
 float DlxyBScut_PbPb_MB = -1.5;
 float DlxyBScut_PbPb_Dtrig = 1.5;
 
-float vertex3dcut_pp[Nptbin]  =  {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0,  3.0,  3.0,  3.0, 3.0, 3.0, 
-                                    3.0,  3.0,  3.0,  3.0,  3.0, 3.0,  3.0,  3.0,  3.0};
-float alphacut_pp[Nptbin]  =   {0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 
-                                    0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12};
-float vertexprobcut_pp[Nptbin] = { 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
-                                    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
+float vertex3dcut_pp[Nptbin]  =  {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0};
+float alphacut_pp[Nptbin]  =   {0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12};
+float vertexprobcut_pp[Nptbin] = { 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
 float DlxyBScut_pp_MB = -1.5;
 float DlxyBScut_pp_Dtrig = 1.5;
 
 //track cuts
 //PbPb
-//#define MBTkptcut_PbPb 0.7
-#define MBTkptcut_PbPb 1.0  //should be lowered a bit when MC sample is produced with lower track pt cut
+#define MBTkptcut_PbPb 0.7
 #define Tketacut_PbPb 1.2
+//#define Tketacut_PbPb 1.5
 #define TrigTkptcut_PbPb 8.5
 //pp
-#define MBTkptcut_pp 1.0
+#define MBTkptcut_pp 0.7
 #define Tketacut_pp 1.2
+//#define Tketacut_pp 1.5
 #define TrigTkptcut_pp 3.0
 
 //D rapidity and track eta cuts
@@ -46,6 +40,7 @@ float DlxyBScut_pp_Dtrig = 1.5;
 #define TkPtresolution_MB 0.3
 #define TkPtresolution_Trig 0.1
 #define TkHitCut_Trig 10.5 //>=
+#define Tknorchi2overlayers_Trig 0.15 //<
 #define TkAlgoCut_Trig 7.5 //<=
 
 //histograms to be filled
@@ -99,6 +94,20 @@ TProfile * h_v1_hiBin_cosndiffeppepm = new TProfile("h_v1_hiBin_cosndiffeppepm",
 TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm","h_v2_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v3_hiBin_cosndiffeppepm = new TProfile("h_v3_hiBin_cosndiffeppepm","h_v3_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v4_hiBin_cosndiffeppepm = new TProfile("h_v4_hiBin_cosndiffeppepm","h_v4_hiBin_cosndiffeppepm", NCentbins, hibinbins);
+
+TProfile * h_v2_hiBin_HFm_cosndiffepAB = new TProfile("h_v2_hiBin_HFm_cosndiffepAB","h_v2_hiBin_HFm_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFm_cosndiffepAC = new TProfile("h_v2_hiBin_HFm_cosndiffepAC","h_v2_hiBin_HFm_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFm_cosndiffepBC = new TProfile("h_v2_hiBin_HFm_cosndiffepBC","h_v2_hiBin_HFm_cosndiffepBC", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFp_cosndiffepAB = new TProfile("h_v2_hiBin_HFp_cosndiffepAB","h_v2_hiBin_HFp_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFp_cosndiffepAC = new TProfile("h_v2_hiBin_HFp_cosndiffepAC","h_v2_hiBin_HFp_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v2_hiBin_HFp_cosndiffepBC = new TProfile("h_v2_hiBin_HFp_cosndiffepBC","h_v2_hiBin_HFp_cosndiffepBC", NCentbins, hibinbins);
+
+TProfile * h_v3_hiBin_HFm_cosndiffepAB = new TProfile("h_v3_hiBin_HFm_cosndiffepAB","h_v3_hiBin_HFm_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFm_cosndiffepAC = new TProfile("h_v3_hiBin_HFm_cosndiffepAC","h_v3_hiBin_HFm_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFm_cosndiffepBC = new TProfile("h_v3_hiBin_HFm_cosndiffepBC","h_v3_hiBin_HFm_cosndiffepBC", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFp_cosndiffepAB = new TProfile("h_v3_hiBin_HFp_cosndiffepAB","h_v3_hiBin_HFp_cosndiffepAB", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFp_cosndiffepAC = new TProfile("h_v3_hiBin_HFp_cosndiffepAC","h_v3_hiBin_HFp_cosndiffepAC", NCentbins, hibinbins);
+TProfile * h_v3_hiBin_HFp_cosndiffepBC = new TProfile("h_v3_hiBin_HFp_cosndiffepBC","h_v3_hiBin_HFp_cosndiffepBC", NCentbins, hibinbins);
 
 TProfile * h_v2_hiBin_HFm_QAB = new TProfile("h_v2_hiBin_HFm_QAB","h_v2_hiBin_HFm_QAB", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_HFm_QAC = new TProfile("h_v2_hiBin_HFm_QAC","h_v2_hiBin_HFm_QAC", NCentbins, hibinbins);
@@ -167,6 +176,17 @@ TH1D * hmass_Dtrig_combined_v1[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v2[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v3[Nptbin][Nphibin];
 TH1D * hmass_Dtrig_combined_v4[Nptbin][Nphibin];
+
+//more delta phi bins
+#define Nphibinmore 5
+TH1D * h_phibins_v2 = new TH1D( "h_phibins_v2", "h_phibins_v2", Nphibinmore, 0, PI/2.);
+TH1D * h_phibins_v3 = new TH1D( "h_phibins_v3", "h_phibins_v3", Nphibinmore, 0, PI/3.);
+
+TH1D * hmass_MB_HFandpart_v2_morephibin[Nptbin][Nphibinmore];
+TH1D * hmass_MB_HFandpart_v3_morephibin[Nptbin][Nphibinmore];
+
+TH1D * hmass_Dtrig_combined_v2_morephibin[Nptbin][Nphibinmore];
+TH1D * hmass_Dtrig_combined_v3_morephibin[Nptbin][Nphibinmore];
 
 //#define Vn_low -1.5
 //#define Vn_high 1.5
