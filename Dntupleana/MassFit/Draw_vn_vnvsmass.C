@@ -114,16 +114,16 @@ void Draw_vn( TH1D * h_vn_pt, TString MBorDtrig = "MBtrig", TString EPorSP = "EP
 
 	if( EPorSP == "EP" )
 	{
-		h_vn_pt->SetMarkerColor(4.0);
-		h_vn_pt->SetLineColor(4.0);
-		h_vn_pt->SetMarkerStyle(21);
+		h_vn_pt->SetMarkerColor(6.0);
+		h_vn_pt->SetLineColor(6.0);
+		h_vn_pt->SetMarkerStyle(22);
 		h_vn_pt->SetMarkerSize(1.0);
 	}
 	else if( EPorSP == "SP" )
 	{
-		h_vn_pt->SetMarkerColor(6.0);
-		h_vn_pt->SetLineColor(6.0);
-		h_vn_pt->SetMarkerStyle(22);
+		h_vn_pt->SetMarkerColor(4.0);
+		h_vn_pt->SetLineColor(4.0);
+		h_vn_pt->SetMarkerStyle(21);
 		h_vn_pt->SetMarkerSize(1.3);
 	}
 

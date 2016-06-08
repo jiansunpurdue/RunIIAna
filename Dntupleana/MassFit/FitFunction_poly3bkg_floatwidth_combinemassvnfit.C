@@ -431,9 +431,9 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	h_vnvsmass->GetXaxis()->SetTitleSize(0.05);
 	h_vnvsmass->GetYaxis()->SetTitleSize(0.05);
 
-	h_vnvsmass->SetMarkerColor(6.0);
-	h_vnvsmass->SetLineColor(6.0);
-	h_vnvsmass->SetMarkerStyle(22);
+	h_vnvsmass->SetMarkerColor(4.0);
+	h_vnvsmass->SetLineColor(4.0);
+	h_vnvsmass->SetMarkerStyle(21);
 	h_vnvsmass->SetMarkerSize(1.3);
 	h_vnvsmass->Draw();
 
