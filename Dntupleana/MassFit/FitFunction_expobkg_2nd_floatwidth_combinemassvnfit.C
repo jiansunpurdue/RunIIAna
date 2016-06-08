@@ -24,11 +24,11 @@ extern float ptbins[Nptbin+1];
 extern const double generalfitrange_masslow;
 extern const double generalfitrange_masshigh;
 
-int iparmassfit[12] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-int iparvnfit[15] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+int iparmassfit_expobkg_2nd_floatwidth[12] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+int iparvnfit_expobkg_2nd_floatwidth[15] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
-struct GlobalChi2 {
-	GlobalChi2(  ROOT::Math::IMultiGenFunction & f1,
+struct GlobalChi2_expobkg_2nd_floatwidth {
+	GlobalChi2_expobkg_2nd_floatwidth(  ROOT::Math::IMultiGenFunction & f1,
 			ROOT::Math::IMultiGenFunction & f2) :
 		fChi2_1(&f1), fChi2_2(&f2) {}
 
@@ -36,10 +36,10 @@ struct GlobalChi2 {
 	// and then is signal (only in 2)
 	double operator() (const double *par) const {
 		double p1[12];
-		for(int i = 0; i < 12; ++i) p1[i] = par[iparmassfit[i]];
+		for(int i = 0; i < 12; ++i) p1[i] = par[iparmassfit_expobkg_2nd_floatwidth[i]];
 
 		double p2[15];
-		for(int i = 0; i < 15; ++i) p2[i] = par[iparvnfit[i]];
+		for(int i = 0; i < 15; ++i) p2[i] = par[iparvnfit_expobkg_2nd_floatwidth[i]];
 
 		return (*fChi2_1)(p1) + (*fChi2_2)(p2);
 	}
@@ -163,7 +163,7 @@ TF1* fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( bool isPbPb, int centlow
 	ROOT::Fit::Chi2Function chi2_B(datamass, wfmass_combinemassvnfit);
 	ROOT::Fit::Chi2Function chi2_SB(datavn, wfvn_combinemassvnfit);
 
-	GlobalChi2 globalChi2(chi2_B, chi2_SB);
+	GlobalChi2_expobkg_2nd_floatwidth globalChi2(chi2_B, chi2_SB);
 
 	ROOT::Fit::Fitter fitter;
 
@@ -197,12 +197,12 @@ TF1* fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( bool isPbPb, int centlow
 	ROOT::Fit::FitResult result = fitter.Result();
 	result.Print(std::cout);
 
-	fmass_combinemassvnfit->SetFitResult( result, iparmassfit);
+	fmass_combinemassvnfit->SetFitResult( result, iparmassfit_expobkg_2nd_floatwidth);
 	fmass_combinemassvnfit->SetRange(range_massfit().first, range_massfit().second);
 	fmass_combinemassvnfit->SetLineColor(kRed);
 	histo->GetListOfFunctions()->Add(fmass_combinemassvnfit);
 
-	fvn_combinemassvnfit->SetFitResult( result, iparvnfit);
+	fvn_combinemassvnfit->SetFitResult( result, iparvnfit_expobkg_2nd_floatwidth);
 	fvn_combinemassvnfit->SetRange(range_vnfit().first, range_vnfit().second);
 	fvn_combinemassvnfit->SetLineColor(6.0);
 	fvn_combinemassvnfit->SetLineStyle(2);

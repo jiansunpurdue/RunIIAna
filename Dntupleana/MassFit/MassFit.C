@@ -20,14 +20,13 @@
 #include <./../uti.h>
 #include <./Plotoption_massfit.h>
 
-#include <./FitFunction_poly3bkg.C>
-#include <./FitFunction_expobkg_2nd.C>
-#include <./FitFunction_poly2bkg.C>
 #include <./FitFunction_poly3bkg_floatwidth.C>
+#include <./FitFunction_expobkg_2nd_floatwidth.C>
+#include <./FitFunction_poly2bkg_floatwidth.C>
 
 namespace fs = boost::filesystem;
 
-void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 1, int iptend = 11, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg")
+void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 1, int iptend = 11, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth")
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
@@ -82,17 +81,14 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 		else
 			iptmc = 4;
 
-		if( fitoption == "poly3bkg")
-			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
-
-		if( fitoption == "expobkg_2nd")
-			signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
-
-		if( fitoption == "poly2bkg")
-			signalfittedfunc = fit_histo_poly2bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
-
 		if( fitoption == "poly3bkg_floatwidth")
 			signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+		if( fitoption == "expobkg_2nd_floatwidth")
+			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+		if( fitoption == "poly2bkg_floatwidth")
+			signalfittedfunc = fit_histo_poly2bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
 
 		double histomassbinsize = histo[ipt]->GetBinWidth(10);
 		double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;

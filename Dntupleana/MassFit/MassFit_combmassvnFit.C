@@ -23,6 +23,8 @@
 #include <./Plotoption_massfit.h>
 
 #include <./FitFunction_poly3bkg_floatwidth_combinemassvnfit.C>
+#include <./FitFunction_poly2bkg_floatwidth_combinemassvnfit.C>
+#include <./FitFunction_expobkg_2nd_floatwidth_combinemassvnfit.C>
 
 //#include <./../EP_resolution.h>
 
@@ -156,6 +158,18 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 		{
 			signalfittedfunc = fit_histo_poly3bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
 			signalfittedfunc = fit_histo_poly3bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+		}
+
+		if( fitoption == "poly2bkg_floatwidth")
+		{
+			signalfittedfunc = fit_histo_poly2bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
+			signalfittedfunc = fit_histo_poly2bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+		}
+
+		if( fitoption == "expobkg_2nd_floatwidth")
+		{
+			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
+			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"vn", Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_v3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
 		}
 
 		double histomassbinsize = hmass_MBorDtrig[ipt]->GetBinWidth(10);
