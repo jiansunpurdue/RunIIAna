@@ -252,7 +252,7 @@ class anaDntuple
 		float   Geta[MAX_GEN];
 		float   Gphi[MAX_GEN];
 		float   Gpt[MAX_GEN];
-		float   GpdgId[MAX_GEN];
+		int   GpdgId[MAX_GEN];
 		int     GisSignal[MAX_GEN];
 		float   Gtk1pt[MAX_GEN];
 		float   Gtk1eta[MAX_GEN];

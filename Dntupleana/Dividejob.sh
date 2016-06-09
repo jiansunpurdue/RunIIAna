@@ -23,7 +23,7 @@ do
  endevt=$((count*EvtPerJob))
  echo "from $startevt to $endevt"
 # make the condor file
-cat > condor_${startevt}to${endevt}.job <<EOF
+cat > condor_${PbPbMBPD}_${startevt}to${endevt}.job <<EOF
 #======================================================================
 #
 # condor_submit condor_job
@@ -36,9 +36,9 @@ initialdir           = /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/
 should_Transfer_Files = NO
 Requirements   = Arch == "X86_64" && TARGET.UidDomain == "rcac.purdue.edu" && TARGET.Machine != "airplay-render1.rcac.purdue.edu" && TARGET.Machine != "airplay-render2.rcac.purdue.edu"
 #======================================================================
-output               = condor_${startevt}to${endevt}.out
-error                = condor_${startevt}to${endevt}.err
-log                  = condor_${startevt}to${endevt}.log
+output               = condor_${PbPbMBPD}_${startevt}to${endevt}.out
+error                = condor_${PbPbMBPD}_${startevt}to${endevt}.err
+log                  = condor_${PbPbMBPD}_${startevt}to${endevt}.log
 #======================================================================
 Getenv               = True
 #======================================================================
@@ -50,7 +50,7 @@ Getenv               = True
 queue
 EOF
 
-condor_submit condor_${startevt}to${endevt}.job
-echo "condor_${startevt}to${endevt}.job submitted"
+condor_submit condor_${PbPbMBPD}_${startevt}to${endevt}.job
+echo "condor_${PbPbMBPD}_${startevt}to${endevt}.job submitted"
 
 done

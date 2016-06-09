@@ -19,12 +19,12 @@
 
 #include "HIN-11-012.h"
 
-void Draw_vn_comparison(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent30to50.root", TString input_inoutplane = "rootfiles/vn_inoutplane_MBtrig_cent30to50.root", TString input_vnvmass_EP = "rootfiles/vn_vnvsmass_MBtrig_EP_cent30to50.root", TString input_vnvmass_SP = "rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 1.5, double pthigh = 35.0, bool Drawvnvsmass = true, bool Drawinoutplane = false, bool Drawchargedparticle = true, TString fitoption = "poly3bkg")
+void Draw_vn_comparison(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent30to50.root", TString input_inoutplane = "rootfiles/vn_inoutplane_MBtrig_cent30to50.root", TString input_vnvmass_EP = "rootfiles/vn_vnvsmass_MBtrig_EP_cent30to50.root", TString input_vnvmass_SP = "rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 1.5, double pthigh = 35.0, bool DrawvnvsmassSP = true, bool DrawvnvsmassEP = false, bool Drawinoutplane = false, bool Drawchargedparticle = true, TString fitoption = "poly3bkg")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
-	void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsmass_SP, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawvnvsmass = false, bool Drawinoutplane = false, bool Drawchargedparticle = false, TString fitoption = "poly3bkg");
+	void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsmass_SP, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool DrawvnvsmassSP = true, bool DrawvnvsmassEP = false, bool Drawinoutplane = false, bool Drawchargedparticle = false, TString fitoption = "poly3bkg");
 
 	if( Drawchargedparticle ) HIN_11_012();
 
@@ -53,10 +53,10 @@ void Draw_vn_comparison(TString input_morephibin = "rootfiles/vn_morephibin_MBtr
 	h_v2_pt_SP->SetName("h_v2_pt_SP"); h_v2_pt_SP->SetTitle("h_v2_pt_SP");
 	h_v3_pt_SP->SetName("h_v3_pt_SP"); h_v3_pt_SP->SetTitle("h_v3_pt_SP");
 
-	Drawcomparison( v2_morephibin, v2_inoutplane, h_v2_pt_EP, h_v2_pt_SP, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawvnvsmass, Drawinoutplane, Drawchargedparticle, fitoption);
+	Drawcomparison( v2_morephibin, v2_inoutplane, h_v2_pt_EP, h_v2_pt_SP, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, DrawvnvsmassSP, DrawvnvsmassEP, Drawinoutplane, Drawchargedparticle, fitoption);
 
 	if( Drawchargedparticle ) return;
-	Drawcomparison( v3_morephibin, v3_inoutplane, h_v3_pt_EP, h_v3_pt_SP, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, Drawvnvsmass, Drawinoutplane, false, fitoption);
+	Drawcomparison( v3_morephibin, v3_inoutplane, h_v3_pt_EP, h_v3_pt_SP, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, DrawvnvsmassSP, DrawvnvsmassEP, Drawinoutplane, false, fitoption);
 
 	TFile * output = new TFile(Form("rootfiles/vn_EPSPinoutplane_%s_cent%dto%d_%s.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 	v2_morephibin->Write();
@@ -70,13 +70,13 @@ void Draw_vn_comparison(TString input_morephibin = "rootfiles/vn_morephibin_MBtr
 	output->Close();
 }
 
-void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsmass_SP, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawvnvsmass = false, bool Drawinoutplane = false, bool Drawchargedparticle = false, TString fitoption = "poly3bkg")
+void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsmass_EP, TH1D * vn_vnvsmass_SP, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool DrawvnvsmassSP = true, bool DrawvnvsmassEP = false, bool Drawinoutplane = false, bool Drawchargedparticle = false, TString fitoption = "poly3bkg")
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 
 	vn_morephibin->Draw();
-	if( Drawvnvsmass ) vn_vnvsmass_EP->Draw("same");
-	if( Drawvnvsmass ) vn_vnvsmass_SP->Draw("same");
+	if( DrawvnvsmassEP ) vn_vnvsmass_EP->Draw("same");
+	if( DrawvnvsmassSP ) vn_vnvsmass_SP->Draw("same");
 	if( Drawinoutplane ) vn_inoutplane->Draw("same");
 
 	if( vnname == "v2" && Drawchargedparticle && cent_low == 0 && cent_high == 10 ) grHIN_v2pt[0]->Draw("psame");
@@ -94,11 +94,11 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 
 	TLegend * leg;
 	if( vnname == "v2" && Drawchargedparticle ) leg = new TLegend(0.45, 0.67, 0.65, 0.90);
-	else leg = new TLegend(0.45, 0.75, 0.65, 0.90);
+	else leg = new TLegend(0.45, 0.78, 0.65, 0.90);
 	leg->SetTextSize(0.04);
 	leg->SetTextFont(42);
-	if( Drawvnvsmass ) leg->AddEntry(vn_vnvsmass_EP, Form("%s vs mass method {EP}", Ytitle.Data()));
-	if( Drawvnvsmass ) leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
+	if( DrawvnvsmassEP ) leg->AddEntry(vn_vnvsmass_EP, Form("%s vs mass method {EP}", Ytitle.Data()));
+	if( DrawvnvsmassSP ) leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
 	leg->AddEntry(vn_morephibin, "5 #Delta#Phi bins");
 	if( Drawinoutplane ) leg->AddEntry(vn_inoutplane, "In and out plane method");
 
@@ -138,6 +138,5 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	fun->SetLineWidth(1);
 	fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_comparison_%s_%s_cent%dto%d_charged%d_vnvsmass%d_inoutplane%d_%s.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, Drawvnvsmass, Drawchargedparticle, Drawinoutplane, fitoption.Data()));
-	//cfg_vn->SaveAs(Form("Plots_vn/cfg_comparison_%s_%s_cent%dto%d_charged%d_inoutplane%d.png", trigname.Data(), vnname.Data(), cent_low, cent_high, Drawchargedparticle, Drawinoutplane));
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_comparison_%s_%s_cent%dto%d_charged%d_vnvsmassSP%dEP%d_inoutplane%d_%s.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, DrawvnvsmassSP, DrawvnvsmassEP, Drawchargedparticle, Drawinoutplane, fitoption.Data()));
 }
