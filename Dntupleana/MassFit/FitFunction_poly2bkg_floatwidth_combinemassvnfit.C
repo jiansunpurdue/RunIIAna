@@ -204,7 +204,7 @@ TF1* fit_histo_poly2bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 
 	fvn_combinemassvnfit->SetFitResult( result, iparvnfit_poly2bkg_floatwidth);
 	fvn_combinemassvnfit->SetRange(range_vnfit().first, range_vnfit().second);
-	fvn_combinemassvnfit->SetLineColor(6.0);
+	fvn_combinemassvnfit->SetLineColor(4.0);
 	fvn_combinemassvnfit->SetLineStyle(2);
 	h_vnvsmass->GetListOfFunctions()->Add(fvn_combinemassvnfit);
 

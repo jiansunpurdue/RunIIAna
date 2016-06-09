@@ -35,7 +35,7 @@ const int Rebin_vnmass = 3;
 
 TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
-void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth")
+void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 2, int iptend = 11, bool isPbPb = true, int centlow=0, int centhigh=10, TString fitoption = "expobkg_2nd_floatwidth")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -147,10 +147,10 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 		TF1* signalfittedfunc = NULL;
 
 		int iptmc;
-		if( ipt > 3 ) 
+		if( ipt > 2 ) 
 			iptmc = ipt;
 		else    
-			iptmc = 4;
+			iptmc = 3;
 
 		hmass_MBorDtrig[ipt]->SetAxisRange(0,hmass_MBorDtrig[ipt]->GetMaximum()*1.4*1.2,"Y");
 

@@ -142,10 +142,10 @@ void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[
 		{
 			TF1* signalfittedfunc=NULL;
 			int iptmc;
-			if( ipt > 3 )
+			if( ipt > 2 )
 				iptmc = ipt;
 			else
-				iptmc = 4;
+				iptmc = 3;
 
 			TString phibin = Form("phibin%d", iphi);
 			//cout << " phibin: " << phibin << endl;

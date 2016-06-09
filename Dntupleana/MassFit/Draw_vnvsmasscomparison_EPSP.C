@@ -77,14 +77,14 @@ void Draw_vnvsmasscomparison( TH1D * h_mass_meanvn_MBorDtrig_EP, TH1D * h_mass_m
 	h_mass_meanvn_MBorDtrig_SP->GetYaxis()->SetTitleSize(0.05);
 
 	h_mass_meanvn_MBorDtrig_EP->SetMarkerColor(6.0);
-	h_mass_meanvn_MBorDtrig_EP->GetFunction(Form("f_vn_mass_%s_%d", (trigname+vnname).Data(), ipt))->SetLineColor(4.0);
+	h_mass_meanvn_MBorDtrig_EP->GetFunction(Form("f_vn_mass_%s_%d", (trigname+vnname).Data(), ipt))->SetLineColor(6.0);
 	h_mass_meanvn_MBorDtrig_EP->GetFunction(Form("f_vn_mass_%s_%d", (trigname+vnname).Data(), ipt))->SetLineStyle(2);
 	h_mass_meanvn_MBorDtrig_EP->SetLineColor(6.0);
 	h_mass_meanvn_MBorDtrig_EP->SetMarkerStyle(22);
 	h_mass_meanvn_MBorDtrig_EP->SetMarkerSize(1.0);
 
 	h_mass_meanvn_MBorDtrig_SP->SetMarkerColor(4.0);
-	h_mass_meanvn_MBorDtrig_SP->GetFunction(Form("f_vn_mass_%s_%d", (trigname+vnname).Data(), ipt))->SetLineColor(6.0);
+	h_mass_meanvn_MBorDtrig_SP->GetFunction(Form("f_vn_mass_%s_%d", (trigname+vnname).Data(), ipt))->SetLineColor(4.0);
 	h_mass_meanvn_MBorDtrig_SP->GetFunction(Form("f_vn_mass_%s_%d", (trigname+vnname).Data(), ipt))->SetLineStyle(2);
 	h_mass_meanvn_MBorDtrig_SP->SetLineColor(4.0);
 	h_mass_meanvn_MBorDtrig_SP->SetMarkerStyle(21);

@@ -1,17 +1,19 @@
 #!/bin/sh
 
-DoCombinemassvnfit=0 # now just work for Fitoption="poly3bkg"
+DoCombinemassvnfit=1
 DoDrawcombindfitvn=1
-DoCompare2stepfit_combinefit_vn=1
+DoCompare2stepfit_combinefit_vn=0
 
 ptbinstart=2
-ptbinend=12
+ptbinend=11 #not included
 ptmin=0.0
-ptmax=45.0
+ptmax=40.0
 MBorDtrig="MBtrig"
-Fitoption="poly3bkg"
+#Fitoption="poly3bkg_floatwidth"
+#Fitoption="expobkg_2nd_floatwidth"
+Fitoption="poly2bkg_floatwidth"
 
-InputMC="./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root"
+InputMC="./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root"
 
 InputMBdata0to100="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100.root"
 InputMBdata0to10="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10.root"

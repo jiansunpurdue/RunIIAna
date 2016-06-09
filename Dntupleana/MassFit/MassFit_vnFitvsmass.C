@@ -219,10 +219,10 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 		TF1* signalfittedfunc = NULL;
 
 		int iptmc;
-		if( ipt > 3 ) 
+		if( ipt > 2 ) 
 			iptmc = ipt;
 		else    
-			iptmc = 4;
+			iptmc = 3;
 
 //		if( fitoption == "poly3bkg")
 //			signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt]);

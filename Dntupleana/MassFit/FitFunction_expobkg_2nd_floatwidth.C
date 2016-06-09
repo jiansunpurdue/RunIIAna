@@ -40,7 +40,6 @@ TF1* fit_histo_expobkg_2nd_floatwidth( bool isPbPb, int centlow, int centhigh, T
 	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] * exp([9]*x + [10]*x*x)", fit_range_low, fit_range_high);
 
 
-	f->SetParLimits(9,-1000,1000);
 	f->SetParLimits(3,0.001,0.05);
 	f->SetParLimits(2,0.01,0.1);
 	f->SetParLimits(7,0.02,0.2);
@@ -86,6 +85,9 @@ TF1* fit_histo_expobkg_2nd_floatwidth( bool isPbPb, int centlow, int centhigh, T
 	f->ReleaseParameter(8);
 	f->ReleaseParameter(9);
 	f->ReleaseParameter(10);
+	f->SetParameter(8,1.e+3);
+	f->SetParameter(9,-1.);
+	f->SetParameter(10,1.0);
 
 	f->SetLineColor(kRed);
 
