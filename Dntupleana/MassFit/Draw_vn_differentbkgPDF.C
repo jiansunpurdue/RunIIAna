@@ -74,15 +74,23 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly2bkg, TH1D * vn_expobkg2ndb
 {
 	TCanvas * cfg_vn_diffbkgPDF = new TCanvas(Form("cfg_vn_diffbkgPDF_%s_cent%dto%d", (vnname+"_"+method+"_"+MBorDtrig).Data(), cent_low, cent_high), Form("cfg_vn_diffbkgPDF_%s_cent%dto%d", (vnname+"_"+method+"_"+MBorDtrig).Data(), cent_low, cent_high), 400, 600);
 	
-	TPad *pad1 = new TPad("pad1","top pad",0.0,0.4,1.0,1.0);
-	pad1->SetBottomMargin(0.01);
+	TPad *pad1 = new TPad("pad1","top pad",0.0,0.6,1.0,1.0);
+	pad1->SetBottomMargin(0.0);
 	pad1->Draw();
 	
-	TPad *pad2 = new TPad("pad2","bottom pad",0.0,0.0,1.0,0.4);
+	TPad *pad2 = new TPad("pad2","middle pad",0.0,0.3,1.0,0.6);
 	pad2->SetTopMargin(0.0);
+	pad2->SetBottomMargin(0.0);
 	pad2->Draw();
 
+	TPad *pad3 = new TPad("pad3","bottom pad",0.0,0.0,1.0,0.3);
+	pad3->SetTopMargin(0.0);
+	pad3->Draw();
+
 	pad1->cd();
+	
+	vn_default->SetTitleSize(0.06,"xyz");
+	vn_default->SetLabelSize(0.08,"xyz");
 	vn_default->Draw();
 	vn_poly2bkg->SetMarkerColor(6);
 	vn_poly2bkg->SetLineColor(6);
@@ -98,7 +106,7 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly2bkg, TH1D * vn_expobkg2ndb
     fun->Draw("same");
 
 	TLegend *  leg = new TLegend(0.45, 0.65, 0.65, 0.90);
-	leg->SetTextSize(0.04);
+	leg->SetTextSize(0.06);
 	leg->SetTextFont(42);
 	leg->SetBorderSize(0);
 	leg->SetFillStyle(0);
@@ -109,6 +117,26 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly2bkg, TH1D * vn_expobkg2ndb
 	leg->Draw();
 
 	pad2->cd();
+	TH1D * h_vn_diff_poly2bkg_default = (TH1D *) vn_poly2bkg->Clone("h_vn_diff_poly2bkg_default");
+	TH1D * h_vn_diff_expobkg2ndbkg_default = (TH1D *) vn_expobkg2ndbkg->Clone("h_vn_diff_expobkg2ndbkg_default");
+
+	h_vn_diff_poly2bkg_default->Add( vn_default, -1.0);
+	h_vn_diff_expobkg2ndbkg_default->Add( vn_default, -1.0);
+
+	h_vn_diff_poly2bkg_default->GetYaxis()->SetRangeUser(-0.1,0.1);
+	h_vn_diff_poly2bkg_default->GetYaxis()->SetTitle("*-Default");
+	h_vn_diff_poly2bkg_default->SetTitleSize(0.06,"xyz");
+	h_vn_diff_poly2bkg_default->SetLabelSize(0.08,"xyz");
+	h_vn_diff_poly2bkg_default->Draw();
+	h_vn_diff_expobkg2ndbkg_default->Draw("same");
+
+    TF1 * fun1 = new TF1("fun1", "0.0", 0, 100);
+    fun1->SetLineColor(1.0);
+    fun1->SetLineStyle(3);
+    fun1->SetLineWidth(1);
+    fun1->Draw("same");
+
+	pad3->cd();
 	TH1D * h_vn_ratio_poly2bkg_default = (TH1D *) vn_poly2bkg->Clone("h_vn_ratio_poly2bkg_default");
 	TH1D * h_vn_ratio_expobkg2ndbkg_default = (TH1D *) vn_expobkg2ndbkg->Clone("h_vn_ratio_expobkg2ndbkg_default");
 
@@ -118,14 +146,16 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly2bkg, TH1D * vn_expobkg2ndb
 	h_vn_ratio_poly2bkg_default->GetYaxis()->SetRangeUser(0.95,1.05);
 	if( method == "deltaphibins" ) h_vn_ratio_poly2bkg_default->GetYaxis()->SetRangeUser(0.8,1.2);
 	h_vn_ratio_poly2bkg_default->GetYaxis()->SetTitle("*/Default");
+	h_vn_ratio_poly2bkg_default->SetTitleSize(0.06,"xyz");
+	h_vn_ratio_poly2bkg_default->SetLabelSize(0.08,"xyz");
 	h_vn_ratio_poly2bkg_default->Draw();
 	h_vn_ratio_expobkg2ndbkg_default->Draw("same");
 
-    TF1 * fun1 = new TF1("fun1", "1.0", 0, 100);
-    fun1->SetLineColor(1.0);
-    fun1->SetLineStyle(3);
-    fun1->SetLineWidth(1);
-    fun1->Draw("same");
+    TF1 * fun2 = new TF1("fun2", "1.0", 0, 100);
+    fun2->SetLineColor(1.0);
+    fun2->SetLineStyle(3);
+    fun2->SetLineWidth(1);
+    fun2->Draw("same");
 
 	cfg_vn_diffbkgPDF->SaveAs(Form("Plots_vn/plots_PDFvariation/cfg_vn_diffbkgPDF_%s_cent%dto%d.pdf", (vnname+"_"+method+"_"+MBorDtrig).Data(), cent_low, cent_high));
 }
