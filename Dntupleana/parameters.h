@@ -155,6 +155,9 @@ TH1D * h_phibins_v3 = new TH1D( "h_phibins_v3", "h_phibins_v3", Nphibinmore, 0, 
 TH1D * hmass_MB_HFandpart_v2_morephibin[Nptbin][Nphibinmore];
 TH1D * hmass_MB_HFandpart_v3_morephibin[Nptbin][Nphibinmore];
 
+TH1D * hmass_MB_HFandpart_v2_morephibin_effcorrected[Nptbin][Nphibinmore];
+TH1D * hmass_MB_HFandpart_v3_morephibin_effcorrected[Nptbin][Nphibinmore];
+
 TH1D * hmass_Dtrig_combined_v2_morephibin[Nptbin][Nphibinmore];
 TH1D * hmass_Dtrig_combined_v3_morephibin[Nptbin][Nphibinmore];
 
@@ -177,6 +180,9 @@ TProfile * h_mass_v1_SP_MB_HFandpart[Nptbin];
 TProfile * h_mass_v2_SP_MB_HFandpart[Nptbin];
 TProfile * h_mass_v3_SP_MB_HFandpart[Nptbin];
 TProfile * h_mass_v4_SP_MB_HFandpart[Nptbin];
+
+TProfile * h_mass_v2_SP_MB_HFandpart_effcorrected[Nptbin];
+TProfile * h_mass_v3_SP_MB_HFandpart_effcorrected[Nptbin];
 
 TProfile * h_mass_v1_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v2_SP_Dtrig_combined[Nptbin];

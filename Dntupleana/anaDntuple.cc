@@ -109,6 +109,9 @@ void anaDntuple::Histobookforanalysis()
 		
 		book_hist_vn_morephibin( hmass_MB_HFandpart_v2_morephibin, ptbins, Nptbin, Nphibinmore, h_phibins_v2, "hmass_MB_HFandpart_v2_morephibin", Nmassbin, massmin, massmax);
 		book_hist_vn_morephibin( hmass_MB_HFandpart_v3_morephibin, ptbins, Nptbin, Nphibinmore, h_phibins_v3, "hmass_MB_HFandpart_v3_morephibin", Nmassbin, massmin, massmax);
+		
+		book_hist_vn_morephibin( hmass_MB_HFandpart_v2_morephibin_effcorrected, ptbins, Nptbin, Nphibinmore, h_phibins_v2, "hmass_MB_HFandpart_v2_morephibin_effcorrected", Nmassbin, massmin, massmax);
+		book_hist_vn_morephibin( hmass_MB_HFandpart_v3_morephibin_effcorrected, ptbins, Nptbin, Nphibinmore, h_phibins_v3, "hmass_MB_HFandpart_v3_morephibin_effcorrected", Nmassbin, massmin, massmax);
 
 		book_TProfile_mass_vn( h_mass_v1_MB_HFandpart, ptbins, Nptbin, "h_mass_v1_MB_HFandpart", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v2_MB_HFandpart, ptbins, Nptbin, "h_mass_v2_MB_HFandpart", Nmassbin, massmin, massmax);
@@ -120,6 +123,9 @@ void anaDntuple::Histobookforanalysis()
 		book_TProfile_mass_vn( h_mass_v3_SP_MB_HFandpart, ptbins, Nptbin, "h_mass_v3_SP_MB_HFandpart", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v4_SP_MB_HFandpart, ptbins, Nptbin, "h_mass_v4_SP_MB_HFandpart", Nmassbin, massmin, massmax);
 
+		book_TProfile_mass_vn( h_mass_v2_SP_MB_HFandpart_effcorrected, ptbins, Nptbin, "h_mass_v2_SP_MB_HFandpart_effcorrected", Nmassbin, massmin, massmax);
+		book_TProfile_mass_vn( h_mass_v3_SP_MB_HFandpart_effcorrected, ptbins, Nptbin, "h_mass_v3_SP_MB_HFandpart_effcorrected", Nmassbin, massmin, massmax);
+		
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v1, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v1", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v2, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v2", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v3, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v3", Nmassbin, massmin, massmax);
@@ -151,58 +157,6 @@ void anaDntuple::readtrees(bool isPbPb, bool isDkpi, bool detailedmoed)
 	else
 		readpphlttree(ntHlt);
 	if(isMC) readGenDtree(ntGen);
-}
-
-void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
-{
-	for( int ientry = 0; ientry < GenDtree->GetEntries(); ientry++ )
-	{
-		GenDtree->GetEntry(ientry);
-		for( int igend = 0; igend < Gsize; igend++ )
-		{
-			if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
-			if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
-			if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
-			if( GcollisionId[igend] > 0 ) continue;
-
-			Gen_D0_pt_noweight_forptreweight->Fill( Gpt[igend] );
-		}
-	}
-
-	divideBinWidth(Gen_D0_pt_noweight_forptreweight);
-
-	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
-	TGraphAsymmErrors* gaeFONLLD0Reference = (TGraphAsymmErrors*) FileFONLLD0->Get("gaeSigmaDzero");
-
-	TH1D * hFONLL = new TH1D( "hFONLL", "hFONLL", bins_reweight, ptmin_reweight, ptmax_reweight);
-	double x,y;
-	for( int i=0; i < bins_reweight; i++)
-	{
-		gaeFONLLD0Reference->GetPoint(i,x,y);
-		hFONLL->SetBinContent(i+1,y);
-	}
-
-	FONLL_over_GenD0Pt_forptreweight = ( TH1D *) hFONLL->Clone("FONLL_over_GenD0Pt_forptreweight");
-	FONLL_over_GenD0Pt_forptreweight->Divide(Gen_D0_pt_noweight_forptreweight);
-
-	//fit w/o draw
-	TF1 * fit_FONLL_over_GenD0Pt = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 150);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-
-	//save fitted function
-	fit_FONLL_over_GenD0Pt->SetLineColor(4.0);
-	FONLL_over_GenD0Pt_forptreweight->GetListOfFunctions()->Add(fit_FONLL_over_GenD0Pt);
-
-	MCPtWeidhtFunction = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 300);
-	MCPtWeidhtFunction->SetParameter( 0, fit_FONLL_over_GenD0Pt->GetParameter(0));
-	MCPtWeidhtFunction->SetParameter( 1, fit_FONLL_over_GenD0Pt->GetParameter(1));
-	MCPtWeidhtFunction->SetParameter( 2, fit_FONLL_over_GenD0Pt->GetParameter(2));
-	MCPtWeidhtFunction->SetParameter( 3, fit_FONLL_over_GenD0Pt->GetParameter(3));
-	MCPtWeidhtFunction->SetParameter( 4, fit_FONLL_over_GenD0Pt->GetParameter(4));
-	MCPtWeidhtFunction->SetParameter( 5, fit_FONLL_over_GenD0Pt->GetParameter(5));
 }
 
 void anaDntuple::PbPbTrigComb_PDs()
@@ -773,6 +727,66 @@ void anaDntuple::Combine_TrigPart_TrigVersion()
 	}
 }
 
+void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
+{
+	for( int ientry = 0; ientry < GenDtree->GetEntries(); ientry++ )
+	{
+		GenDtree->GetEntry(ientry);
+		for( int igend = 0; igend < Gsize; igend++ )
+		{
+			if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
+			if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
+			if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
+			if( GcollisionId[igend] > 0 ) continue;
+
+			Gen_D0_pt_noweight_forptreweight->Fill( Gpt[igend] );
+		}
+	}
+
+	divideBinWidth(Gen_D0_pt_noweight_forptreweight);
+
+	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
+	TGraphAsymmErrors* gaeFONLLD0Reference = (TGraphAsymmErrors*) FileFONLLD0->Get("gaeSigmaDzero");
+
+	TH1D * hFONLL = new TH1D( "hFONLL", "hFONLL", bins_reweight, ptmin_reweight, ptmax_reweight);
+	double x,y;
+	for( int i=0; i < bins_reweight; i++)
+	{
+		gaeFONLLD0Reference->GetPoint(i,x,y);
+		hFONLL->SetBinContent(i+1,y);
+	}
+
+	FONLL_over_GenD0Pt_forptreweight = ( TH1D *) hFONLL->Clone("FONLL_over_GenD0Pt_forptreweight");
+	FONLL_over_GenD0Pt_forptreweight->Divide(Gen_D0_pt_noweight_forptreweight);
+
+	//fit w/o draw
+	TF1 * fit_FONLL_over_GenD0Pt = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 150);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+
+	//save fitted function
+	fit_FONLL_over_GenD0Pt->SetLineColor(4.0);
+	FONLL_over_GenD0Pt_forptreweight->GetListOfFunctions()->Add(fit_FONLL_over_GenD0Pt);
+
+	MCPtWeidhtFunction = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 300);
+	MCPtWeidhtFunction->SetParameter( 0, fit_FONLL_over_GenD0Pt->GetParameter(0));
+	MCPtWeidhtFunction->SetParameter( 1, fit_FONLL_over_GenD0Pt->GetParameter(1));
+	MCPtWeidhtFunction->SetParameter( 2, fit_FONLL_over_GenD0Pt->GetParameter(2));
+	MCPtWeidhtFunction->SetParameter( 3, fit_FONLL_over_GenD0Pt->GetParameter(3));
+	MCPtWeidhtFunction->SetParameter( 4, fit_FONLL_over_GenD0Pt->GetParameter(4));
+	MCPtWeidhtFunction->SetParameter( 5, fit_FONLL_over_GenD0Pt->GetParameter(5));
+}
+
+void anaDntuple::SetEfficiencyCurve()
+{
+	EfficiencyCurve = new TF1( "EfficiencyCurve", "TMath::Erf([0]+[1]*x)*0.5*(1-[2])", 0.0, 40.0); // fit range 2 to 40 GeV
+	EfficiencyCurve->SetParameter( 0, -1.04446e-01);
+	EfficiencyCurve->SetParameter( 1, 4.28041e-02);
+	EfficiencyCurve->SetParameter( 2, 1.78221e-01);
+}
+
 //
 //
 void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool isPbPb, bool isMCornot, double hibin_low, double hibin_high, int whichPbPbPD)
@@ -828,6 +842,7 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 
 		readtrees(isPbPb);
 		if(isMC) GetMCPtWeightFunction( ntGen ); //actually not work for file loop case because need to get the gen pt of all files
+		SetEfficiencyCurve(); //only PbPb curve now
 		//for MC, the file loop won't be used
 
 		ntDkpi->AddFriend(ntHlt);
@@ -885,6 +900,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 
 	readtrees(isPbPb);
 	if(isMC) GetMCPtWeightFunction( ntGen );
+	SetEfficiencyCurve(); //only PbPb curve now
 
 	ntDkpi->AddFriend(ntHlt);
 	ntDkpi->AddFriend(ntSkim);
@@ -1093,6 +1109,10 @@ void anaDntuple::LoopOverDcandidates()
 
 		if( isPbPbCollision )
 		{
+			if( Dpt[icand] < 40 && Dpt[icand] > 3 ) effcorrection = EfficiencyCurve->Eval( Dpt[icand] );
+			else effcorrection = 1.0;
+			//cout << " Dpt[icand]: " << Dpt[icand] << "  effcorrection: " << effcorrection << endl;
+
 			dcanddeltaphiv1 = Calculatedeltaphi( icand, 1);
 			dcanddeltaphiv2 = Calculatedeltaphi( icand, 2);
 			dcanddeltaphiv3 = Calculatedeltaphi( icand, 3);
@@ -1474,6 +1494,9 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 			hmass_MB_HFandpart_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
 			hmass_MB_HFandpart_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
 
+			hmass_MB_HFandpart_v2_morephibin_effcorrected[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand], 1./effcorrection);
+			hmass_MB_HFandpart_v3_morephibin_effcorrected[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand], 1./effcorrection);
+
 			h_mass_v1_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(dcanddeltaphiv1)/EP_resolution_v1);
 			h_mass_v2_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
 			h_mass_v3_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
@@ -1483,6 +1506,9 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 			h_mass_v2_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
 			h_mass_v3_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
 			//h_mass_v4_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v4 * TMath::Cos(4.*dcanddeltaphiv4)/SP_EP_resolution_v4);
+			
+			h_mass_v2_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2, 1./effcorrection);
+			h_mass_v3_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3, 1./effcorrection);
 		}
 	}
 
@@ -1683,6 +1709,9 @@ void anaDntuple::Write()
 			{
 				hmass_MB_HFandpart_v2_morephibin[i][j]->Write();
 				hmass_MB_HFandpart_v3_morephibin[i][j]->Write();
+				
+				hmass_MB_HFandpart_v2_morephibin_effcorrected[i][j]->Write();
+				hmass_MB_HFandpart_v3_morephibin_effcorrected[i][j]->Write();
 			}
 
 			h_mass_v1_MB_HFandpart[i]->Write();
@@ -1694,6 +1723,9 @@ void anaDntuple::Write()
 			h_mass_v2_SP_MB_HFandpart[i]->Write();
 			h_mass_v3_SP_MB_HFandpart[i]->Write();
 			h_mass_v4_SP_MB_HFandpart[i]->Write();
+			
+			h_mass_v2_SP_MB_HFandpart_effcorrected[i]->Write();
+			h_mass_v3_SP_MB_HFandpart_effcorrected[i]->Write();
 		}
 
 		for(int i = 0; i<Nptbin; i++)
