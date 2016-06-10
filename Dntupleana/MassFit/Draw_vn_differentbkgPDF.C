@@ -17,7 +17,7 @@
 #include <TGraphErrors.h>
 #include <TMultiGraph.h>
 
-void Draw_vn_differentbkgPDF( TString inputdefault = "rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50_poly3bkg.root", TString inputpoly2bkg = "rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50_poly2bkg.root", TString inputexpobkg2ndbkg = "rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50_expobkg_2nd.root", TString method = "SP", TString MBorDtrig= "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 45.0)
+void Draw_vn_differentbkgPDF( TString inputdefault = "rootfiles/vn_morephibin_MBtrig_cent30to50_poly3bkg_floatwidth.root", TString inputpoly2bkg = "rootfiles/vn_morephibin_MBtrig_cent30to50_poly2bkg_floatwidth.root", TString inputexpobkg2ndbkg = "rootfiles/vn_morephibin_MBtrig_cent30to50_expobkg_2nd_floatwidth.root", TString method = "deltaphibins", TString MBorDtrig= "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -47,7 +47,7 @@ void Draw_vn_differentbkgPDF( TString inputdefault = "rootfiles/vn_vnvsmass_MBtr
 		v3_expobkg2ndbkg = (TH1D *) inputdata_expobkg2ndbkg->Get("h_v3_pt");
 	}
 
-	if( method == "5phibins" )
+	if( method == "deltaphibins" )
 	{
 		v2_default = (TH1D *) inputdata_default->Get("v2_morephibin");
 		v2_poly2bkg = (TH1D *) inputdata_poly2bkg->Get("v2_morephibin");
@@ -84,8 +84,8 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly2bkg, TH1D * vn_expobkg2ndb
 
 	pad1->cd();
 	vn_default->Draw();
-	vn_poly2bkg->SetMarkerColor(4);
-	vn_poly2bkg->SetLineColor(4);
+	vn_poly2bkg->SetMarkerColor(6);
+	vn_poly2bkg->SetLineColor(6);
 	vn_poly2bkg->Draw("same");
 	vn_expobkg2ndbkg->SetMarkerColor(8);
 	vn_expobkg2ndbkg->SetLineColor(8);
@@ -116,6 +116,7 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_poly2bkg, TH1D * vn_expobkg2ndb
 	h_vn_ratio_expobkg2ndbkg_default->Divide( vn_expobkg2ndbkg, vn_default, 1.0, 1.0, "B");
 
 	h_vn_ratio_poly2bkg_default->GetYaxis()->SetRangeUser(0.95,1.05);
+	if( method == "deltaphibins" ) h_vn_ratio_poly2bkg_default->GetYaxis()->SetRangeUser(0.8,1.2);
 	h_vn_ratio_poly2bkg_default->GetYaxis()->SetTitle("*/Default");
 	h_vn_ratio_poly2bkg_default->Draw();
 	h_vn_ratio_expobkg2ndbkg_default->Draw("same");
