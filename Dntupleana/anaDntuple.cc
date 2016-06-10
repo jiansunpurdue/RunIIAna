@@ -49,6 +49,9 @@ void anaDntuple::Histobookforanalysis()
 	MBmatched_allcuts_D0_pt_pthatweight->Sumw2(); MBmatched_allcuts_D0_pt_ptweight->Sumw2(); MBmatched_allcuts_D0_pt_noweight->Sumw2();
 	Dtrigmatched_allcuts_D0_pt_pthatweight->Sumw2(); Dtrigmatched_allcuts_D0_pt_ptweight->Sumw2(); Dtrigmatched_allcuts_D0_pt_noweight->Sumw2();
 
+	Gen_D0_pt_ptweight_finebins->Sumw2();
+	MBmatched_allcuts_D0_pt_ptweight_finebins->Sumw2();
+
 	cout << "Begin book histogram" << endl;
 	book_masshist( mc_matched_signal_noweight, ptbins, Nptbin, "mc_matched_signal_noweight", Nmassbin, massmin, massmax);
 	book_masshist( mc_matched_kpiswapped_noweight, ptbins, Nptbin, "mc_matched_kpiswapped_noweight", Nmassbin, massmin, massmax);
@@ -160,6 +163,7 @@ void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
 			if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
 			if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
 			if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
+			if( GcollisionId[igend] > 0 ) continue;
 
 			Gen_D0_pt_noweight_forptreweight->Fill( Gpt[igend] );
 		}
@@ -1049,12 +1053,14 @@ void anaDntuple::LoopOverGenDs()
 		if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
 		if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
 		if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
+		if( GcollisionId[igend] > 0 ) continue;
 
 		Gen_D0_pt_noweight->Fill( Gpt[igend]);
 		Gen_D0_pt_pthatweight->Fill( Gpt[igend], pthatweight);
 
 		GenDptweight = MCPtWeidhtFunction->Eval( Gpt[igend] );
 		Gen_D0_pt_ptweight->Fill( Gpt[igend], GenDptweight);
+		Gen_D0_pt_ptweight_finebins->Fill( Gpt[igend], GenDptweight);
 	}
 }
 
@@ -1153,6 +1159,8 @@ void anaDntuple::LoopOverDcandidates()
 				SP_EP_resolution_v4 = 1;
 			}
 		}
+
+		if( isMC && ( Dgen[icand] == 23333 || Dgen[icand] == 23344 ) && DgencollisionId[icand] > 0 ) continue; // remove Gen matched D candidates
 
 		//apply MB track pt cut first. After MB histograms are filled, apply trig track pt cut
 		if( isPbPbCollision && ( Dtrk1Pt[icand] <  MBTkptcut_PbPb || Dtrk2Pt[icand] <  MBTkptcut_PbPb ) ) continue;
@@ -1430,7 +1438,7 @@ void anaDntuple::FillMCMBhisto(int icand, int iptbin)
 {
 	double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
 
-	if( MBtrig_part_combined && Dgen[icand] == 23333 )
+	if( MBtrig_part_combined && Dgen[icand] == 23333 && DgencollisionId[icand] == 0)
 	{
 		mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
 		mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
@@ -1439,9 +1447,10 @@ void anaDntuple::FillMCMBhisto(int icand, int iptbin)
 		MBmatched_allcuts_D0_pt_noweight->Fill(Dpt[icand]);
 		MBmatched_allcuts_D0_pt_pthatweight->Fill(Dpt[icand], pthatweight);
 		MBmatched_allcuts_D0_pt_ptweight->Fill(Dpt[icand], Candptweight);
+		MBmatched_allcuts_D0_pt_ptweight_finebins->Fill(Dpt[icand], Candptweight);
 	}
 
-	if( MBtrig_part_combined && Dgen[icand] == 23344 )
+	if( MBtrig_part_combined && Dgen[icand] == 23344 && DgencollisionId[icand] == 0)
 	{
 		mc_matched_kpiswapped_noweight[iptbin]->Fill(Dmass[icand]);
 		mc_matched_kpiswapped_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
@@ -1497,7 +1506,7 @@ void anaDntuple::FillMCDtrighisto(int icand, int iptbin)
 {
 	double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
 
-	if( Dtrig_combined && Dgen[icand] == 23333 )
+	if( Dtrig_combined && Dgen[icand] == 23333 && DgencollisionId[icand] == 0)
 	{
 		Dtrig_mc_matched_signal_noweight[iptbin]->Fill(Dmass[icand]);
 		Dtrig_mc_matched_signal_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
@@ -1508,7 +1517,7 @@ void anaDntuple::FillMCDtrighisto(int icand, int iptbin)
 		Dtrigmatched_allcuts_D0_pt_ptweight->Fill(Dpt[icand],Candptweight);
 	}
 
-	if( Dtrig_combined && Dgen[icand] == 23344 )
+	if( Dtrig_combined && Dgen[icand] == 23344 && DgencollisionId[icand] == 0)
 	{
 		Dtrig_mc_matched_kpiswapped_noweight[iptbin]->Fill(Dmass[icand]);
 		Dtrig_mc_matched_kpiswapped_pthatweight[iptbin]->Fill(Dmass[icand], pthatweight);
@@ -1736,6 +1745,9 @@ void anaDntuple::Write()
 		Dtrigmatched_allcuts_D0_pt_pthatweight->Write();
 		Dtrigmatched_allcuts_D0_pt_ptweight->Write();
 		Dtrigmatched_allcuts_D0_pt_noweight->Write();
+
+		Gen_D0_pt_ptweight_finebins->Write();
+		MBmatched_allcuts_D0_pt_ptweight_finebins->Write();
 
 		for(int i = 0; i<Nptbin; i++)
 		{

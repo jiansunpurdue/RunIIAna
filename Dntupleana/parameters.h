@@ -36,6 +36,10 @@ TH1D * Dtrigmatched_allcuts_D0_pt_pthatweight = new TH1D("Dtrigmatched_allcuts_D
 TH1D * Dtrigmatched_allcuts_D0_pt_ptweight = new TH1D("Dtrigmatched_allcuts_D0_pt_ptweight","Dtrigmatched_allcuts_D0_pt_ptweight",Nptbin,ptbins);
 TH1D * Dtrigmatched_allcuts_D0_pt_noweight = new TH1D("Dtrigmatched_allcuts_D0_pt_noweight","Dtrigmatched_allcuts_D0_pt_noweight",Nptbin,ptbins);
 
+//to fit efficiency curve
+TH1D * Gen_D0_pt_ptweight_finebins = new TH1D("Gen_D0_pt_ptweight_finebins","Gen_D0_pt_ptweight_finebins",100,0,100.);
+TH1D * MBmatched_allcuts_D0_pt_ptweight_finebins = new TH1D("MBmatched_allcuts_D0_pt_ptweight_finebins","MBmatched_allcuts_D0_pt_ptweight_finebins",100,0,100.);
+
 TH1D * mc_matched_signal_noweight[Nptbin];
 TH1D * mc_matched_kpiswapped_noweight[Nptbin];
 TH1D * mc_matched_signal_ptweight[Nptbin];

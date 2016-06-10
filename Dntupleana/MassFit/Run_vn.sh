@@ -1,30 +1,30 @@
 #!/bin/sh
 
-DoMassFitEPformassvsvn=0
+DoMassFitEPformassvsvn=1
 DoMassFitSPformassvsvn=1
 DoMassFitMorephibin=1
-DoMassFitEPforinoutplane=0
+DoMassFitEPforinoutplane=1
 DoStatisticalerr_from_signalfractionfunc_SP=0 #pretty time consuming, ~6 hours for one centrality bin
 DoStatisticalerr_from_signalfractionfunc_EP=0 #pretty time consuming, ~6 hours for one centrality bin
 
 Do_combinestaterror_sigfractionfunc_SP_poly3bkg=0 #just for SP and poly3 bkg, if false no error from sigfraction func
 
-DODrawEPmassvsvn=0
+DODrawEPmassvsvn=1
 DODrawSPmassvsvn=1
 DODrawmorephibinvn=1
-DODrawinoutplanevn=0
-DOVnvsmasscomparison=0
+DODrawinoutplanevn=1
+DOVnvsmasscomparison=1
 
-DOVncomparison=0
+DOVncomparison=1
 
 ptbinstart=2
 ptbinend=11 #not included
 ptmin=0.0
 ptmax=40.0
 MBorDtrig="MBtrig"
-#Fitoption="poly3bkg_floatwidth"
+Fitoption="poly3bkg_floatwidth"
 #Fitoption="expobkg_2nd_floatwidth"
-Fitoption="poly2bkg_floatwidth"
+#Fitoption="poly2bkg_floatwidth"
 
 InputMC="./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root"
 
@@ -175,7 +175,6 @@ root -l -b -q 'Draw_vn_inoutplane.C++("'$InputMB0to10_drawvn_inoutplane'","'$MBo
 root -l -b -q 'Draw_vn_inoutplane.C++("'$InputMB10to30_drawvn_inoutplane'","'$MBorDtrig'",10,30,'$ptmin','$ptmax',"'$Fitoption'")'
 root -l -b -q 'Draw_vn_inoutplane.C++("'$InputMB30to50_drawvn_inoutplane'","'$MBorDtrig'",30,50,'$ptmin','$ptmax',"'$Fitoption'")'
 root -l -b -q 'Draw_vn_inoutplane.C++("'$InputMB50to70_drawvn_inoutplane'","'$MBorDtrig'",50,70,'$ptmin','$ptmax',"'$Fitoption'")'
-mv Massfitplots/PbPb/*.pdf Plots_vn/fitmorephibin
 fi
 
 EPorSP="EP"

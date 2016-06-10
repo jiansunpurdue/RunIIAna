@@ -252,8 +252,11 @@ class anaDntuple
 		float   Geta[MAX_GEN];
 		float   Gphi[MAX_GEN];
 		float   Gpt[MAX_GEN];
-		int   GpdgId[MAX_GEN];
+		int     GpdgId[MAX_GEN];
+		int     GcollisionId[MAX_GEN];//to tell if it is from pythia event or hydjet event, = 0 embedded pythia, > 0 Hydjet
 		int     GisSignal[MAX_GEN];
+		float   GBAncestorpt[MAX_GEN];
+		int     GBAncestorpdgId[MAX_GEN];
 		float   Gtk1pt[MAX_GEN];
 		float   Gtk1eta[MAX_GEN];
 		float   Gtk1y[MAX_GEN];
@@ -470,6 +473,9 @@ class anaDntuple
 		float   Dgeneta[MAX_XB];
 		float   Dgenphi[MAX_XB];
 		float   Dgeny[MAX_XB];
+		int     DgencollisionId[MAX_XB];
+		float   DgenBAncestorpt[MAX_XB];
+		int     DgenBAncestorpdgId[MAX_XB];
 
 		//branches from ntHlt
 		//********************* for PbPb ************************
@@ -863,7 +869,10 @@ void anaDntuple::readGenDtree(TTree * GenDtree)
 	GenDtree->SetBranchAddress("Gphi", Gphi);
 	GenDtree->SetBranchAddress("Gpt", Gpt);
 	GenDtree->SetBranchAddress("GpdgId", GpdgId);
+	GenDtree->SetBranchAddress("GcollisionId", GcollisionId);
 	GenDtree->SetBranchAddress("GisSignal", GisSignal);
+	GenDtree->SetBranchAddress("GBAncestorpt", GBAncestorpt);
+	GenDtree->SetBranchAddress("GBAncestorpdgId", GBAncestorpdgId);
 	GenDtree->SetBranchAddress("Gtk1pt", Gtk1pt);
 	GenDtree->SetBranchAddress("Gtk1eta", Gtk1eta);
 	GenDtree->SetBranchAddress("Gtk1y", Gtk1y);
@@ -978,6 +987,9 @@ void anaDntuple::readDntupletree(TTree * Dtree, bool isDkpi, bool detailedmoed)
 	Dtree->SetBranchAddress("Dgeneta", Dgeneta);
 	Dtree->SetBranchAddress("Dgenphi", Dgenphi);
 	Dtree->SetBranchAddress("Dgeny", Dgeny);
+	Dtree->SetBranchAddress("DgencollisionId", DgencollisionId);
+	Dtree->SetBranchAddress("DgenBAncestorpt", DgenBAncestorpt);
+	Dtree->SetBranchAddress("DgenBAncestorpdgId", DgenBAncestorpdgId);
 }
 
 void anaDntuple::readPbPbhlttree(TTree * PbPbhlttree)
