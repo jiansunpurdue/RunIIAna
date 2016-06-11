@@ -72,6 +72,8 @@ void anaDntuple::Histobookforanalysis()
 	book_masshist( hmass_MB_cent50to100_trig, ptbins, Nptbin, "hmass_MB_cent50to100_trig", Nmassbin, massmin, massmax);
 	book_masshist( hmass_MB_cent70to100_trig, ptbins, Nptbin, "hmass_MB_cent70to100_trig", Nmassbin, massmin, massmax);
 
+	book_masshist( hmass_MB_HFandpart_effcorrected, ptbins, Nptbin, "hmass_MB_HFandpart_trig_effcorrected", Nmassbin, massmin, massmax);
+
 	book_masshist( hmass_Dtrig_combined, ptbins, Nptbin, "hmass_Dtrig_combined", Nmassbin, massmin, massmax);
 
 	book_masshist( hmass_Dpt8, ptbins, Nptbin, "hmass_Dpt8_trig", Nmassbin, massmin, massmax);
@@ -1483,6 +1485,7 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 	if( MBtrig_part_combined )
 	{
 		hmass_MB_HFandpart[iptbin]->Fill(Dmass[icand]);
+		hmass_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], 1./effcorrection);
 
 		if( isPbPbCollision )
 		{
@@ -1666,6 +1669,7 @@ void anaDntuple::Write()
 	for(int i = 0; i<Nptbin; i++)
 	{
 		hmass_MB_HFandpart[i]->Write();
+		hmass_MB_HFandpart_effcorrected[i]->Write();
 		hmass_MB_cent30to100_trig[i]->Write();
 		hmass_MB_cent50to100_trig[i]->Write();
 		hmass_MB_cent70to100_trig[i]->Write();

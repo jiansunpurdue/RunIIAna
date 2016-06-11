@@ -26,12 +26,12 @@
 
 namespace fs = boost::filesystem;
 
-void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 4, int iptend = 5, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "expobkg_2nd_floatwidth")
+void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 4, int iptend = 5, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
 	void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TH1D * dNdpt, TString fitoption);
-	void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TString vnname, TH1D * dNdpt_phibins_in_oneptbin[], TString fitoption);
+	void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TString vnname, TH1D * dNdpt_phibins_in_oneptbin[], TString fitoption, bool effcorrected);
 
 	//get MC histo
 	TH1D * mc_matched_signal[Nptbin];
@@ -59,10 +59,16 @@ void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dn
 	if( MBorDtrig == "MBtrig" )
 	{
 		get_masshist(inputdatafile, hmass_MBorDtrig, Nptbin, "hmass_MB_HFandpart_trig");
-		//get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v1, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v1_morephibin");
-		get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v2, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v2_morephibin");
-		get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v3, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v3_morephibin");
-		//get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v4, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v4_morephibin");
+		if( !effcorrected )
+		{
+			get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v2, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v2_morephibin");
+			get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v3, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v3_morephibin");
+		}
+		else
+		{
+			get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v2, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v2_morephibin_effcorrected");
+			get_hist_vn_morephibin(inputdatafile, hmass_MBorDtrig_v3, Nptbin, Nphibinmore, "hmass_MB_HFandpart_v3_morephibin_effcorrected");
+		}
 	}
 	else
 	{
@@ -87,10 +93,10 @@ void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dn
 		dNdpt_v2_phibins_in_oneptbin[ipt]->Sumw2();
 		dNdpt_v3_phibins_in_oneptbin[ipt]->Sumw2();
 	}
-	Fithisto_morephibin( hmass_MBorDtrig_v2, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, "v2", dNdpt_v2_phibins_in_oneptbin, fitoption);
-	Fithisto_morephibin( hmass_MBorDtrig_v3, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, "v3", dNdpt_v3_phibins_in_oneptbin, fitoption);
+	Fithisto_morephibin( hmass_MBorDtrig_v2, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, "v2", dNdpt_v2_phibins_in_oneptbin, fitoption, effcorrected);
+	Fithisto_morephibin( hmass_MBorDtrig_v3, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, "v3", dNdpt_v3_phibins_in_oneptbin, fitoption, effcorrected);
 
-	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_morephibin_%s_%s.root",(fs::basename(inputdatafilename)).c_str(), fitoption.Data()),"RECREATE");
+	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_morephibin_%s_%s_effcorrected%d.root",(fs::basename(inputdatafilename)).c_str(), fitoption.Data(), effcorrected),"RECREATE");
 
 	dNdpt->Write();
 
@@ -134,7 +140,7 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 	}   
 }
 
-void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TString vnname, TH1D * dNdpt_phibins_in_oneptbin[], TString fitoption)
+void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[], TH1D * mc_matched_kpiswapped[], TString MBorDtrig, int iptstart, int iptend, bool isPbPb, int centlow, int centhigh, TString vnname, TH1D * dNdpt_phibins_in_oneptbin[], TString fitoption, bool effcorrected)
 {
 	for(int ipt = iptstart; ipt < iptend; ipt++)
 	{
@@ -147,17 +153,17 @@ void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[
 			else
 				iptmc = 3;
 
-			TString phibin = Form("phibin%d", iphi);
-			//cout << " phibin: " << phibin << endl;
+			TString cfgname = Form("%s_%s_phibin%d_effcorrected%d", MBorDtrig.Data(), vnname.Data(), iphi, effcorrected);
+			//cout << " cfgname: " << cfgname << endl;
 
 			if( fitoption == "poly3bkg_floatwidth")
-				signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"_"+vnname+"_"+phibin);
+				signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, true, false, NULL, effcorrected);
 
 			if( fitoption == "expobkg_2nd_floatwidth")
-				signalfittedfunc = fit_histo_expobkg_2nd_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"_"+vnname+"_"+phibin);
+				signalfittedfunc = fit_histo_expobkg_2nd_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname);
 
 			if( fitoption == "poly2bkg_floatwidth")
-				signalfittedfunc = fit_histo_poly2bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig+"_"+vnname+"_"+phibin);
+				signalfittedfunc = fit_histo_poly2bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname);
 
 			double histomassbinsize = histo[ipt][iphi]->GetBinWidth(10);
 			double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;

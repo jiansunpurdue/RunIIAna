@@ -99,7 +99,7 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	leg->SetTextFont(42);
 	if( DrawvnvsmassEP ) leg->AddEntry(vn_vnvsmass_EP, Form("%s vs mass method {EP}", Ytitle.Data()));
 	if( DrawvnvsmassSP ) leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
-	leg->AddEntry(vn_morephibin, "5 #Delta#Phi bins");
+	leg->AddEntry(vn_morephibin, "#Delta#Phi bins");
 	if( Drawinoutplane ) leg->AddEntry(vn_inoutplane, "In and out plane method");
 
 	if( vnname == "v2" && Drawchargedparticle )

@@ -101,6 +101,8 @@ TH1D * hmass_MB_cent70to100_trig[Nptbin];
 
 TH1D * hmass_Dtrig_combined[Nptbin];
 
+TH1D * hmass_MB_HFandpart_effcorrected[Nptbin];
+
 TH1D * hmass_Dpt8[Nptbin];
 TH1D * hmass_Dpt15[Nptbin];
 TH1D * hmass_Dpt20[Nptbin];
