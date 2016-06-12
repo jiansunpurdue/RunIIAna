@@ -266,7 +266,7 @@ TF1* fit_histo_poly2bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
     mass->SetLineStyle(2);
 
 	TF1* massSwap = new TF1(Form("fmassSwap_%s_%d",cfgname.Data(),ipt),"[0]*(1-[2])*Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3])");
-	massSwap->SetParameters(fmass_combinemassvnfit->GetParameter(0),fmass_combinemassvnfit->GetParameter(1),fmass_combinemassvnfit->GetParameter(5),fmass_combinemassvnfit->GetParameter(6));
+	massSwap->SetParameters(fmass_combinemassvnfit->GetParameter(0),fmass_combinemassvnfit->GetParameter(1),fmass_combinemassvnfit->GetParameter(5),fmass_combinemassvnfit->GetParameter(7));
 	massSwap->SetParError(0,fmass_combinemassvnfit->GetParError(0));
 	massSwap->SetParError(1,fmass_combinemassvnfit->GetParError(1));
 	massSwap->SetParError(2,fmass_combinemassvnfit->GetParError(5));
