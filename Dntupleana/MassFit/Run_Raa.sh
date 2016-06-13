@@ -36,5 +36,3 @@ fi
 if [ $DoRaaCrosssection -eq 1 ]; then
 	root -l -b -q 'RaaCalculation.C++("'$ppdatacorrected'", "'$PbPbdatacorrected'", "'$MBorDtrig'", 0, 100, '$ptmin','$ptmax')'
 fi
-
-./cleanup.sh

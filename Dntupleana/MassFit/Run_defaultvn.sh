@@ -1,12 +1,12 @@
 #!/bin/sh
 
-DoCombinemassvnfit=0
-DoDrawcombindfitvn=0
+DoCombinemassvnfit=1
+DoDrawcombindfitvn=1
 DoCompare2stepfit_combinefit_vn=0
 
-DoMassFitMorephibin=0
-DODrawmorephibinvn=0
-DOVncomparison=1 #to be fixed, to have a new code
+DoMassFitMorephibin=1
+DODrawmorephibinvn=1
+DOVncomparison=1
 
 ptbinstart=2
 ptbinend=11 #not included
@@ -61,10 +61,10 @@ EPorSP="SP"
 
 if [ $DoCombinemassvnfit -eq 1 ]; then
 
-root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption'")'
-root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption'")'
-root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'")'
-root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'")'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'",'$Doefficiencycorrection')'
 fi
 
 if [ $DoDrawcombindfitvn -eq 1 ]; then
@@ -86,10 +86,10 @@ fi
 
 if [ $DoMassFitMorephibin -eq 1 ]; then
 #
-root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption'")'
-root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption'")'
-root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'")'
-root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'")'
+root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_morephibin.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption'",'$Doefficiencycorrection')'
 mv Massfitplots/PbPb/*.pdf Plots_vn/Massfitforvn
 fi
 
@@ -109,5 +109,3 @@ root -l -b -q 'Draw_vn_comparison_default.C++("'$FileVnMB10to30_morephibin'","'$
 root -l -b -q 'Draw_vn_comparison_default.C++("'$FileVnMB30to50_morephibin'","'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawchargedparticle',"'$Fitoption'")'
 root -l -b -q 'Draw_vn_comparison_default.C++("'$FileVnMB50to70_morephibin'","'$FileVnMB50to70_SP_combinedfit'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawchargedparticle',"'$Fitoption'")'
 fi
-
-./cleanup.sh

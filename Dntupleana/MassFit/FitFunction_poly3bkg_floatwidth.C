@@ -103,7 +103,7 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
 	
-	if( effcorrected ) //for weighted histogram, need to use fit option "WL" to get right errors
+	if( effcorrected && ipt >= 4 ) //for weighted histogram, need to use fit option "WL" to get right errors
 	{
 		histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"WL q","",fit_range_low,fit_range_high);
 		histo->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"WL q","",fit_range_low,fit_range_high);
