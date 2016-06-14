@@ -7,10 +7,10 @@
 using namespace hi;
 
 //should be decided each time based on information in HiEvtPlaneList.h
-const int v2HFm = HFm2e;
-const int v2HFp = HFp2e;
-const int v3HFm = HFm3e;
-const int v3HFp = HFp3e;
+const int v2HFm = HFm2;
+const int v2HFp = HFp2;
+const int v3HFm = HFm3;
+const int v3HFp = HFp3;
 
 //
 anaDntuple::anaDntuple()
@@ -157,7 +157,7 @@ void anaDntuple::Histobookforanalysis()
 		
 		for( int i = 0; i < NEvtPlanesSave; i++ )
 		{   
-			h_EvtPlane[i] = new TH1D( Form("h_EvtPlane_%d", i), Form("h_EvtPlane_%d", i), 2000, -15., 15.);
+			h_EvtPlane[i] = new TH1D( Form("h_EvtPlane_%d", i), Form("h_EvtPlane_%d", i), 1000, -15., 15.);
 			h_EvtPlane[i]->Sumw2();
 			h_EvtPlane[i]->SetMarkerStyle(1);
 		}
@@ -973,6 +973,15 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		{
 			for( int iep = 0; iep < ( (hiNevtPlane > NEvtPlanesSave) ? NEvtPlanesSave : hiNevtPlane ); iep++ )
 				h_EvtPlane[iep]->Fill(hiEvtPlanes[iep]);
+
+			//make sure the event planes are good
+			isGoodforv2 = true;
+			if( hiEvtPlanes[v2HFm] < -5. || hiEvtPlanes[RCMate1[v2HFm]] < -5. || hiEvtPlanes[RCMate2[v2HFm]] < -5. )  isGoodforv2 = false;
+			if( hiEvtPlanes[v2HFp] < -5. || hiEvtPlanes[RCMate1[v2HFp]] < -5. || hiEvtPlanes[RCMate2[v2HFp]] < -5. )  isGoodforv2 = false;
+			
+			isGoodforv3 = true;
+			if( hiEvtPlanes[v3HFm] < -5. || hiEvtPlanes[RCMate1[v3HFm]] < -5. || hiEvtPlanes[RCMate2[v3HFm]] < -5. )  isGoodforv3 = false;
+			if( hiEvtPlanes[v3HFp] < -5. || hiEvtPlanes[RCMate1[v3HFp]] < -5. || hiEvtPlanes[RCMate2[v3HFp]] < -5. )  isGoodforv3 = false;
 		}
 
 		//if want to use all events
@@ -1010,31 +1019,40 @@ void anaDntuple::FillEPresohisto()
 {
 	if( MBtrig_part_combined )
 	{
+		//two sub events
 		h_v1_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( hiEvtPlanes[0] - hiEvtPlanes[1]));
-		h_v2_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 2.*(hiEvtPlanes[v2HFm] - hiEvtPlanes[v2HFp])));
-		h_v3_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 3.*(hiEvtPlanes[v3HFm] - hiEvtPlanes[v3HFp])));
+		if( isGoodforv2 ) h_v2_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 2.*(hiEvtPlanes[v2HFm] - hiEvtPlanes[v2HFp])));
+		if( isGoodforv3 ) h_v3_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 3.*(hiEvtPlanes[v3HFm] - hiEvtPlanes[v3HFp])));
 		h_v4_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 4.*(hiEvtPlanes[19] - hiEvtPlanes[20])));
 
-		h_v2_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate1[v2HFm]] )));
-		h_v2_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate2[v2HFm]] )));
-		h_v2_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFm]] - hiEvtPlanes[RCMate2[v2HFm]] )));
+		//three sub events
+		if( isGoodforv2 )
+		{
+			h_v2_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate1[v2HFm]] )));
+			h_v2_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate2[v2HFm]] )));
+			h_v2_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFm]] - hiEvtPlanes[RCMate2[v2HFm]] )));
+			
+			h_v2_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate1[v2HFp]] )));
+			h_v2_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate2[v2HFp]] )));
+			h_v2_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFp]] - hiEvtPlanes[RCMate2[v2HFp]] )));
+		
+			FillEPresohisto_SP(v2HFm, h_v2_hiBin_HFm_QAB, h_v2_hiBin_HFm_QAC, h_v2_hiBin_HFm_QBC);
+			FillEPresohisto_SP(v2HFp, h_v2_hiBin_HFp_QAB, h_v2_hiBin_HFp_QAC, h_v2_hiBin_HFp_QBC);
+		}
 
-		h_v2_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate1[v2HFp]] )));
-		h_v2_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate2[v2HFp]] )));
-		h_v2_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFp]] - hiEvtPlanes[RCMate2[v2HFp]] )));
-
-		h_v3_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate1[v3HFm]] )));
-		h_v3_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate2[v3HFm]] )));
-		h_v3_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFm]] - hiEvtPlanes[RCMate2[v3HFm]] )));
-
-		h_v3_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate1[v3HFp]] )));
-		h_v3_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate2[v3HFp]] )));
-		h_v3_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFp]] - hiEvtPlanes[RCMate2[v3HFp]] )));
-
-		FillEPresohisto_SP(v2HFm, h_v2_hiBin_HFm_QAB, h_v2_hiBin_HFm_QAC, h_v2_hiBin_HFm_QBC);
-		FillEPresohisto_SP(v2HFp, h_v2_hiBin_HFp_QAB, h_v2_hiBin_HFp_QAC, h_v2_hiBin_HFp_QBC);
-		FillEPresohisto_SP(v3HFm, h_v3_hiBin_HFm_QAB, h_v3_hiBin_HFm_QAC, h_v3_hiBin_HFm_QBC);
-		FillEPresohisto_SP(v3HFp, h_v3_hiBin_HFp_QAB, h_v3_hiBin_HFp_QAC, h_v3_hiBin_HFp_QBC);
+		if( isGoodforv3 )
+		{
+			h_v3_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate1[v3HFm]] )));
+			h_v3_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate2[v3HFm]] )));
+			h_v3_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFm]] - hiEvtPlanes[RCMate2[v3HFm]] )));
+			
+			h_v3_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate1[v3HFp]] )));
+			h_v3_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate2[v3HFp]] )));
+			h_v3_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFp]] - hiEvtPlanes[RCMate2[v3HFp]] )));
+			
+			FillEPresohisto_SP(v3HFm, h_v3_hiBin_HFm_QAB, h_v3_hiBin_HFm_QAC, h_v3_hiBin_HFm_QBC);
+			FillEPresohisto_SP(v3HFp, h_v3_hiBin_HFp_QAB, h_v3_hiBin_HFp_QAC, h_v3_hiBin_HFp_QBC);
+		}
 	}
 }
 
@@ -1521,28 +1539,33 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 		if( isPbPbCollision )
 		{
 			hmass_MB_HFandpart_v1[iptbin][dcandiphiv1]->Fill(Dmass[icand]);
-			hmass_MB_HFandpart_v2[iptbin][dcandiphiv2]->Fill(Dmass[icand]);
-			hmass_MB_HFandpart_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
 			hmass_MB_HFandpart_v4[iptbin][dcandiphiv4]->Fill(Dmass[icand]);
-
-			hmass_MB_HFandpart_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
-			hmass_MB_HFandpart_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
-
-			hmass_MB_HFandpart_v2_morephibin_effcorrected[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand], 1./effcorrection);
-			hmass_MB_HFandpart_v3_morephibin_effcorrected[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand], 1./effcorrection);
-
 			h_mass_v1_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(dcanddeltaphiv1)/EP_resolution_v1);
-			h_mass_v2_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
-			h_mass_v3_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
 			h_mass_v4_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(4.*dcanddeltaphiv4)/EP_resolution_v4);
 
-			//h_mass_v1_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v1 * TMath::Cos(dcanddeltaphiv1)/SP_EP_resolution_v1);
-			h_mass_v2_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
-			h_mass_v3_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
-			//h_mass_v4_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v4 * TMath::Cos(4.*dcanddeltaphiv4)/SP_EP_resolution_v4);
+			if( isGoodforv2 ) 
+			{
+				hmass_MB_HFandpart_v2[iptbin][dcandiphiv2]->Fill(Dmass[icand]);
 
-			h_mass_v2_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2, 1./effcorrection);
-			h_mass_v3_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3, 1./effcorrection);
+				hmass_MB_HFandpart_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
+				hmass_MB_HFandpart_v2_morephibin_effcorrected[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand], 1./effcorrection);
+
+				h_mass_v2_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
+				h_mass_v2_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
+				h_mass_v2_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2, 1./effcorrection);
+			}
+
+			if( isGoodforv3 ) 
+			{
+				hmass_MB_HFandpart_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
+
+				hmass_MB_HFandpart_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
+				hmass_MB_HFandpart_v3_morephibin_effcorrected[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand], 1./effcorrection);
+
+				h_mass_v3_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
+				h_mass_v3_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
+				h_mass_v3_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3, 1./effcorrection);
+			}
 		}
 	}
 
@@ -1628,22 +1651,25 @@ void anaDntuple::FillDtrighisto_PbPb(int icand, int iptbin)
 		hmass_Dtrig_combined[iptbin]->Fill(Dmass[icand]);
 
 		hmass_Dtrig_combined_v1[iptbin][dcandiphiv1]->Fill(Dmass[icand]);
-		hmass_Dtrig_combined_v2[iptbin][dcandiphiv2]->Fill(Dmass[icand]);
-		hmass_Dtrig_combined_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
 		hmass_Dtrig_combined_v4[iptbin][dcandiphiv4]->Fill(Dmass[icand]);
-
-		hmass_Dtrig_combined_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
-		hmass_Dtrig_combined_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
-
 		h_mass_v1_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(dcanddeltaphiv1)/EP_resolution_v1);
-		h_mass_v2_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
-		h_mass_v3_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
 		h_mass_v4_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(4.*dcanddeltaphiv4)/EP_resolution_v4);
 
-		//h_mass_v1_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v1 * TMath::Cos(dcanddeltaphiv1)/SP_EP_resolution_v1);
-		h_mass_v2_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
-		h_mass_v3_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
-		//h_mass_v4_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v4 * TMath::Cos(4.*dcanddeltaphiv4)/SP_EP_resolution_v4);
+		if( isGoodforv2 )
+		{
+			hmass_Dtrig_combined_v2[iptbin][dcandiphiv2]->Fill(Dmass[icand]);
+			hmass_Dtrig_combined_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
+			h_mass_v2_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
+			h_mass_v2_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
+		}
+
+		if( isGoodforv3 )
+		{
+			hmass_Dtrig_combined_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
+			hmass_Dtrig_combined_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
+			h_mass_v3_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
+			h_mass_v3_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
+		}
 	}
 }
 

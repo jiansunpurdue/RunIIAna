@@ -84,6 +84,8 @@ class anaDntuple
 		TF1 * MCPtWeidhtFunction;
 		TF1 * EfficiencyCurve;
 		float effcorrection;
+		bool isGoodforv2;
+		bool isGoodforv3;
 
 	private:
 		float dcanddeltaphiv1;
