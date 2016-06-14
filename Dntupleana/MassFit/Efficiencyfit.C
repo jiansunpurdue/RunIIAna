@@ -36,6 +36,7 @@ double ptbinsnew[Nptbinnew+1] = { 1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 20, 25, 30, 
 using namespace std;
 
 void Efficiencyfit(TString filenamemc = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", bool isPbPb = false, TString MBorDtrig = "MBtrig", int centlow = 0, int centhigh = 100, float ptmin = 1.0, float ptmax = 40.0)
+//void Efficiencyfit(TString filenamemc = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Cent-0to100_Evt0to-1.root", bool isPbPb = false, TString MBorDtrig = "MBtrig", int centlow = 0, int centhigh = 100, float ptmin = 1.0, float ptmax = 40.0)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);

@@ -144,5 +144,3 @@ root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB10to30_Inoutplane'","'$FileVnMB
 root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB30to50_Inoutplane'","'$FileVnMB30to50_EP_Vnvsmass'","'$FileVnMB30to50_SP_Vnvsmass'","'$MBorDtrig'",30,50,'$ptmin','$ptmax', '$Drawchargedparticle')'
 root -l -b -q 'Draw_vn_comparison.C++("'$FileVnMB50to70_Inoutplane'","'$FileVnMB50to70_EP_Vnvsmass'","'$FileVnMB50to70_SP_Vnvsmass'","'$MBorDtrig'",50,70,'$ptmin','$ptmax', '$Drawchargedparticle')'
 fi
-
-./cleanup.sh

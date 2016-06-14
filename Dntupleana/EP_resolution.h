@@ -4,6 +4,8 @@
 #define NCentbin 6
 
 int centbins[NCentbin+1] = { 0, 10, 30, 50, 70, 90, 100};
+
+//for default EP list
 double EPm_resolution_v1[NCentbin] = { 0.18244, 0.17418, 0.16040, 0.14045, 0.175546, 0.166938};
 double EPp_resolution_v1[NCentbin] = { 0.18397, 0.17183, 0.15899, 0.13923, 0.175546, 0.166938};
 double EPm_resolution_v2[NCentbin] = { 0.685723, 0.859663, 0.805454, 0.566906, 0.211415, 0.0300765};
@@ -18,13 +20,9 @@ double SP_EPp_resolution_v2[NCentbin] = { 2.22631, 4.55176, 5.44434, 3.86785, 1.
 double SP_EPm_resolution_v3[NCentbin] = { 1.1976, 1.45446, 1.44092, 0.885596, 0.163693, 99999.};
 double SP_EPp_resolution_v3[NCentbin] = { 1.19813, 1.45973, 1.44858, 0.888648, 0.164866, 99999.};
 
-//not calibrated event planes
-//double SP_EPm_resolution_v2[NCentbin] = { 60.2798, 68.9037, 37.2794, 11.199, 1.5478, 0.0676852};
-//double SP_EPp_resolution_v2[NCentbin] = { 59.0384, 68.7826, 37.3237, 11.2098, 1.54055, 0.0706194};
-//double SP_EPm_resolution_v3[NCentbin] = { 33.8804, 23.1012, 10.0544, 2.63191, 0.2058, 0.16317};
-//double SP_EPp_resolution_v3[NCentbin] = { 32.2514, 22.6223, 9.95982, 2.61081, 0.265497, 0.0343396};
+//for v2, v3 eta gap study EP list
 
-//from steve
+//from steve for default EP list
 //double EPm_resolution_v1[NCentbin] = { 0.18244, 0.17418, 0.16040, 0.14045, 0.175546, 0.166938};
 //double EPp_resolution_v1[NCentbin] = { 0.18397, 0.17183, 0.15899, 0.13923, 0.175546, 0.166938};
 //double EPm_resolution_v2[NCentbin] = { 0.68322, 0.85910, 0.80485, 0.56705, 0.219526, 0.0282894};

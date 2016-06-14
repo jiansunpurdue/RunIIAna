@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$#" -eq 8 ]
+if [ "$#" -eq 10 ]
 then
 	INFILE=$1
 	isPbPb=$2
@@ -10,9 +10,11 @@ then
 	hibin_low=$6
 	hibin_high=$7
 	PbPbMBPD=$8
+	EPlistdefault=$9
+	Jobindex=${10}
 	echo 'EvtPerJob: ' $EvtPerJob
 else
-	echo "Wrong number of parameters. 8 expected, passed $#"
+	echo "Wrong number of parameters. 10 expected, passed $#"
 	exit
 fi
 
@@ -23,33 +25,32 @@ do
  endevt=$((count*EvtPerJob))
  echo "from $startevt to $endevt"
 # make the PBS file
-cat > PBS_${PbPbMBPD}_${startevt}to${endevt}.sh <<EOF
+cat > PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.sh <<EOF
 #!/bin/sh
 
-#PBS -l nodes=1,walltime=01:20:00,mem=2400MB
-#PBS -N anaDntuple_${PbPbMBPD}_${startevt}to${endevt}
-#PBS -o /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/PBS_${PbPbMBPD}_${startevt}to${endevt}.log
-#PBS -e /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/PBS_${PbPbMBPD}_${startevt}to${endevt}.err
+#PBS -l nodes=1,walltime=00:40:00,mem=2400MB
+#PBS -N anaDntuple_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}
+#PBS -o /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.log
+#PBS -e /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.err
 #PBS -r n
 #PBS -V
-#PBS -q cms-bradburn 
+#PBS -q fqwang 
 
-echo `hostname`
+echo \`hostname\`
 export SCRAM_ARCH=slc6_amd64_gcc491
 source /apps/osg/cmssoft/cmsset_default.sh
 export X509_USER_PROXY=/home/sun229/.myproxy
-cd /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src 
-eval `scramv1 runtime -sh`
-cd RunIIAna/Dntupleana
+cd /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana 
+eval \`scramv1 runtime -sh\`
 
-root -l -b 'run_anaDntuple_partevt.C+("'$INFILE'", $isPbPb, $isMC, $startevt, $endevt, $hibin_low, $hibin_high, $PbPbMBPD)'
+root -l -b -q 'run_anaDntuple_partevt.C+("'$INFILE'", $isPbPb, $isMC, $startevt, $endevt, $hibin_low, $hibin_high, $PbPbMBPD, $EPlistdefault)'
 
 echo Done
 EOF
 
-chmod 744 PBS_${PbPbMBPD}_${startevt}to${endevt}.sh
+chmod 744 PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.sh
 
-qsub PBS_${PbPbMBPD}_${startevt}to${endevt}.sh
-echo "PBS_${PbPbMBPD}_${startevt}to${endevt}.job submitted"
+qsub PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.sh
+echo "PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.sh submitted"
 
 done

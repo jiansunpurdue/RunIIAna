@@ -23,15 +23,12 @@
 #include "TLorentzVector.h"
 #include <TCanvas.h>
 
-#include "RecoHI/HiEvtPlaneAlgos/interface/HiEvtPlaneList.h"
-
 #define MAX_XB       20000
 #define MAX_GEN      6000
 
 #define kMaxEvtPlanes 200
 
 using namespace std;
-using namespace hi;
 namespace fs = boost::filesystem;
 typedef complex<double> comp;
 
@@ -42,8 +39,8 @@ class anaDntuple
 	public:
 		anaDntuple();
 		virtual ~anaDntuple();
-		void LoopOverFile( int startFile, int endFile, string filelist, bool isPbPb, bool isMCornot, double hibin_low = -0.5, double hibin_high = 199.5, int whichPbPbPD = 0); //if need to loop over files
-		void ProcessPartialEvents( string inputfilename, bool isPbPb, bool isMCornot, int startevt = 0, int endevt = -1, double hibin_low = -0.5, double hibin_high = 199.5, int whichPbPbPD = 0);
+		void LoopOverFile( int startFile, int endFile, string filelist, bool isPbPb, bool isMCornot, double hibin_low = -0.5, double hibin_high = 199.5, int whichPbPbPD = 0, bool EPlistdefault = true); //if need to loop over files
+		void ProcessPartialEvents( string inputfilename, bool isPbPb, bool isMCornot, int startevt = 0, int endevt = -1, double hibin_low = -0.5, double hibin_high = 199.5, int whichPbPbPD = 0, bool EPlistdefault = true);
 
 	private:
 		//basic functions
@@ -70,10 +67,12 @@ class anaDntuple
 		float Calculatedeltaphi( int icand, int floworder);
 		int  Decideinoutplane(float deltaphi, int floworder);
 		int  Decidephibin_morephibin(float deltaphi, int floworder);
+		void DecideEPSPresolution( int icand);
 
 	private:
 		bool isPbPbCollision;
 		bool isMC;
+		bool DefaultEPlist;
 		int PbPbPD;
 		TFile * outputfile;
 		//centrality range to process

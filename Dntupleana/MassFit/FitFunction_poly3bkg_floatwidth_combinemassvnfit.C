@@ -281,7 +281,6 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	mass->Draw("same");
 	massSwap->SetRange(fit_range_low,fit_range_high);
 	massSwap->Draw("same");
-	f->Draw("same");
 
 	Double_t yield = mass->Integral(fit_range_low,fit_range_high)/histomassbinsize;
 	Double_t yieldErr = mass->Integral(fit_range_low,fit_range_high)/histomassbinsize*mass->GetParError(0)/mass->GetParameter(0);
