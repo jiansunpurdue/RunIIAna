@@ -56,6 +56,9 @@ TH1D * Dtrig_mc_matched_kpiswapped_pthatweight[Nptbin];
 
 //event level trigger decision
 TH2D * hevt_trig_hiBin = new TH2D("hevt_trig_hiBin","hevt_trig_hiBin", 35, 0, 35, 200, 0, 200); //2D histogram for trig vs hiBin
+//histograms for event plane
+#define NEvtPlanesSave 35
+TH1D * h_EvtPlane[NEvtPlanesSave];
 
 //for event plane resolution with 2-sub event
 #define NCentbins 6

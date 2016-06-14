@@ -154,6 +154,14 @@ void anaDntuple::Histobookforanalysis()
 		book_TProfile_mass_vn( h_mass_v2_SP_Dtrig_combined, ptbins, Nptbin, "h_mass_v2_SP_Dtrig_combined", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v3_SP_Dtrig_combined, ptbins, Nptbin, "h_mass_v3_SP_Dtrig_combined", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v4_SP_Dtrig_combined, ptbins, Nptbin, "h_mass_v4_SP_Dtrig_combined", Nmassbin, massmin, massmax);
+		
+		for( int i = 0; i < NEvtPlanesSave; i++ )
+		{   
+			h_EvtPlane[i] = new TH1D( Form("h_EvtPlane_%d", i), Form("h_EvtPlane_%d", i), 2000, -15., 15.);
+			h_EvtPlane[i]->Sumw2();
+			h_EvtPlane[i]->SetMarkerStyle(1);
+		}
+
 	}
 	cout << "End book histogram" << endl;
 }
@@ -960,6 +968,12 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		if( TMath::Abs(vz) > vz_cut ) continue;
 
 		if( !isPbPbCollision ) hiBin = 1;
+
+		if( isPbPbCollision )
+		{
+			for( int iep = 0; iep < ( (hiNevtPlane > NEvtPlanesSave) ? NEvtPlanesSave : hiNevtPlane ); iep++ )
+				h_EvtPlane[iep]->Fill(hiEvtPlanes[iep]);
+		}
 
 		//if want to use all events
 		if( isMC ) MBtrig_part_combined = 1;
@@ -1818,6 +1832,12 @@ void anaDntuple::Write()
 			Dtrig_mc_matched_signal_pthatweight[i]->Write();
 			Dtrig_mc_matched_kpiswapped_pthatweight[i]->Write();
 		}
+	}
+
+	if( isPbPbCollision )
+	{
+		for( int i = 0; i < NEvtPlanesSave; i++ )
+			h_EvtPlane[i]->Write();
 	}
 
 }
