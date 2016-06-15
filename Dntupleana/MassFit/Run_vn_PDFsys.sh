@@ -36,9 +36,9 @@ InputDefault="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent${cent_low}to${cen
 InputPoly2bkg="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent${cent_low}to${cent_high}_poly2bkg_floatwidth_effcorrected${Doefficiencycorrection}.root"
 InputExpobkg="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent${cent_low}to${cent_high}_expobkg_2nd_floatwidth_effcorrected${Doefficiencycorrection}.root"
 
-InputDefault_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly3bkg_floatwidth_effcorrected${Doefficiencycorrection}.root"
-InputPoly2bkg_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly2bkg_floatwidth_effcorrected${Doefficiencycorrection}.root"
-InputExpobkg_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_expobkg_2nd_floatwidth_effcorrected${Doefficiencycorrection}.root"
+InputDefault_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly3bkg_effcorrected${Doefficiencycorrection}.root"
+InputPoly2bkg_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly2bkg_effcorrected${Doefficiencycorrection}.root"
+InputExpobkg_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_expobkg_2nd_effcorrected${Doefficiencycorrection}.root"
 
 method="SP"
 root -l -b -q 'Draw_vn_differentbkgPDF.C++("'$InputDefault'","'$InputPoly2bkg'","'$InputExpobkg'","'$method'","'$MBorDtrig'",'$cent_low','$cent_high','$ptmin','$ptmax')'

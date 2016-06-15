@@ -24,9 +24,13 @@
 #include <./FitFunction_expobkg_2nd_floatwidth.C>
 #include <./FitFunction_poly2bkg_floatwidth.C>
 
+#include <./FitFunction_poly3bkg.C>
+#include <./FitFunction_expobkg_2nd.C>
+#include <./FitFunction_poly2bkg.C>
+
 namespace fs = boost::filesystem;
 
-void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 4, int iptend = 5, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
+void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 4, int iptend = 5, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg", bool effcorrected = false)
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();
@@ -118,10 +122,10 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 		TF1* signalfittedfunc = NULL;
 
 		int iptmc;
-		if( ipt > 3 ) 
+		if( ipt > 2 ) 
 			iptmc = ipt;
 		else    
-			iptmc = 4;
+			iptmc = 3;
 
         if( fitoption == "poly3bkg_floatwidth")
             signalfittedfunc = fit_histo_poly3bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
@@ -131,6 +135,15 @@ void Fithistograms(TH1D * histo[], TH1D * mc_matched_signal[], TH1D * mc_matched
 
         if( fitoption == "poly2bkg_floatwidth")
             signalfittedfunc = fit_histo_poly2bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+        if( fitoption == "poly3bkg")
+            signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+        if( fitoption == "expobkg_2nd")
+            signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
+
+        if( fitoption == "poly2bkg")
+            signalfittedfunc = fit_histo_poly2bkg( isPbPb, centlow, centhigh, histo[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, MBorDtrig);
 
 		double histomassbinsize = histo[ipt]->GetBinWidth(10);
 		double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;
@@ -164,6 +177,15 @@ void Fithisto_morephibin( TH1D * histo[][Nphibinmore], TH1D * mc_matched_signal[
 
 			if( fitoption == "poly2bkg_floatwidth")
 				signalfittedfunc = fit_histo_poly2bkg_floatwidth( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname);
+
+			if( fitoption == "poly3bkg")
+				signalfittedfunc = fit_histo_poly3bkg( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, true, false, NULL, effcorrected);
+
+			if( fitoption == "expobkg_2nd")
+				signalfittedfunc = fit_histo_expobkg_2nd( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname);
+
+			if( fitoption == "poly2bkg")
+				signalfittedfunc = fit_histo_poly2bkg( isPbPb, centlow, centhigh, histo[ipt][iphi], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname);
 
 			double histomassbinsize = histo[ipt][iphi]->GetBinWidth(10);
 			double yield = signalfittedfunc->Integral(massmin,massmax)/histomassbinsize;

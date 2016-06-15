@@ -19,7 +19,7 @@
 #include <./../uti.h>
 #include <./../EP_resolution.h>
 
-void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, int iptstart = 7, int iptend = 8, TString fitoption = "poly3bkg", bool effcorrected = false)
+void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, int iptstart = 4, int iptend = 5, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetHistMinimumZero(kFALSE);
@@ -55,8 +55,8 @@ void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephi
 	v2_morephibin->Sumw2();
 	v3_morephibin->Sumw2();
 
-	Get_vn_morephibin( v2_morephibin, dNdpt_v2_phibins_in_oneptbin, resolution_EP_v2, trigname, "v2", "v_{2}", cent_low, cent_high, iptstart, iptend, fitoption);
-	Get_vn_morephibin( v3_morephibin, dNdpt_v3_phibins_in_oneptbin, resolution_EP_v3, trigname, "v3", "v_{3}", cent_low, cent_high, iptstart, iptend, fitoption);
+	Get_vn_morephibin( v2_morephibin, dNdpt_v2_phibins_in_oneptbin, resolution_EP_v2, trigname, "v2", "v_{2}", cent_low, cent_high, iptstart, iptend, fitoption, effcorrected);
+	Get_vn_morephibin( v3_morephibin, dNdpt_v3_phibins_in_oneptbin, resolution_EP_v3, trigname, "v3", "v_{3}", cent_low, cent_high, iptstart, iptend, fitoption, effcorrected);
 
 	TFile * output = new TFile(Form("rootfiles/vn_morephibin_%s_cent%dto%d_%s_effcorrected%d.root", trigname.Data(), cent_low, cent_high, fitoption.Data(), effcorrected),"RECREATE");
 	v2_morephibin->Write();

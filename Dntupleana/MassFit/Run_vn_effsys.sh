@@ -34,8 +34,8 @@ fi
 InputDefault="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent${cent_low}to${cent_high}_poly3bkg_floatwidth_effcorrected0.root"
 Inputefficiencycorrected="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent${cent_low}to${cent_high}_poly3bkg_floatwidth_effcorrected1.root"
 
-InputDefault_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly3bkg_floatwidth_effcorrected0.root"
-Inputefficiencycorrected_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly3bkg_floatwidth_effcorrected1.root"
+InputDefault_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly3bkg_effcorrected0.root"
+Inputefficiencycorrected_deltaphibins="rootfiles/vn_morephibin_MBtrig_cent${cent_low}to${cent_high}_poly3bkg_effcorrected1.root"
 
 method="SP"
 root -l -b -q 'Draw_vn_effcorrection.C++("'$InputDefault'","'$Inputefficiencycorrected'","'$method'","'$MBorDtrig'",'$cent_low','$cent_high','$ptmin','$ptmax')'

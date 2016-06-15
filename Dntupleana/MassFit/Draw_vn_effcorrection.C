@@ -125,8 +125,8 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_effcorrected, TString vnname, T
 
 	h_vn_ratio_effcorrected_default->Divide( vn_effcorrected, vn_default, 1.0, 1.0, "B");
 
-	h_vn_ratio_effcorrected_default->GetYaxis()->SetRangeUser(0.5,1.5);
-//	if( method == "deltaphibins" ) h_vn_ratio_effcorrected_default->GetYaxis()->SetRangeUser(0.8,1.2);
+	h_vn_ratio_effcorrected_default->GetYaxis()->SetRangeUser(0.8,1.2);
+	if( method == "deltaphibins" ) h_vn_ratio_effcorrected_default->GetYaxis()->SetRangeUser(0.5,1.5);
 	h_vn_ratio_effcorrected_default->GetYaxis()->SetTitle("*/Default");
 	h_vn_ratio_effcorrected_default->SetTitleSize(0.06,"xyz");
 	h_vn_ratio_effcorrected_default->SetLabelSize(0.08,"xyz");
