@@ -60,9 +60,14 @@ TH2D * hevt_trig_hiBin = new TH2D("hevt_trig_hiBin","hevt_trig_hiBin", 35, 0, 35
 #define NEvtPlanesSave 35
 TH1D * h_EvtPlane[NEvtPlanesSave];
 
-//for event plane resolution with 2-sub event
+//for event plane resolution with 2-sub and 3-sub event
+//for data
 #define NCentbins 6
 double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
+//for MC
+//#define NCentbins 9 
+//double hibinbins[NCentbins+1] = { -0.5, 9.5, 29.5, 69.5, 79.5, 99.5, 119.5, 139.5, 179.5, 199.5};
+
 TProfile * h_v1_hiBin_cosndiffeppepm = new TProfile("h_v1_hiBin_cosndiffeppepm","h_v1_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm","h_v2_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v3_hiBin_cosndiffeppepm = new TProfile("h_v3_hiBin_cosndiffeppepm","h_v3_hiBin_cosndiffeppepm", NCentbins, hibinbins);

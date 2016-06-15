@@ -19,6 +19,10 @@
 #define NCentbins 6
 double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
 
+////for MC
+//#define NCentbins 9 
+//double hibinbins[NCentbins+1] = { -0.5, 9.5, 29.5, 69.5, 79.5, 99.5, 119.5, 139.5, 179.5, 199.5};
+
 void SP_resolution_3subevent(TString infilename = "rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100.root")
 {
 	TH1::SetDefaultSumw2();

@@ -28,13 +28,13 @@ do
 cat > PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.sh <<EOF
 #!/bin/sh
 
-#PBS -l nodes=1,walltime=00:40:00,mem=2400MB
+#PBS -l nodes=1,walltime=01:30:00,mem=2400MB
 #PBS -N anaDntuple_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}
 #PBS -o /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.log
 #PBS -e /home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/PBS_${PbPbMBPD}_${startevt}to${endevt}_${Jobindex}.err
 #PBS -r n
 #PBS -V
-#PBS -q fqwang 
+#PBS -q fqwang
 
 echo \`hostname\`
 export SCRAM_ARCH=slc6_amd64_gcc491
