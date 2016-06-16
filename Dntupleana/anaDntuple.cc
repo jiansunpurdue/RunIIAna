@@ -154,7 +154,7 @@ void anaDntuple::Histobookforanalysis()
 		book_TProfile_mass_vn( h_mass_v2_SP_Dtrig_combined, ptbins, Nptbin, "h_mass_v2_SP_Dtrig_combined", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v3_SP_Dtrig_combined, ptbins, Nptbin, "h_mass_v3_SP_Dtrig_combined", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v4_SP_Dtrig_combined, ptbins, Nptbin, "h_mass_v4_SP_Dtrig_combined", Nmassbin, massmin, massmax);
-		
+
 		for( int i = 0; i < NEvtPlanesSave; i++ )
 		{   
 			h_EvtPlane[i] = new TH1D( Form("h_EvtPlane_%d", i), Form("h_EvtPlane_%d", i), 1000, -15., 15.);
@@ -978,7 +978,7 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 			isGoodforv2 = true;
 			if( hiEvtPlanes[v2HFm] < -5. || hiEvtPlanes[RCMate1[v2HFm]] < -5. || hiEvtPlanes[RCMate2[v2HFm]] < -5. )  isGoodforv2 = false;
 			if( hiEvtPlanes[v2HFp] < -5. || hiEvtPlanes[RCMate1[v2HFp]] < -5. || hiEvtPlanes[RCMate2[v2HFp]] < -5. )  isGoodforv2 = false;
-			
+
 			isGoodforv3 = true;
 			if( hiEvtPlanes[v3HFm] < -5. || hiEvtPlanes[RCMate1[v3HFm]] < -5. || hiEvtPlanes[RCMate2[v3HFm]] < -5. )  isGoodforv3 = false;
 			if( hiEvtPlanes[v3HFp] < -5. || hiEvtPlanes[RCMate1[v3HFp]] < -5. || hiEvtPlanes[RCMate2[v3HFp]] < -5. )  isGoodforv3 = false;
@@ -1031,11 +1031,11 @@ void anaDntuple::FillEPresohisto()
 			h_v2_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate1[v2HFm]] )));
 			h_v2_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate2[v2HFm]] )));
 			h_v2_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFm]] - hiEvtPlanes[RCMate2[v2HFm]] )));
-			
+
 			h_v2_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate1[v2HFp]] )));
 			h_v2_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate2[v2HFp]] )));
 			h_v2_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFp]] - hiEvtPlanes[RCMate2[v2HFp]] )));
-		
+
 			FillEPresohisto_SP(v2HFm, h_v2_hiBin_HFm_QAB, h_v2_hiBin_HFm_QAC, h_v2_hiBin_HFm_QBC);
 			FillEPresohisto_SP(v2HFp, h_v2_hiBin_HFp_QAB, h_v2_hiBin_HFp_QAC, h_v2_hiBin_HFp_QBC);
 		}
@@ -1045,11 +1045,11 @@ void anaDntuple::FillEPresohisto()
 			h_v3_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate1[v3HFm]] )));
 			h_v3_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate2[v3HFm]] )));
 			h_v3_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFm]] - hiEvtPlanes[RCMate2[v3HFm]] )));
-			
+
 			h_v3_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate1[v3HFp]] )));
 			h_v3_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate2[v3HFp]] )));
 			h_v3_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFp]] - hiEvtPlanes[RCMate2[v3HFp]] )));
-			
+
 			FillEPresohisto_SP(v3HFm, h_v3_hiBin_HFm_QAB, h_v3_hiBin_HFm_QAC, h_v3_hiBin_HFm_QBC);
 			FillEPresohisto_SP(v3HFp, h_v3_hiBin_HFp_QAB, h_v3_hiBin_HFp_QAC, h_v3_hiBin_HFp_QBC);
 		}
@@ -1183,6 +1183,8 @@ void anaDntuple::LoopOverDcandidates()
 			}
 
 			DecideEPSPresolution( icand );
+			//cout << "isMC: " << isMC << "  cent_low: " << cent_low << " cent_high: " << cent_high << " deta: " << Deta[icand] << endl;
+			//cout << " EP_resolution_v2: " << EP_resolution_v2 << " EP_resolution_v3: " << EP_resolution_v3 << " SP_EP_resolution_v2: " << SP_EP_resolution_v2 << " SP_EP_resolution_v3: " << SP_EP_resolution_v3 << endl;
 		}
 
 		if( isMC && ( Dgen[icand] == 23333 || Dgen[icand] == 23344 ) && DgencollisionId[icand] > 0 ) continue; // remove Gen matched D candidates
@@ -1232,33 +1234,63 @@ void anaDntuple::LoopOverDcandidates()
 void anaDntuple::DecideEPSPresolution( int icand )
 {
 	//decide EP resolution
-	int icentbin = Decide_centbin_for_EPresolution( cent_low, cent_high);
+	int icentbin = Decide_centbin_for_EPresolution( cent_low, cent_high, isMC);
 	if( icentbin >= 0 )
 	{
-//		if( DefaultEPlist )  // to be added
-		if( Deta[icand] >= 0 )
+		//		if( DefaultEPlist )  // to be added
+		if( !isMC ) //data
 		{
-			EP_resolution_v1 = EPm_resolution_v1[icentbin];
-			EP_resolution_v2 = EPm_resolution_v2[icentbin];
-			EP_resolution_v3 = EPm_resolution_v3[icentbin];
-			EP_resolution_v4 = EPm_resolution_v4[icentbin];
+			if( Deta[icand] >= 0 )
+			{
+				EP_resolution_v1 = EPm_resolution_v1[icentbin];
+				EP_resolution_v2 = EPm_resolution_v2[icentbin];
+				EP_resolution_v3 = EPm_resolution_v3[icentbin];
+				EP_resolution_v4 = EPm_resolution_v4[icentbin];
 
-			SP_EP_resolution_v1 = 1;
-			SP_EP_resolution_v2 = SP_EPm_resolution_v2[icentbin];
-			SP_EP_resolution_v3 = SP_EPm_resolution_v3[icentbin];
-			SP_EP_resolution_v4 = 1;
+				SP_EP_resolution_v1 = 1;
+				SP_EP_resolution_v2 = SP_EPm_resolution_v2[icentbin];
+				SP_EP_resolution_v3 = SP_EPm_resolution_v3[icentbin];
+				SP_EP_resolution_v4 = 1;
+			}
+			else
+			{
+				EP_resolution_v1 = EPp_resolution_v1[icentbin];
+				EP_resolution_v2 = EPp_resolution_v2[icentbin];
+				EP_resolution_v3 = EPp_resolution_v3[icentbin];
+				EP_resolution_v4 = EPp_resolution_v4[icentbin];
+
+				SP_EP_resolution_v1 = 1;
+				SP_EP_resolution_v2 = SP_EPp_resolution_v2[icentbin];
+				SP_EP_resolution_v3 = SP_EPp_resolution_v3[icentbin];
+				SP_EP_resolution_v4 = 1;
+			}
 		}
 		else
 		{
-			EP_resolution_v1 = EPp_resolution_v1[icentbin];
-			EP_resolution_v2 = EPp_resolution_v2[icentbin];
-			EP_resolution_v3 = EPp_resolution_v3[icentbin];
-			EP_resolution_v4 = EPp_resolution_v4[icentbin];
+			if( Deta[icand] >= 0 )
+			{
+				EP_resolution_v1 = 1;
+				EP_resolution_v2 = EPm_resolution_v2_MC[icentbin];
+				EP_resolution_v3 = EPm_resolution_v3_MC[icentbin];
+				EP_resolution_v4 = 1;
 
-			SP_EP_resolution_v1 = 1;
-			SP_EP_resolution_v2 = SP_EPp_resolution_v2[icentbin];
-			SP_EP_resolution_v3 = SP_EPp_resolution_v3[icentbin];
-			SP_EP_resolution_v4 = 1;
+				SP_EP_resolution_v1 = 1;
+				SP_EP_resolution_v2 = SP_EPm_resolution_v2_MC[icentbin];
+				SP_EP_resolution_v3 = SP_EPm_resolution_v3_MC[icentbin];
+				SP_EP_resolution_v4 = 1;
+			}
+			else
+			{
+				EP_resolution_v1 = 1;
+				EP_resolution_v2 = EPp_resolution_v2_MC[icentbin];
+				EP_resolution_v3 = EPp_resolution_v3_MC[icentbin];
+				EP_resolution_v4 = 1;
+
+				SP_EP_resolution_v1 = 1;
+				SP_EP_resolution_v2 = SP_EPp_resolution_v2_MC[icentbin];
+				SP_EP_resolution_v3 = SP_EPp_resolution_v3_MC[icentbin];
+				SP_EP_resolution_v4 = 1;
+			}
 		}
 	}
 	else
