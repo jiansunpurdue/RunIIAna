@@ -2,18 +2,43 @@
 #define EP_resolution_H
 
 //for MC default EP list, no calibration
-#define NCentbin_MC 9
-int centbins_MC[NCentbin_MC+1] = { 0, 5, 15, 35, 40, 50, 60, 70, 90, 100};
+//#define NCentbin_MC 9
+//int centbins_MC[NCentbin_MC+1] = { 0, 5, 15, 35, 40, 50, 60, 70, 90, 100};
+//
+//double EPm_resolution_v2_MC[NCentbin_MC] = { 0.784277, 0.930973, 0.932909, 0.905139, 0.868241, 0.781579, 0.632768, 0.336767, 0.084966};
+//double EPp_resolution_v2_MC[NCentbin_MC] = { 0.789622, 0.930651, 0.93282, 0.903751, 0.868913, 0.782272, 0.635515, 0.334797, 0.120175};
+//double EPm_resolution_v3_MC[NCentbin_MC] = { 0.733322, 0.780641, 0.713051, 0.612896, 0.554029, 0.453339, 0.323571, 0.14654, 99999.};
+//double EPp_resolution_v3_MC[NCentbin_MC] = { 0.729355, 0.776133, 0.712883, 0.633601, 0.556134, 0.430348, 0.32254, 0.16158, 99999.};
+//
+//double SP_EPm_resolution_v2_MC[NCentbin_MC] = { 95.7606, 126.183, 96.865, 61.6211, 44.9339, 26.3757, 13.338, 3.96807, 0.339162};
+//double SP_EPp_resolution_v2_MC[NCentbin_MC] = { 96.4375, 126.475, 96.9675, 61.7006, 45.068, 26.4305, 13.3437, 3.97825, 0.498504};
+//double SP_EPm_resolution_v3_MC[NCentbin_MC] = { 70.7116, 67.2383, 43.7007, 25.6119, 18.8044, 10.9497, 5.43308, 1.5248, 0.0353239};
+//double SP_EPp_resolution_v3_MC[NCentbin_MC] = { 70.7568, 66.5684, 43.6427, 26.5294, 18.6348, 10.548, 5.36539, 1.5913, 1.00892};
 
-double EPm_resolution_v2_MC[NCentbin_MC] = { 0.784277, 0.930973, 0.932909, 0.905139, 0.868241, 0.781579, 0.632768, 0.336767, 0.084966};
-double EPp_resolution_v2_MC[NCentbin_MC] = { 0.789622, 0.930651, 0.93282, 0.903751, 0.868913, 0.782272, 0.635515, 0.334797, 0.120175};
-double EPm_resolution_v3_MC[NCentbin_MC] = { 0.733322, 0.780641, 0.713051, 0.612896, 0.554029, 0.453339, 0.323571, 0.14654, 99999.};
-double EPp_resolution_v3_MC[NCentbin_MC] = { 0.729355, 0.776133, 0.712883, 0.633601, 0.556134, 0.430348, 0.32254, 0.16158, 99999.};
+#define NCentbin_MC 6
+int centbins_MC[NCentbin_MC+1] = { 0, 5, 20, 40, 60, 80, 100};
 
-double SP_EPm_resolution_v2_MC[NCentbin_MC] = { 95.7606, 126.183, 96.865, 61.6211, 44.9339, 26.3757, 13.338, 3.96807, 0.339162};
-double SP_EPp_resolution_v2_MC[NCentbin_MC] = { 96.4375, 126.475, 96.9675, 61.7006, 45.068, 26.4305, 13.3437, 3.97825, 0.498504};
-double SP_EPm_resolution_v3_MC[NCentbin_MC] = { 70.7116, 67.2383, 43.7007, 25.6119, 18.8044, 10.9497, 5.43308, 1.5248, 0.0353239};
-double SP_EPp_resolution_v3_MC[NCentbin_MC] = { 70.7568, 66.5684, 43.6427, 26.5294, 18.6348, 10.548, 5.36539, 1.5913, 1.00892};
+//pthatweight
+double EPm_resolution_v2_MC[NCentbin_MC] = { 0.780564, 0.935042, 0.927511, 0.840199, 0.592185, 0.24612};
+double EPp_resolution_v2_MC[NCentbin_MC] = { 0.792049, 0.935415, 0.926704, 0.844018, 0.592548, 0.251614};
+double EPm_resolution_v3_MC[NCentbin_MC] = { 0.729103, 0.77431, 0.686449, 0.523215, 0.291367, 0.0955829};
+double EPp_resolution_v3_MC[NCentbin_MC] = { 0.733793, 0.767867, 0.68886, 0.508867, 0.296772, 0.123554};
+
+double SP_EPm_resolution_v2_MC[NCentbin_MC] = { 95.4735, 122.887, 83.6028, 37.3283, 10.7024, 1.71673};
+double SP_EPp_resolution_v2_MC[NCentbin_MC] = { 95.9358, 123.001, 83.9414, 37.5968, 10.673, 1.71067};
+double SP_EPm_resolution_v3_MC[NCentbin_MC] = { 70.4551, 63.2733, 36.9853, 15.704, 4.34821, 0.603327};
+double SP_EPp_resolution_v3_MC[NCentbin_MC] = { 71.055, 62.5361, 36.5589, 15.3159, 4.25297, 0.678117};
+
+////no pthatweight
+//double EPm_resolution_v2_MC[NCentbin_MC] = { 0.784277, 0.934235, 0.923994, 0.825564, 0.528754, 0.203334};
+//double EPp_resolution_v2_MC[NCentbin_MC] = { 0.789622, 0.933644, 0.923848, 0.826244, 0.529531, 0.205695};
+//double EPm_resolution_v3_MC[NCentbin_MC] = { 0.733322, 0.771342, 0.67854, 0.505453, 0.259086, 0.0766994};
+//double EPp_resolution_v3_MC[NCentbin_MC] = { 0.729355, 0.768982, 0.682528, 0.496532, 0.264215, 0.0970609};
+//
+//double SP_EPm_resolution_v2_MC[NCentbin_MC] = { 95.7606, 122.843, 83.4118, 36.7421, 9.85876, 1.47601};
+//double SP_EPp_resolution_v2_MC[NCentbin_MC] = { 96.4375, 123.022, 83.5666, 36.843, 9.85664, 1.54997};
+//double SP_EPm_resolution_v3_MC[NCentbin_MC] = { 70.7116, 63.1424, 36.5976, 15.3428, 3.98462, 0.496936};
+//double SP_EPp_resolution_v3_MC[NCentbin_MC] = { 70.7568, 62.7981, 36.5228, 15.098, 3.96212, 0.622147};
 
 //for data
 #define NCentbin 6

@@ -67,6 +67,8 @@ double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
 //for MC
 //#define NCentbins 9 
 //double hibinbins[NCentbins+1] = { -0.5, 9.5, 29.5, 69.5, 79.5, 99.5, 119.5, 139.5, 179.5, 199.5};
+//#define NCentbins 6 
+//double hibinbins[NCentbins+1] = { -0.5, 9.5, 39.5, 79.5, 119.5, 159.5, 199.5};
 
 TProfile * h_v1_hiBin_cosndiffeppepm = new TProfile("h_v1_hiBin_cosndiffeppepm","h_v1_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm","h_v2_hiBin_cosndiffeppepm", NCentbins, hibinbins);
