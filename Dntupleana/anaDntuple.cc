@@ -1154,7 +1154,7 @@ void anaDntuple::LoopOverDcandidates()
 
 		// remove Gen matched D candidates from Hydjet event
 		if( isMC && ( Dgen[icand] == 23333 || Dgen[icand] == 23344 ) && DgencollisionId[icand] > 0 ) continue;
-		if( isMC && Dpt[icand] > pthat/1.5 ) continue;
+		//if( isMC && Dpt[icand] > pthat/1.5 ) continue;
 		////remove no matched candidates
 		//if( isMC && Dgen[icand] != 23333 && Dgen[icand] != 23344 ) continue;
 		////remove matched candidates
