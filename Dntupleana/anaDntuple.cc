@@ -1010,9 +1010,9 @@ void anaDntuple::FillEPresohisto_SP(int EP, TProfile * h_QAB, TProfile * h_QAC, 
 	QAC =  QA*std::conj(QC);
 	QBC =  QB*std::conj(QC);
 
-	h_QAB->Fill( hiBin, QAB.real(), Evt_weight);
-	h_QAC->Fill( hiBin, QAC.real(), Evt_weight);
-	h_QBC->Fill( hiBin, QBC.real(), Evt_weight);
+	h_QAB->Fill( hiBin, QAB.real());
+	h_QAC->Fill( hiBin, QAC.real());
+	h_QBC->Fill( hiBin, QBC.real());
 }
 
 void anaDntuple::FillEPresohisto()
@@ -1020,21 +1020,21 @@ void anaDntuple::FillEPresohisto()
 	if( MBtrig_part_combined )
 	{
 		//two sub events
-		h_v1_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( hiEvtPlanes[0] - hiEvtPlanes[1]), Evt_weight);
-		if( isGoodforv2 ) h_v2_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 2.*(hiEvtPlanes[v2HFm] - hiEvtPlanes[v2HFp])), Evt_weight);
-		if( isGoodforv3 ) h_v3_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 3.*(hiEvtPlanes[v3HFm] - hiEvtPlanes[v3HFp])), Evt_weight);
-		h_v4_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 4.*(hiEvtPlanes[19] - hiEvtPlanes[20])), Evt_weight);
+		h_v1_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( hiEvtPlanes[0] - hiEvtPlanes[1]));
+		if( isGoodforv2 ) h_v2_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 2.*(hiEvtPlanes[v2HFm] - hiEvtPlanes[v2HFp])));
+		if( isGoodforv3 ) h_v3_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 3.*(hiEvtPlanes[v3HFm] - hiEvtPlanes[v3HFp])));
+		h_v4_hiBin_cosndiffeppepm->Fill( hiBin, TMath::Cos( 4.*(hiEvtPlanes[19] - hiEvtPlanes[20])));
 
 		//three sub events
 		if( isGoodforv2 )
 		{
-			h_v2_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate1[v2HFm]] )), Evt_weight);
-			h_v2_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate2[v2HFm]] )), Evt_weight);
-			h_v2_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFm]] - hiEvtPlanes[RCMate2[v2HFm]] )), Evt_weight);
+			h_v2_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate1[v2HFm]] )));
+			h_v2_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFm] - hiEvtPlanes[RCMate2[v2HFm]] )));
+			h_v2_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFm]] - hiEvtPlanes[RCMate2[v2HFm]] )));
 
-			h_v2_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate1[v2HFp]] )), Evt_weight);
-			h_v2_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate2[v2HFp]] )), Evt_weight);
-			h_v2_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFp]] - hiEvtPlanes[RCMate2[v2HFp]] )), Evt_weight);
+			h_v2_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate1[v2HFp]] )));
+			h_v2_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[v2HFp] - hiEvtPlanes[RCMate2[v2HFp]] )));
+			h_v2_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 2. * ( hiEvtPlanes[RCMate1[v2HFp]] - hiEvtPlanes[RCMate2[v2HFp]] )));
 
 			FillEPresohisto_SP(v2HFm, h_v2_hiBin_HFm_QAB, h_v2_hiBin_HFm_QAC, h_v2_hiBin_HFm_QBC);
 			FillEPresohisto_SP(v2HFp, h_v2_hiBin_HFp_QAB, h_v2_hiBin_HFp_QAC, h_v2_hiBin_HFp_QBC);
@@ -1042,13 +1042,13 @@ void anaDntuple::FillEPresohisto()
 
 		if( isGoodforv3 )
 		{
-			h_v3_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate1[v3HFm]] )), Evt_weight);
-			h_v3_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate2[v3HFm]] )), Evt_weight);
-			h_v3_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFm]] - hiEvtPlanes[RCMate2[v3HFm]] )), Evt_weight);
+			h_v3_hiBin_HFm_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate1[v3HFm]] )));
+			h_v3_hiBin_HFm_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFm] - hiEvtPlanes[RCMate2[v3HFm]] )));
+			h_v3_hiBin_HFm_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFm]] - hiEvtPlanes[RCMate2[v3HFm]] )));
 
-			h_v3_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate1[v3HFp]] )), Evt_weight);
-			h_v3_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate2[v3HFp]] )), Evt_weight);
-			h_v3_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFp]] - hiEvtPlanes[RCMate2[v3HFp]] )), Evt_weight);
+			h_v3_hiBin_HFp_cosndiffepAB->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate1[v3HFp]] )));
+			h_v3_hiBin_HFp_cosndiffepAC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[v3HFp] - hiEvtPlanes[RCMate2[v3HFp]] )));
+			h_v3_hiBin_HFp_cosndiffepBC->Fill( hiBin, TMath::Cos( 3. * ( hiEvtPlanes[RCMate1[v3HFp]] - hiEvtPlanes[RCMate2[v3HFp]] )));
 
 			FillEPresohisto_SP(v3HFm, h_v3_hiBin_HFm_QAB, h_v3_hiBin_HFm_QAC, h_v3_hiBin_HFm_QBC);
 			FillEPresohisto_SP(v3HFp, h_v3_hiBin_HFp_QAB, h_v3_hiBin_HFp_QAC, h_v3_hiBin_HFp_QBC);

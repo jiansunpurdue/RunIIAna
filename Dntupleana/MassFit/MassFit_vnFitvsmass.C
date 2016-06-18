@@ -36,6 +36,9 @@ namespace fs = boost::filesystem;
 const int Rebin_mass = 1;
 const int Rebin_vnmass = 3;
 
+#define Nvnmassbins 14
+double massbin_rebinvnmass[Nvnmassbins+1] = { 1.7, 1.74, 1.78, 1.80, 1.82, 1.84, 1.85, 1.86, 1.865, 1.87, 1.88, 1.90, 1.92, 1.96, 2.00};
+
 TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
 void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 4, int iptend = 5, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool doStatisticalerr_from_signalfractionfunc = false, int toyMCnumber = 1000)
@@ -120,14 +123,27 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 		}
 	}
 
+
+    TProfile * h_mass_v1_MBorDtrig_Rebin[Nptbin];
+    TProfile * h_mass_v2_MBorDtrig_Rebin[Nptbin];
+    TProfile * h_mass_v3_MBorDtrig_Rebin[Nptbin];
+    TProfile * h_mass_v4_MBorDtrig_Rebin[Nptbin];
+
 	//Rebin
 	for( int ipt = 0; ipt < Nptbin; ipt++ )
 	{
 		hmass_MBorDtrig[ipt]->Rebin(Rebin_mass);
-		h_mass_v1_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
-		h_mass_v2_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
-		h_mass_v3_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
-		h_mass_v4_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
+
+//		h_mass_v1_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
+//		h_mass_v2_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
+//		h_mass_v3_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
+//		h_mass_v4_MBorDtrig[ipt]->Rebin(Rebin_vnmass);
+
+        h_mass_v1_MBorDtrig_Rebin[ipt] = ( TProfile * ) h_mass_v1_MBorDtrig[ipt]->Rebin( Nvnmassbins, Form("h_mass_v1_MBorDtrig_Rebin_%d", ipt), massbin_rebinvnmass);
+        h_mass_v2_MBorDtrig_Rebin[ipt] = ( TProfile * ) h_mass_v2_MBorDtrig[ipt]->Rebin( Nvnmassbins, Form("h_mass_v2_MBorDtrig_Rebin_%d", ipt), massbin_rebinvnmass);
+        h_mass_v3_MBorDtrig_Rebin[ipt] = ( TProfile * ) h_mass_v3_MBorDtrig[ipt]->Rebin( Nvnmassbins, Form("h_mass_v3_MBorDtrig_Rebin_%d", ipt), massbin_rebinvnmass);
+        h_mass_v4_MBorDtrig_Rebin[ipt] = ( TProfile * ) h_mass_v4_MBorDtrig[ipt]->Rebin( Nvnmassbins, Form("h_mass_v4_MBorDtrig_Rebin_%d", ipt), massbin_rebinvnmass);
+
 	}
 
 	//change profile to histogram
@@ -138,15 +154,10 @@ void MassFit_vnFitvsmass(string inputdatafilename = "./../rootfiles/anaDntuple_D
 
 	for( int ipt = 0; ipt < Nptbin; ipt++ )
 	{
-		h_mass_meanv1_MBorDtrig[ipt] = h_mass_v1_MBorDtrig[ipt]->ProjectionX(Form("h_mass_meanv1_MBorDtrig_%d",ipt),"e");
-		h_mass_meanv2_MBorDtrig[ipt] = h_mass_v2_MBorDtrig[ipt]->ProjectionX(Form("h_mass_meanv2_MBorDtrig_%d",ipt),"e");
-		h_mass_meanv3_MBorDtrig[ipt] = h_mass_v3_MBorDtrig[ipt]->ProjectionX(Form("h_mass_meanv3_MBorDtrig_%d",ipt),"e");
-		h_mass_meanv4_MBorDtrig[ipt] = h_mass_v4_MBorDtrig[ipt]->ProjectionX(Form("h_mass_meanv4_MBorDtrig_%d",ipt),"e");
-
-		//h_mass_meanv1_MBorDtrig[ipt]->Scale(1.0/resolution_EP_v1);
-		//h_mass_meanv2_MBorDtrig[ipt]->Scale(1.0/resolution_EP_v2);
-		//h_mass_meanv3_MBorDtrig[ipt]->Scale(1.0/resolution_EP_v3);
-		//h_mass_meanv4_MBorDtrig[ipt]->Scale(1.0/resolution_EP_v4);
+		h_mass_meanv1_MBorDtrig[ipt] = h_mass_v1_MBorDtrig_Rebin[ipt]->ProjectionX(Form("h_mass_meanv1_MBorDtrig_%d",ipt),"e");
+		h_mass_meanv2_MBorDtrig[ipt] = h_mass_v2_MBorDtrig_Rebin[ipt]->ProjectionX(Form("h_mass_meanv2_MBorDtrig_%d",ipt),"e");
+		h_mass_meanv3_MBorDtrig[ipt] = h_mass_v3_MBorDtrig_Rebin[ipt]->ProjectionX(Form("h_mass_meanv3_MBorDtrig_%d",ipt),"e");
+		h_mass_meanv4_MBorDtrig[ipt] = h_mass_v4_MBorDtrig_Rebin[ipt]->ProjectionX(Form("h_mass_meanv4_MBorDtrig_%d",ipt),"e");
 	}
 
 	// mass spectrum fit and get signal ratio bin by bin
