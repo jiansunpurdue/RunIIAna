@@ -49,6 +49,27 @@ FileVnMB0to10_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent0to10_${Fitoption
 FileVnMB10to30_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent10to30_${Fitoption_SP}.root"
 FileVnMB30to50_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50_${Fitoption_SP}.root"
 FileVnMB50to70_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent50to70_${Fitoption_SP}.root"
+
+DoEPCombinemassvnfit=0
+DoEPDrawcombindfitvn=0
+Fitoption_EP="poly3bkg_floatwidth"
+
+InputMB0to100_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+InputMB0to10_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+InputMB10to30_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent10to30_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+InputMB30to50_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+InputMB50to70_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent50to70_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+
+FileVnMB0to10_EP_combinedfit="rootfiles/vn_combinedfit_vnvsmass_MBtrig_EP_cent0to10_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+FileVnMB10to30_EP_combinedfit="rootfiles/vn_combinedfit_vnvsmass_MBtrig_EP_cent10to30_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+FileVnMB30to50_EP_combinedfit="rootfiles/vn_combinedfit_vnvsmass_MBtrig_EP_cent30to50_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+FileVnMB50to70_EP_combinedfit="rootfiles/vn_combinedfit_vnvsmass_MBtrig_EP_cent50to70_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
+
+FileVnMB0to100_EP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_EP_cent0to100_${Fitoption_EP}.root"
+FileVnMB0to10_EP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_EP_cent0to10_${Fitoption_EP}.root"
+FileVnMB10to30_EP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_EP_cent10to30_${Fitoption_EP}.root"
+FileVnMB30to50_EP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_EP_cent30to50_${Fitoption_EP}.root"
+FileVnMB50to70_EP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_EP_cent50to70_${Fitoption_EP}.root"
 #################### more phi bin method
 
 InputMB0to100_drawvn_morephibin="rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100_${Fitoption_DeltaPhibin}_effcorrected${Doefficiencycorrection}.root"
@@ -85,6 +106,23 @@ root -l -b -q 'Draw_vn_2stepfit_combinefit.C++("'$FileVnMB0to10_SP_Vnvsmass'","'
 root -l -b -q 'Draw_vn_2stepfit_combinefit.C++("'$FileVnMB10to30_SP_Vnvsmass'","'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax')'
 root -l -b -q 'Draw_vn_2stepfit_combinefit.C++("'$FileVnMB30to50_SP_Vnvsmass'","'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax')'
 root -l -b -q 'Draw_vn_2stepfit_combinefit.C++("'$FileVnMB50to70_SP_Vnvsmass'","'$FileVnMB50to70_SP_combinedfit'","'$MBorDtrig'",50,70,'$ptmin','$ptmax')'
+fi
+
+EPorSP="EP"
+
+if [ $DoEPCombinemassvnfit -eq 1 ]; then
+
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata0to10'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,0,10,"'$Fitoption_EP'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata10to30'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,10,30,"'$Fitoption_EP'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata30to50'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,30,50,"'$Fitoption_EP'",'$Doefficiencycorrection')'
+root -l -b -q 'MassFit_combmassvnFit.C++("'$InputMBdata50to70'","'$InputMC'","'$MBorDtrig'","'$EPorSP'",'$ptbinstart','$ptbinend',true,50,70,"'$Fitoption_EP'",'$Doefficiencycorrection')'
+fi
+
+if [ $DoEPDrawcombindfitvn -eq 1 ]; then
+root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB0to10_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",0,10,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
+root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB10to30_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",10,30,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
+root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB30to50_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",30,50,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
+root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB50to70_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",50,70,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
 fi
 
 ###################################
