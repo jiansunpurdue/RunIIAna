@@ -34,8 +34,8 @@ void Draw_vn_combinedfit(TString inputfilename = "rootfiles/Raw_spectrum_combine
 	TH1D * h_v4_pt = (TH1D *) inputdata->Get("h_v4_pt");
 
 	//	Draw_vn( h_v1_pt, MBorDtrig, EPorSP, "v1_"+EPorSP, Form("v_{1}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh);
-	Draw_vn( h_v2_pt, MBorDtrig, EPorSP, "v2_"+EPorSP, Form("v_{2}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh, fitoption);
-	Draw_vn( h_v3_pt, MBorDtrig, EPorSP, "v3_"+EPorSP, Form("v_{3}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh, fitoption);
+	Draw_vn( h_v2_pt, MBorDtrig, EPorSP, "v2_"+EPorSP, Form("v_{2}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);
+	Draw_vn( h_v3_pt, MBorDtrig, EPorSP, "v3_"+EPorSP, Form("v_{3}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);
 	//	Draw_vn( h_v4_pt, MBorDtrig, EPorSP, "v4_"+EPorSP, Form("v_{4}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh);
 
 	TFile * output = new TFile(Form("rootfiles/vn_combinedfit_vnvsmass_%s_%s_cent%dto%d_%s_effcorrected%d.root", MBorDtrig.Data(), EPorSP.Data(), cent_low, cent_high, fitoption.Data(), effcorrected),"RECREATE");

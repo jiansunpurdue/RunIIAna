@@ -7,10 +7,10 @@
 using namespace hi;
 
 //should be decided each time based on information in HiEvtPlaneList.h
-const int v2HFm = HFm2;
-const int v2HFp = HFp2;
-const int v3HFm = HFm3;
-const int v3HFp = HFp3;
+const int v2HFm = HFm2f;
+const int v2HFp = HFp2f;
+const int v3HFm = HFm3f;
+const int v3HFp = HFp3f;
 
 //
 anaDntuple::anaDntuple()
