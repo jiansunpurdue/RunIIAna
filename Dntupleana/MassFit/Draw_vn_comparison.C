@@ -97,9 +97,9 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	else leg = new TLegend(0.45, 0.78, 0.65, 0.90);
 	leg->SetTextSize(0.04);
 	leg->SetTextFont(42);
-	if( DrawvnvsmassEP ) leg->AddEntry(vn_vnvsmass_EP, Form("%s vs mass method {EP}", Ytitle.Data()));
-	if( DrawvnvsmassSP ) leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
-	leg->AddEntry(vn_morephibin, "#Delta#Phi bins");
+	if( DrawvnvsmassEP ) leg->AddEntry(vn_vnvsmass_EP, Form("EP method", Ytitle.Data()));
+	if( DrawvnvsmassSP ) leg->AddEntry(vn_vnvsmass_SP, Form("SP method", Ytitle.Data()));
+	leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
 	if( Drawinoutplane ) leg->AddEntry(vn_inoutplane, "In and out plane method");
 
 	if( vnname == "v2" && Drawchargedparticle )
@@ -121,14 +121,14 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	tex = new TLatex(0.20,0.83,"|y| < 1.0");
 	tex->SetNDC();
 	tex->SetTextFont(42);
-	tex->SetTextSize(0.04);
+	tex->SetTextSize(0.05);
 	tex->SetLineWidth(2);
 	tex->Draw();
 
-	tex = new TLatex(0.20,0.78,Form("Cent. %d-%d%%", cent_low, cent_high));
+	tex = new TLatex(0.20,0.76,Form("Cent. %d-%d%%", cent_low, cent_high));
 	tex->SetNDC();
 	tex->SetTextFont(42);
-	tex->SetTextSize(0.04);
+	tex->SetTextSize(0.05);
 	tex->SetLineWidth(2);
 	tex->Draw();
 

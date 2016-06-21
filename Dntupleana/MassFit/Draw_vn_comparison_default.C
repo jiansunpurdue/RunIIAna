@@ -19,7 +19,7 @@
 
 #include "HIN-11-012.h"
 
-void Draw_vn_comparison_default(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth")
+void Draw_vn_comparison_default(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg_floatwidth")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -75,11 +75,12 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_vnvsmass_SP, TString trignam
 	Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
 	Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
-	TLegend * leg = new TLegend(0.45, 0.78, 0.65, 0.90);
-	leg->SetTextSize(0.04);
+	TLegend * leg = new TLegend(0.50, 0.74, 0.70, 0.87);
+	leg->SetTextSize(0.05);
 	leg->SetTextFont(42);
-	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
-	leg->AddEntry(vn_morephibin, "#Delta#Phi bins");
+//	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
+	leg->AddEntry(vn_vnvsmass_SP, "SP method");
+	leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
 
 	if( vnname == "v2" && Drawchargedparticle )
 		leg->AddEntry(grHIN_v2pt[0], "Charged particle", "p");
@@ -100,14 +101,14 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_vnvsmass_SP, TString trignam
 	tex = new TLatex(0.20,0.83,"|y| < 1.0");
 	tex->SetNDC();
 	tex->SetTextFont(42);
-	tex->SetTextSize(0.04);
+	tex->SetTextSize(0.05);
 	tex->SetLineWidth(2);
 	tex->Draw();
 
-	tex = new TLatex(0.20,0.78,Form("Cent. %d-%d%%", cent_low, cent_high));
+	tex = new TLatex(0.20,0.76,Form("Cent. %d-%d%%", cent_low, cent_high));
 	tex->SetNDC();
 	tex->SetTextFont(42);
-	tex->SetTextSize(0.04);
+	tex->SetTextSize(0.05);
 	tex->SetLineWidth(2);
 	tex->Draw();
 
