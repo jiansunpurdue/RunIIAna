@@ -17,11 +17,15 @@
 #include <TGraphErrors.h>
 #include <TMultiGraph.h>
 
-void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorephibins_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg_floatwidth")
+#include <./DataPoints_HIN_15_014.C>
+
+void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorephibin_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
+
+	DataPoints();
 
 	void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vnvsmass_SP, TH1D * vn_vnvsmass_SP_sys, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg");
 
@@ -66,6 +70,41 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vn
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 
 	vn_morephibin->Draw();
+
+	if( Drawchargedparticle )
+	{
+		grSteveSPv2[8]->SetMarkerStyle(24);
+		grSteveSPv2[8]->SetMarkerColor(14);
+		grSteveSPv2[8]->SetLineColor(14);
+		grSteveSPv2[8]->SetMarkerSize(1);
+
+		grSteveSPv2[9]->SetMarkerStyle(24);
+		grSteveSPv2[9]->SetMarkerColor(14);
+		grSteveSPv2[9]->SetLineColor(14);
+		grSteveSPv2[9]->SetMarkerSize(1);
+
+		grSteveSPv2[10]->SetMarkerStyle(24);
+		grSteveSPv2[10]->SetMarkerColor(14);
+		grSteveSPv2[10]->SetLineColor(14);
+		grSteveSPv2[10]->SetMarkerSize(1);
+
+		if( cent_low == 0 && cent_high == 10 ) 
+		{
+			//grSteveSPv2sys[8]->Draw("2same");
+			grSteveSPv2[8]->Draw("psame");
+		}
+		if( cent_low == 10 && cent_high == 30 ) 
+		{
+			//grSteveSPv2sys[9]->Draw("2same");
+			grSteveSPv2[9]->Draw("psame");
+		}
+		if( cent_low == 30 && cent_high == 50 ) 
+		{
+			//grSteveSPv2sys[10]->Draw("2same");
+			grSteveSPv2[10]->Draw("psame");
+		}
+	}
+
 	vn_morephibin_sys->Draw("E2same");
 	vn_morephibin->Draw("same");
 	vn_vnvsmass_SP_sys->Draw("E2same");
@@ -79,16 +118,34 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vn
 	Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
 	Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
-	TLegend * leg = new TLegend(0.50, 0.74, 0.70, 0.87);
-	leg->SetTextSize(0.05);
-	leg->SetTextFont(42);
-//	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
-	leg->AddEntry(vn_vnvsmass_SP, "SP method");
-	leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
+	if( !Drawchargedparticle )
+	{
+		TLegend * leg = new TLegend(0.50, 0.74, 0.70, 0.87);
+		leg->SetTextSize(0.05);
+		leg->SetTextFont(42);
+		//	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
+		leg->AddEntry(vn_vnvsmass_SP, "SP method");
+		leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
 
-	leg->SetBorderSize(0);
-	leg->SetFillStyle(0);
-	leg->Draw();
+		leg->SetBorderSize(0);
+		leg->SetFillStyle(0);
+		leg->Draw();
+	}
+	else
+	{
+		TLegend * leg = new TLegend(0.50, 0.65, 0.70, 0.90);
+		leg->SetTextSize(0.05);
+		leg->SetTextFont(42);
+		//	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
+		leg->AddEntry(vn_vnvsmass_SP, "SP method");
+		leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
+		leg->AddEntry(grSteveSPv2[10], "Charged particle", "p");
+		leg->AddEntry((TObject*)0, "#scale[0.7]{HIN-15-014}", "");
+
+		leg->SetBorderSize(0);
+		leg->SetFillStyle(0);
+		leg->Draw();
+	}
 
 	TLatex* tex;
 	tex = new TLatex(0.20,0.83,"|y| < 1.0");

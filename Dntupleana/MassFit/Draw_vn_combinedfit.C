@@ -46,8 +46,8 @@ void Draw_vn_combinedfit(TString inputfilename = "rootfiles/Raw_spectrum_combine
 		Calculatetotalsys( cent_low, cent_high, 1.0, 40.0, EPorSP, "v3", h_v3_pt, h_v3_pt_sys, h_v3_pt_relativesys);
 	}
 
-	Draw_vn( h_v2_pt, h_v2_pt_sys, MBorDtrig, EPorSP, "v2_"+EPorSP, Form("v_{2}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);
-	Draw_vn( h_v3_pt, h_v3_pt_sys, MBorDtrig, EPorSP, "v3_"+EPorSP, Form("v_{3}{%s}", EPorSP.Data()), cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);
+	Draw_vn( h_v2_pt, h_v2_pt_sys, MBorDtrig, EPorSP, "v2_"+EPorSP, "v_{2}", cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);
+	Draw_vn( h_v3_pt, h_v3_pt_sys, MBorDtrig, EPorSP, "v3_"+EPorSP, "v_{3}", cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);
 
 	TFile * output = new TFile(Form("rootfiles/vn_combinedfit_vnvsmass_%s_%s_cent%dto%d_%s_effcorrected%d.root", MBorDtrig.Data(), EPorSP.Data(), cent_low, cent_high, fitoption.Data(), effcorrected),"RECREATE");
 

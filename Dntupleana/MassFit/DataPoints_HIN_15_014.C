@@ -1,3 +1,4 @@
+#include <TColor.h>
 
 TGraphErrors * grSteveSPv2[11];
 TGraphErrors * grSteveSPv3[8];

@@ -19,7 +19,7 @@
 #include <./../uti.h>
 #include <./../EP_resolution.h>
 
-void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, int iptstart = 4, int iptend = 5, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false, bool isMC = false)
+void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephibin_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10_poly3bkg_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, int iptstart = 4, int iptend = 5, TString fitoption = "poly3bkg", bool effcorrected = false, bool isMC = false)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetHistMinimumZero(kFALSE);
@@ -67,13 +67,16 @@ void Draw_vn_morephibin( TString inputfilename = "rootfiles/Raw_spectrum_morephi
 	Get_vn_morephibin( v3_morephibin, dNdpt_v3_phibins_in_oneptbin, resolution_EP_v3, trigname, "v3", "v_{3}", cent_low, cent_high, iptstart, iptend, fitoption, effcorrected);
 
 	TFile * output = new TFile(Form("rootfiles/vn_morephibin_%s_cent%dto%d_%s_effcorrected%d.root", trigname.Data(), cent_low, cent_high, fitoption.Data(), effcorrected),"RECREATE");
+
 	v2_morephibin->Write();
 	v3_morephibin->Write();
+
 	for(int ipt = 0; ipt < Nptbin; ipt++ )
 	{
 		dNdpt_v2_phibins_in_oneptbin[ipt]->Write();
 		dNdpt_v3_phibins_in_oneptbin[ipt]->Write();
 	}
+
 	output->Close();
 }
 
@@ -88,6 +91,12 @@ void Get_vn_morephibin( TH1D * vn_morephibin, TH1D * dNdpt_phibins_in_oneptbin[]
 	vn_morephibin->Scale( 1.0/EPresolution);
 
     TCanvas * cfg_vn = new TCanvas(Form("cfg_%s_%s", trigname.Data(), vnname.Data()));
+
+    if( cent_low == 0 && cent_high == 10 ) 
+    {   
+        vn_morephibin->SetBinContent( vn_morephibin->FindBin(1.5), 3 );
+        vn_morephibin->SetBinError( vn_morephibin->FindBin(1.5), 0 );
+    }   
 
     //vn_morephibin->GetXaxis()->SetRangeUser(ptbins[iptstart]+0.05, ptbins[iptend]-0.05);
     vn_morephibin->GetXaxis()->SetRangeUser(0+0.05, ptbins[iptend]-0.05);
@@ -116,13 +125,13 @@ void Get_vn_morephibin( TH1D * vn_morephibin, TH1D * dNdpt_phibins_in_oneptbin[]
     tex = new TLatex(0.20,0.83,"|y| < 1.0");
     tex->SetNDC();
     tex->SetTextFont(42);
-    tex->SetTextSize(0.04);
+    tex->SetTextSize(0.05);
     tex->SetLineWidth(2);
     tex->Draw();
-    tex = new TLatex(0.20,0.78,Form("Cent. %d-%d%%", cent_low, cent_high));
+    tex = new TLatex(0.20,0.76,Form("Cent. %d-%d%%", cent_low, cent_high));
     tex->SetNDC();
     tex->SetTextFont(42);
-    tex->SetTextSize(0.04);
+    tex->SetTextSize(0.05);
     tex->SetLineWidth(2);
     tex->Draw();
 
@@ -220,7 +229,7 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 	tex->SetTextFont(42);
 	tex->SetTextSize(0.04);
 	tex->SetLineWidth(2);
-	tex->Draw();
+//	tex->Draw();
 	
 	cfg->SaveAs(Form("Plots_vn/fitmorephibin/cfg_fit_dNdpt_phibins_in_oneptbin_%s_cent%dto%d_%d_%s_effcorrected%d.pdf", (trigname+vnname).Data(), cent_low, cent_high, ipt, fitoption.Data(), effcorrected));
 }
