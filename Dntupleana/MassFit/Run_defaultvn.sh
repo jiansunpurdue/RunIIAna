@@ -1,12 +1,13 @@
 #!/bin/sh
 
-DoCombinemassvnfit=1
-DoDrawcombindfitvn=1
+DoCombinemassvnfit=0
+DoDrawcombindfitvn=0
 DoCompare2stepfit_combinefit_vn=0
 
-DoMassFitMorephibin=1
-DODrawmorephibinvn=1
-DOVncomparison=1
+DoMassFitMorephibin=0
+DODrawmorephibinvn=0
+
+DOVncomparison=0
 
 ptbinstart=2
 ptbinend=11 #not included
@@ -53,6 +54,8 @@ FileVnMB50to70_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent50to70_${Fitopti
 DoEPCombinemassvnfit=0
 DoEPDrawcombindfitvn=0
 Fitoption_EP="poly3bkg_floatwidth"
+
+DOVnvsmasscomparison=1
 
 InputMB0to100_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to100_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
 InputMB0to10_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent-0to10_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
@@ -123,6 +126,13 @@ root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB0to10_drawvn_combinemassvnfit_E
 root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB10to30_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",10,30,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
 root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB30to50_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",30,50,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
 root -l -b -q 'Draw_vn_combinedfit.C++("'$InputMB50to70_drawvn_combinemassvnfit_EP'","'$MBorDtrig'","'$EPorSP'",50,70,'$ptmin','$ptmax',"'$Fitoption_EP'",'$Doefficiencycorrection')'
+fi
+
+if [ $DOVnvsmasscomparison -eq 1 ]; then
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB0to10_drawvn_combinemassvnfit_EP'","'$InputMB0to10_drawvn_combinemassvnfit_SP'","'$MBorDtrig'",0,10,'$ptbinstart','$ptbinend',"'$Fitoption_SP'")'
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB10to30_drawvn_combinemassvnfit_EP'","'$InputMB10to30_drawvn_combinemassvnfit_SP'","'$MBorDtrig'",10,30,'$ptbinstart','$ptbinend',"'$Fitoption_SP'")'
+root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB30to50_drawvn_combinemassvnfit_EP'","'$InputMB30to50_drawvn_combinemassvnfit_SP'","'$MBorDtrig'",30,50,'$ptbinstart','$ptbinend',"'$Fitoption_SP'")'
+#root -l -b -q 'Draw_vnvsmasscomparison_EPSP.C++("'$InputMB50to70_drawvn_combinemassvnfit_EP'","'$InputMB50to70_drawvn_combinemassvnfit_SP'","'$MBorDtrig'",50,70,'$ptbinstart','$ptbinend',"'$Fitoption'")'
 fi
 
 ###################################

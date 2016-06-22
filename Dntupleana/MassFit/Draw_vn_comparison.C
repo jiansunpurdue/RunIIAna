@@ -79,11 +79,6 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	if( DrawvnvsmassSP ) vn_vnvsmass_SP->Draw("same");
 	if( Drawinoutplane ) vn_inoutplane->Draw("same");
 
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 0 && cent_high == 10 ) grHIN_v2pt[0]->Draw("psame");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 10 && cent_high == 30 ) grHIN_v2pt[1]->Draw("psame");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 30 && cent_high == 50 ) grHIN_v2pt[3]->Draw("psame");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 50 && cent_high == 70 ) grHIN_v2pt[5]->Draw("psame");
-
 	TLatex Tl;
 	Tl.SetNDC();
 	Tl.SetTextAlign(12);
@@ -92,26 +87,13 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	Tl.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
 	Tl.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
-	TLegend * leg;
-	if( vnname == "v2" && Drawchargedparticle ) leg = new TLegend(0.45, 0.67, 0.65, 0.90);
-	else leg = new TLegend(0.45, 0.78, 0.65, 0.90);
+	TLegend * leg = new TLegend(0.45, 0.78, 0.65, 0.90);
 	leg->SetTextSize(0.04);
 	leg->SetTextFont(42);
 	if( DrawvnvsmassEP ) leg->AddEntry(vn_vnvsmass_EP, Form("EP method", Ytitle.Data()));
 	if( DrawvnvsmassSP ) leg->AddEntry(vn_vnvsmass_SP, Form("SP method", Ytitle.Data()));
 	leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
 	if( Drawinoutplane ) leg->AddEntry(vn_inoutplane, "In and out plane method");
-
-	if( vnname == "v2" && Drawchargedparticle )
-		leg->AddEntry(grHIN_v2pt[0], "Charged particle", "p");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 0 && cent_high == 10 ) 
-		leg->AddEntry((TObject*)0, "#scale[0.7]{Cent. 0-10%, HIN-11-012}", "");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 10 && cent_high == 30 ) 
-		leg->AddEntry((TObject*)0, "#scale[0.7]{Cent. 10-20%, HIN-11-012}", "");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 30 && cent_high == 50 ) 
-		leg->AddEntry((TObject*)0, "#scale[0.7]{Cent. 30-40%, HIN-11-012}", "");
-	if( vnname == "v2" && Drawchargedparticle && cent_low == 50 && cent_high == 70 ) 
-		leg->AddEntry((TObject*)0, "#scale[0.7]{Cent. 50-60%, HIN-11-012}", "");
 
 	leg->SetBorderSize(0);
 	leg->SetFillStyle(0);
@@ -138,5 +120,5 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_inoutplane, TH1D * vn_vnvsma
 	fun->SetLineWidth(1);
 	fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_comparison_%s_%s_cent%dto%d_charged%d_vnvsmassSP%dEP%d_inoutplane%d_%s.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, DrawvnvsmassSP, DrawvnvsmassEP, Drawchargedparticle, Drawinoutplane, fitoption.Data()));
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_comparison_%s_%s_cent%dto%d_vnvsmassSP%dEP%d_inoutplane%d_%s.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, DrawvnvsmassSP, DrawvnvsmassEP, Drawinoutplane, fitoption.Data()));
 }

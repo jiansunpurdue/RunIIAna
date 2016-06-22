@@ -55,7 +55,11 @@ void Draw_vn_ratio( TH1D * vn_2stepfit, TH1D * vn_combinefit, TString vnname, TS
 	pad2->Draw();
 
 	pad1->cd();
+	vn_2stepfit->SetMarkerSize(1);
+	vn_2stepfit->SetMarkerColor(6);
+	vn_2stepfit->SetLineColor(6);
 	vn_2stepfit->Draw();
+	vn_combinefit->SetMarkerSize(1);
 	vn_combinefit->SetMarkerColor(4);
 	vn_combinefit->SetLineColor(4);
 	vn_combinefit->Draw("same");
