@@ -66,10 +66,19 @@ void Calculate_EPreso_EP( TH1D * h_EPreso_EP, string EPname, TProfile * h_hiBin_
     for( int ibin = 0; ibin < NCentbins; ibin++  )
     {
 		h_EPreso_EP->SetBinContent( ibin+1, TMath::Sqrt( h_hiBin_cosndiffepAB->GetBinContent(ibin+1) * h_hiBin_cosndiffepAC->GetBinContent(ibin+1) / h_hiBin_cosndiffepBC->GetBinContent(ibin+1) ));
+		//should add the error
+		double error2_AB = h_hiBin_cosndiffepAB->GetBinError( ibin+1 ) * h_hiBin_cosndiffepAB->GetBinError( ibin+1 ) / ( h_hiBin_cosndiffepAB->GetBinContent(ibin+1) * h_hiBin_cosndiffepAB->GetBinContent(ibin+1) );
+		double error2_AC = h_hiBin_cosndiffepAC->GetBinError( ibin+1 ) * h_hiBin_cosndiffepAC->GetBinError( ibin+1 ) / ( h_hiBin_cosndiffepAC->GetBinContent(ibin+1) * h_hiBin_cosndiffepAC->GetBinContent(ibin+1) );
+		double error2_BC = h_hiBin_cosndiffepBC->GetBinError( ibin+1 ) * h_hiBin_cosndiffepBC->GetBinError( ibin+1 ) / ( h_hiBin_cosndiffepBC->GetBinContent(ibin+1) * h_hiBin_cosndiffepBC->GetBinContent(ibin+1) );
+		h_EPreso_EP->SetBinError( ibin+1, h_EPreso_EP->GetBinContent( ibin+1 )/2. * TMath::Sqrt( error2_AB + error2_AC + error2_BC ));
 	}
 
 	cout << EPname<< " Resolution for EP: ";
 	for( int ibin = 0; ibin < NCentbins; ibin++  )
 		cout << h_EPreso_EP->GetBinContent( ibin+1 ) << ", ";
+	cout << endl;
+	cout << EPname<< " Resolution Error for EP: ";
+	for( int ibin = 0; ibin < NCentbins; ibin++  )
+		cout << h_EPreso_EP->GetBinError( ibin+1 ) << ", ";
 	cout << endl;
 }
