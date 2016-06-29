@@ -834,6 +834,7 @@ void anaDntuple::LoopOverFile(int startFile, int endFile, string filelist, bool 
 	Init(outfilename);
 
 	Histobookforanalysis();
+	Initiate_EPSPresolution();
 
 	string inputfilename;
 
@@ -909,6 +910,7 @@ void anaDntuple::ProcessPartialEvents( string inputfilename, bool isPbPb, bool i
 	Init(outfilename);
 
 	Histobookforanalysis();
+	Initiate_EPSPresolution();
 
 	if (!TFile::Open(inputfilename.c_str()))   { cout << " fail to open file" << endl; return;}
 	TFile * inputf = TFile::Open(inputfilename.c_str());
@@ -1242,75 +1244,206 @@ void anaDntuple::DecideEPSPresolution( int icand )
 {
 	//decide EP resolution
 	int icentbin = Decide_centbin_for_EPresolution( cent_low, cent_high, isMC);
+
+	EP_resolution_v1 = 1;
+	EP_resolution_v2 = 99999.;
+	EP_resolution_v3 = 99999.;
+	EP_resolution_v4 = 1;
+
+	SP_EP_resolution_v1 = 1;
+	SP_EP_resolution_v2 = 99999.;
+	SP_EP_resolution_v3 = 99999.;
+	SP_EP_resolution_v4 = 1;
+
 	if( icentbin >= 0 )
 	{
-		//		if( DefaultEPlist )  // to be added
-		if( !isMC ) //data
+		if( DefaultEPlist )  // to be added
 		{
-			if( Deta[icand] >= 0 )
+			if( !isMC ) //data
 			{
-				EP_resolution_v1 = EPm_resolution_v1[icentbin];
-				EP_resolution_v2 = EPm_resolution_v2[icentbin];
-				EP_resolution_v3 = EPm_resolution_v3[icentbin];
-				EP_resolution_v4 = EPm_resolution_v4[icentbin];
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v1 = EPm_resolution_v1[icentbin];
+					EP_resolution_v2 = EPm_resolution_v2[icentbin];
+					EP_resolution_v3 = EPm_resolution_v3[icentbin];
+					EP_resolution_v4 = EPm_resolution_v4[icentbin];
 
-				SP_EP_resolution_v1 = 1;
-				SP_EP_resolution_v2 = SP_EPm_resolution_v2[icentbin];
-				SP_EP_resolution_v3 = SP_EPm_resolution_v3[icentbin];
-				SP_EP_resolution_v4 = 1;
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2[icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3[icentbin];
+				}
+				else
+				{
+					EP_resolution_v1 = EPp_resolution_v1[icentbin];
+					EP_resolution_v2 = EPp_resolution_v2[icentbin];
+					EP_resolution_v3 = EPp_resolution_v3[icentbin];
+					EP_resolution_v4 = EPp_resolution_v4[icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2[icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3[icentbin];
+				}
 			}
 			else
 			{
-				EP_resolution_v1 = EPp_resolution_v1[icentbin];
-				EP_resolution_v2 = EPp_resolution_v2[icentbin];
-				EP_resolution_v3 = EPp_resolution_v3[icentbin];
-				EP_resolution_v4 = EPp_resolution_v4[icentbin];
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_MC[icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_MC[icentbin];
 
-				SP_EP_resolution_v1 = 1;
-				SP_EP_resolution_v2 = SP_EPp_resolution_v2[icentbin];
-				SP_EP_resolution_v3 = SP_EPp_resolution_v3[icentbin];
-				SP_EP_resolution_v4 = 1;
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_MC[icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_MC[icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_MC[icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_MC[icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_MC[icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_MC[icentbin];
+				}
 			}
 		}
-		else
+		else if( !isMC )//not default event plane lists and not MC
 		{
-			if( Deta[icand] >= 0 )
+			if( v2HFm == HFm2 && v2HFp == HFp2 ) //eta gap 3.0
 			{
-				EP_resolution_v1 = 1;
-				EP_resolution_v2 = EPm_resolution_v2_MC[icentbin];
-				EP_resolution_v3 = EPm_resolution_v3_MC[icentbin];
-				EP_resolution_v4 = 1;
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[0][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[0][icentbin];
 
-				SP_EP_resolution_v1 = 1;
-				SP_EP_resolution_v2 = SP_EPm_resolution_v2_MC[icentbin];
-				SP_EP_resolution_v3 = SP_EPm_resolution_v3_MC[icentbin];
-				SP_EP_resolution_v4 = 1;
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[0][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[0][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[0][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[0][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[0][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[0][icentbin];
+				}
 			}
-			else
-			{
-				EP_resolution_v1 = 1;
-				EP_resolution_v2 = EPp_resolution_v2_MC[icentbin];
-				EP_resolution_v3 = EPp_resolution_v3_MC[icentbin];
-				EP_resolution_v4 = 1;
 
-				SP_EP_resolution_v1 = 1;
-				SP_EP_resolution_v2 = SP_EPp_resolution_v2_MC[icentbin];
-				SP_EP_resolution_v3 = SP_EPp_resolution_v3_MC[icentbin];
-				SP_EP_resolution_v4 = 1;
+			if( v2HFm == HFm2a && v2HFp == HFp2a ) //eta gap 2.0
+			{
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[1][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[1][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[1][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[1][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[1][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[1][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[1][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[1][icentbin];
+				}
+			}
+
+			if( v2HFm == HFm2b && v2HFp == HFp2b ) //eta gap 2.5
+			{
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[2][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[2][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[2][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[2][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[2][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[2][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[2][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[2][icentbin];
+				}
+			}
+
+			if( v2HFm == HFm2c && v2HFp == HFp2c ) //eta gap 3.0
+			{
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[3][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[3][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[3][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[3][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[3][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[3][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[3][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[3][icentbin];
+				}
+			}
+
+			if( v2HFm == HFm2d && v2HFp == HFp2d ) //eta gap 3.5
+			{
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[4][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[4][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[4][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[4][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[4][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[4][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[4][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[4][icentbin];
+				}
+			}
+
+			if( v2HFm == HFm2e && v2HFp == HFp2e ) //eta gap 4.0
+			{
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[5][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[5][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[5][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[5][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[5][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[5][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[5][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[5][icentbin];
+				}
+			}
+
+			if( v2HFm == HFm2f && v2HFp == HFp2f ) //eta gap 4.5
+			{
+				if( Deta[icand] >= 0 )
+				{
+					EP_resolution_v2 = EPm_resolution_v2_etagap[6][icentbin];
+					EP_resolution_v3 = EPm_resolution_v3_etagap[6][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPm_resolution_v2_etagap[6][icentbin];
+					SP_EP_resolution_v3 = SP_EPm_resolution_v3_etagap[6][icentbin];
+				}
+				else
+				{
+					EP_resolution_v2 = EPp_resolution_v2_etagap[6][icentbin];
+					EP_resolution_v3 = EPp_resolution_v3_etagap[6][icentbin];
+
+					SP_EP_resolution_v2 = SP_EPp_resolution_v2_etagap[6][icentbin];
+					SP_EP_resolution_v3 = SP_EPp_resolution_v3_etagap[6][icentbin];
+				}
 			}
 		}
-	}
-	else
-	{
-		EP_resolution_v1 = 1;
-		EP_resolution_v2 = 1;
-		EP_resolution_v3 = 1;
-		EP_resolution_v4 = 1;
-
-		SP_EP_resolution_v1 = 1;
-		SP_EP_resolution_v2 = 1;
-		SP_EP_resolution_v3 = 1;
-		SP_EP_resolution_v4 = 1;
 	}
 }
 
