@@ -7,10 +7,10 @@
 using namespace hi;
 
 //should be decided each time based on information in HiEvtPlaneList.h
-const int v2HFm = HFm2f;
-const int v2HFp = HFp2f;
-const int v3HFm = HFm3f;
-const int v3HFp = HFp3f;
+const int v2HFm = HFm2;
+const int v2HFp = HFp2;
+const int v3HFm = HFm3;
+const int v3HFp = HFp3;
 
 //
 anaDntuple::anaDntuple()
@@ -1194,7 +1194,7 @@ void anaDntuple::LoopOverDcandidates()
 			}
 
 			DecideEPSPresolution( icand );
-			//cout << "isMC: " << isMC << "  cent_low: " << cent_low << " cent_high: " << cent_high << " deta: " << Deta[icand] << endl;
+			//cout << " DefaultEPlist: " << DefaultEPlist << " isMC: " << isMC << "  cent_low: " << cent_low << " cent_high: " << cent_high << " deta: " << Deta[icand] << endl;
 			//cout << " EP_resolution_v2: " << EP_resolution_v2 << " EP_resolution_v3: " << EP_resolution_v3 << " SP_EP_resolution_v2: " << SP_EP_resolution_v2 << " SP_EP_resolution_v3: " << SP_EP_resolution_v3 << endl;
 		}
 

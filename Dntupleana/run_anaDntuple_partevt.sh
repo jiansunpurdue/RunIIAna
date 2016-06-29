@@ -16,9 +16,10 @@ endevt=$5
 hibin_low=$6
 hibin_high=$7
 PbPbMBPD=$8
+EPlistdefault=$9
 
 root -l -b<<EOF
-.x run_anaDntuple_partevt.C+("$intputfilename", $isPbPb, $isMC, $startevt, $endevt, $hibin_low, $hibin_high, $PbPbMBPD)
+.x run_anaDntuple_partevt.C+("$intputfilename", $isPbPb, $isMC, $startevt, $endevt, $hibin_low, $hibin_high, $PbPbMBPD, $EPlistdefault)
 .q
 EOF
 
