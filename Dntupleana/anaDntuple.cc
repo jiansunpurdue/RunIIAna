@@ -1457,48 +1457,48 @@ void anaDntuple::Dtrig_combination( int icand )
 	if( isPbPbCollision )
 	{
 		if(
-				(HLT_HIDmesonHITrackingGlobal_Dpt20_combined&&Dpt[icand]>25.&&Dpt[icand]<45.)||
-				(HLT_HIDmesonHITrackingGlobal_Dpt40_v1&&Dpt[icand]>45.&&Dpt[icand]<65.)||
-				(HLT_HIDmesonHITrackingGlobal_Dpt60_v1&&Dpt[icand]>65.)	
+				(HLT_HIDmesonHITrackingGlobal_Dpt20_combined&&Dpt[icand]>20.&&Dpt[icand]<40.)||
+				(HLT_HIDmesonHITrackingGlobal_Dpt40_v1&&Dpt[icand]>40.&&Dpt[icand]<60.)||
+				(HLT_HIDmesonHITrackingGlobal_Dpt60_v1&&Dpt[icand]>60.)	
 		  )
 			Dtrig_combined = 1;
 
-		if( PbPbPD == 16 ) //HardProbe
-		{
-			if(
-					HLT_HIDmesonHITrackingGlobal_Dpt20_Cent0_10_combined&&Dpt[icand]>25.
-			  )
-				Dtrig_combined_Cent0_10 = 1;
-
-			if( cent_low >= 0 && cent_high <= 10 )
-				Dtrig_combined = Dtrig_combined || Dtrig_combined_Cent0_10;
-		}
-
-		if( PbPbPD == 17 ) //HardProbePeripheral
-		{
-			if(
-					run > 262750 && 
-					( (HLT_HIDmesonHITrackingGlobal_Dpt20_Cent30_100_combined&&Dpt[icand]>25.&&Dpt[icand]<35.)||
-					  (HLT_HIDmesonHITrackingGlobal_Dpt30_Cent30_100_v1&&Dpt[icand]>35.&&Dpt[icand]<45.)||
-					  (HLT_HIDmesonHITrackingGlobal_Dpt40_Cent30_100_v1&&Dpt[icand]>45.&&Dpt[icand]<65.)||
-					  (HLT_HIDmesonHITrackingGlobal_Dpt60_Cent30_100_v1&&Dpt[icand]>65.) )
-			  )
-				Dtrig_combined_Cent30_100 = 1;
-
-			if(
-					( (HLT_HIDmesonHITrackingGlobal_Dpt20_Cent50_100_combined&&Dpt[icand]>25.&&Dpt[icand]<35.)||
-					  (HLT_HIDmesonHITrackingGlobal_Dpt30_Cent50_100_v1&&Dpt[icand]>35.&&Dpt[icand]<45.)||
-					  (HLT_HIDmesonHITrackingGlobal_Dpt40_Cent50_100_v1&&Dpt[icand]>45.&&Dpt[icand]<65.)||
-					  (HLT_HIDmesonHITrackingGlobal_Dpt60_Cent50_100_v1&&Dpt[icand]>65.) )
-			  )
-				Dtrig_combined_Cent50_100 = 1;
-
-			if( cent_low >= 30 && cent_low < 50 && cent_high <= 100 )
-				Dtrig_combined = !Dtrig_combined && Dtrig_combined_Cent30_100; //remove overlap with 0-100% D triggers
-
-			if( cent_low >= 50 && cent_high <= 100 )
-				Dtrig_combined = !Dtrig_combined && ( Dtrig_combined_Cent30_100 || Dtrig_combined_Cent50_100 );
-		}
+//		if( PbPbPD == 16 ) //HardProbe
+//		{
+//			if(
+//					HLT_HIDmesonHITrackingGlobal_Dpt20_Cent0_10_combined&&Dpt[icand]>20.
+//			  )
+//				Dtrig_combined_Cent0_10 = 1;
+//
+//			if( cent_low >= 0 && cent_high <= 10 )
+//				Dtrig_combined = Dtrig_combined || Dtrig_combined_Cent0_10;
+//		}
+//
+//		if( PbPbPD == 17 ) //HardProbePeripheral
+//		{
+//			if(
+//					run > 262750 && 
+//					( (HLT_HIDmesonHITrackingGlobal_Dpt20_Cent30_100_combined&&Dpt[icand]>20.&&Dpt[icand]<40.)||
+//					  //(HLT_HIDmesonHITrackingGlobal_Dpt30_Cent30_100_v1&&Dpt[icand]>30.&&Dpt[icand]<40.)||
+//					  (HLT_HIDmesonHITrackingGlobal_Dpt40_Cent30_100_v1&&Dpt[icand]>40.&&Dpt[icand]<60.)||
+//					  (HLT_HIDmesonHITrackingGlobal_Dpt60_Cent30_100_v1&&Dpt[icand]>60.) )
+//			  )
+//				Dtrig_combined_Cent30_100 = 1;
+//
+//			if(
+//					( (HLT_HIDmesonHITrackingGlobal_Dpt20_Cent50_100_combined&&Dpt[icand]>20.&&Dpt[icand]<40.)||
+//					  //(HLT_HIDmesonHITrackingGlobal_Dpt30_Cent50_100_v1&&Dpt[icand]>30.&&Dpt[icand]<40.)||
+//					  (HLT_HIDmesonHITrackingGlobal_Dpt40_Cent50_100_v1&&Dpt[icand]>40.&&Dpt[icand]<60.)||
+//					  (HLT_HIDmesonHITrackingGlobal_Dpt60_Cent50_100_v1&&Dpt[icand]>60.) )
+//			  )
+//				Dtrig_combined_Cent50_100 = 1;
+//
+//			if( cent_low >= 30 && cent_low < 50 && cent_high <= 100 )
+//				Dtrig_combined = !Dtrig_combined && Dtrig_combined_Cent30_100; //remove overlap with 0-100% D triggers
+//
+//			if( cent_low >= 50 && cent_high <= 100 )
+//				Dtrig_combined = !Dtrig_combined && ( Dtrig_combined_Cent30_100 || Dtrig_combined_Cent50_100 );
+//		}
 	}
 	else
 	{
