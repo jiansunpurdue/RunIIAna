@@ -43,6 +43,7 @@ void anaDntuple::Histobookforanalysis()
 	h_v3_hiBin_cosndiffeppepm->Sumw2();
 	h_v4_hiBin_cosndiffeppepm->Sumw2();
 
+	h_hiBin_Dcandphi->Sumw2();
 	h_v2_hiBin_HFm_cosndiffepAB->Sumw2(); h_v2_hiBin_HFm_cosndiffepAC->Sumw2(); h_v2_hiBin_HFm_cosndiffepBC->Sumw2();
 	h_v2_hiBin_HFp_cosndiffepAB->Sumw2(); h_v2_hiBin_HFp_cosndiffepAC->Sumw2(); h_v2_hiBin_HFp_cosndiffepBC->Sumw2();
 	h_v3_hiBin_HFm_cosndiffepAB->Sumw2(); h_v3_hiBin_HFm_cosndiffepAC->Sumw2(); h_v3_hiBin_HFm_cosndiffepBC->Sumw2();
@@ -1137,6 +1138,7 @@ void anaDntuple::LoopOverDcandidates()
 		if( TMath::Abs( Dy[icand] ) > Drapiditycut )    continue;
 
 		int iptbin = decideptbin( Dpt[icand], ptbins, Nptbin);
+		DcandDCA = DsvpvDistance[icand] * TMath::Sin(Dalpha[icand]);
 
 		//topological cuts
 		if( isPbPbCollision )
@@ -1210,6 +1212,9 @@ void anaDntuple::LoopOverDcandidates()
 		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp_MB ) continue;
 
 		///////////////////////////////analysis with MB trig/////////////////////////////////////////
+		//
+		//for D cand Q vectore recenter
+		h_hiBin_Dcandphi->Fill( hiBin, Dphi[icand]);
 
 		FillMBhisto( icand, iptbin);
 		if( isMC ) FillMCMBhisto( icand, iptbin);
@@ -1869,6 +1874,7 @@ void anaDntuple::Write()
 	h_v3_hiBin_cosndiffeppepm->Write();
 	h_v4_hiBin_cosndiffeppepm->Write();
 
+	h_hiBin_Dcandphi->Write();
 	h_v2_hiBin_HFm_cosndiffepAB->Write();
 	h_v2_hiBin_HFm_cosndiffepAC->Write();
 	h_v2_hiBin_HFm_cosndiffepBC->Write();

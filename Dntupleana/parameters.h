@@ -60,7 +60,6 @@ TH2D * hevt_trig_hiBin = new TH2D("hevt_trig_hiBin","hevt_trig_hiBin", 35, 0, 35
 #define NEvtPlanesSave 35
 TH1D * h_EvtPlane[NEvtPlanesSave];
 
-//for event plane resolution with 2-sub and 3-sub event
 //for data
 #define NCentbins 6
 double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
@@ -70,6 +69,10 @@ double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
 //#define NCentbins 6 
 //double hibinbins[NCentbins+1] = { -0.5, 9.5, 39.5, 79.5, 119.5, 159.5, 199.5};
 
+//for D cand Q vector recenter
+TH2D * h_hiBin_Dcandphi = new TH2D("h_hiBin_Dcandphi","h_hiBin_Dcandphi",200,0,200,400,-4.,4.);
+
+//for event plane resolution with 2-sub and 3-sub event
 TProfile * h_v1_hiBin_cosndiffeppepm = new TProfile("h_v1_hiBin_cosndiffeppepm","h_v1_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm","h_v2_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v3_hiBin_cosndiffeppepm = new TProfile("h_v3_hiBin_cosndiffeppepm","h_v3_hiBin_cosndiffeppepm", NCentbins, hibinbins);
@@ -200,5 +203,12 @@ TProfile * h_mass_v1_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v2_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v3_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v4_SP_Dtrig_combined[Nptbin];
+
+//for DCA cut sequence
+TH1D * hmass_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
+TProfile * h_mass_v2_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
+TProfile * h_mass_v3_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
+TH1D * hmass_MB_HFandpart_v2_morephibin_DCAsequence[NDCAcut][Nptbin][Nphibinmore];
+TH1D * hmass_MB_HFandpart_v3_morephibin_DCAsequence[NDCAcut][Nptbin][Nphibinmore];
 
 #endif //  parameters_H

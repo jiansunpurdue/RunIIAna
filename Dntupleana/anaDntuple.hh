@@ -115,6 +115,8 @@ class anaDntuple
 		float SP_EP_resolution_v3;
 		float SP_EP_resolution_v4;
 
+		float DcandDCA;
+
 	private:
 		//version combined trig decision
 		//for pp, only MB trig part* need to be combined
