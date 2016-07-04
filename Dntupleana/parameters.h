@@ -204,11 +204,11 @@ TProfile * h_mass_v2_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v3_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v4_SP_Dtrig_combined[Nptbin];
 
-//for DCA cut sequence
-TH1D * hmass_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
-TProfile * h_mass_v2_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
-TProfile * h_mass_v3_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
-TH1D * hmass_MB_HFandpart_v2_morephibin_DCAsequence[NDCAcut][Nptbin][Nphibinmore];
-TH1D * hmass_MB_HFandpart_v3_morephibin_DCAsequence[NDCAcut][Nptbin][Nphibinmore];
+////for DCA cut sequence
+//TH1D * hmass_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
+//TProfile * h_mass_v2_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
+//TProfile * h_mass_v3_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
+//TH1D * hmass_MB_HFandpart_v2_morephibin_DCAsequence[NDCAcut][Nptbin][Nphibinmore];
+//TH1D * hmass_MB_HFandpart_v3_morephibin_DCAsequence[NDCAcut][Nptbin][Nphibinmore];
 
 #endif //  parameters_H
