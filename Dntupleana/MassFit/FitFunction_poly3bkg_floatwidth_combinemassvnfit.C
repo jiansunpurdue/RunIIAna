@@ -48,7 +48,7 @@ struct GlobalChi2_poly3bkg_floatwidth {
 	const  ROOT::Math::IMultiGenFunction * fChi2_2;
 };
 
-TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL, TH1D * h_vnvsmass = NULL, TH1D * h_vnvspt = NULL, TString vnorder = "v2", TString EPorSP = "SP")
+TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, int centhigh, TH1D * histo, TH1D * h_mc_matched_signal, TH1D * h_mc_matched_kpiswapped, int ipt, TString cfgname, bool get_sig_bkg_ratio = false, TH1D * Ratio_signal_foreground = NULL, TH1D * h_vnvsmass = NULL, TH1D * h_vnvspt = NULL, TString vnorder = "v2", TString EPorSP = "SP", TH1D * h_vnvspt_bkg = NULL)
 {
 	Double_t setparam0=100.;
 	Double_t setparam1=1.8648;
@@ -212,11 +212,15 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	h_vnvspt->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(12));
 	h_vnvspt->SetBinError( ipt+1, fvn_combinemassvnfit->GetParError(12));
 
+	h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13) + fvn_combinemassvnfit->GetParameter(14) * 1.864);
+	h_vnvspt_bkg->SetBinError( ipt+1, 0. );
+	//h_vnvspt_bkg->SetBinError( ipt+1, TMath::Sqrt( fvn_combinemassvnfit->GetParError(13) * fvn_combinemassvnfit->GetParError(13) + 1.864 * 1.864 * fvn_combinemassvnfit->GetParError(14) * fvn_combinemassvnfit->GetParError(14)));
+
 	TCanvas* cfg_massfit_combinemassvn = new TCanvas(Form("cfg_poly3bkg_floatwidth_combinemassvnfit_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),Form("cfg_poly3bkg_floatwidth_combinemassvnfit_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),600,600);
 
     gPad->SetRightMargin(0.043);
     gPad->SetLeftMargin(0.18);
-    gPad->SetTopMargin(0.1);
+//    gPad->SetTopMargin(0.1);
     gPad->SetBottomMargin(0.145);
 
 	histo->SetXTitle("m_{#piK} (GeV/c^{2})");
@@ -304,11 +308,11 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	Tl.SetTextAlign(12);
 	Tl.SetTextSize(0.05);
 	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.18,0.93, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+	Tl.DrawLatex(0.18,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
 	if( isPbPb )
-		Tl.DrawLatex(0.61,0.93, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
+		Tl.DrawLatex(0.61,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 	else
-		Tl.DrawLatex(0.65,0.93, "#scale[0.8]{pp #sqrt{s_{NN}} = 5.02 TeV}");
+		Tl.DrawLatex(0.65,0.965, "#scale[0.8]{pp #sqrt{s_{NN}} = 5.02 TeV}");
 
 	TLatex* tex;
 
