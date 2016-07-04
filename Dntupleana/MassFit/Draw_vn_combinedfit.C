@@ -29,10 +29,8 @@ void Draw_vn_combinedfit(TString inputfilename = "rootfiles/Raw_spectrum_combine
 
 	TFile * inputdata = new TFile(inputfilename);
 
-	TH1D * h_v1_pt = (TH1D *) inputdata->Get("h_v1_pt");
 	TH1D * h_v2_pt = (TH1D *) inputdata->Get("h_v2_pt");
 	TH1D * h_v3_pt = (TH1D *) inputdata->Get("h_v3_pt");
-	TH1D * h_v4_pt = (TH1D *) inputdata->Get("h_v4_pt");
 
 	TH1D * h_v2_pt_sys = (TH1D *) h_v2_pt->Clone("h_v2_pt_sys");
 	TH1D * h_v3_pt_sys = (TH1D *) h_v3_pt->Clone("h_v3_pt_sys");
@@ -51,10 +49,8 @@ void Draw_vn_combinedfit(TString inputfilename = "rootfiles/Raw_spectrum_combine
 
 	TFile * output = new TFile(Form("rootfiles/vn_combinedfit_vnvsmass_%s_%s_cent%dto%d_%s_effcorrected%d.root", MBorDtrig.Data(), EPorSP.Data(), cent_low, cent_high, fitoption.Data(), effcorrected),"RECREATE");
 
-	h_v1_pt->Write();
 	h_v2_pt->Write();
 	h_v3_pt->Write();
-	h_v4_pt->Write();
 
 	h_v2_pt_sys->Write();
 	h_v3_pt_sys->Write();

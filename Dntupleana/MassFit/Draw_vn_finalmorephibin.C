@@ -40,7 +40,7 @@ void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin
     TH1D * v2_morephibin_relativesys = new TH1D("v2_morephibin_relativesys", "v2_morephibin_relativesys", Nptbin, ptbins);
     TH1D * v3_morephibin_relativesys = new TH1D("v3_morephibin_relativesys", "v3_morephibin_relativesys", Nptbin, ptbins);
 
-    if( fitoption == "poly3bkg" )
+    if( fitoption == "poly3bkg" || fitoption == "poly3bkg_floatwidth" )
     {
         Calculatetotalsys( cent_low, cent_high, 1.0, 40.0, "deltaphibins", "v2", v2_morephibin, v2_morephibin_sys, v2_morephibin_relativesys);
         Calculatetotalsys( cent_low, cent_high, 1.0, 40.0, "deltaphibins", "v3", v3_morephibin, v3_morephibin_sys, v3_morephibin_relativesys);

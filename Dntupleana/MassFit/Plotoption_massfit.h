@@ -10,7 +10,7 @@ void Plotoption_massfit()
 	gStyle->SetTextFont(42);
 	gStyle->SetPadRightMargin(0.043);
 	gStyle->SetPadLeftMargin(0.18);
-	gStyle->SetPadTopMargin(0.1);
+//	gStyle->SetPadTopMargin(0.1);
 	gStyle->SetPadBottomMargin(0.145);
 	gStyle->SetTitleX(.0f);
 }
