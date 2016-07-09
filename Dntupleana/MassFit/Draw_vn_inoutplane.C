@@ -25,16 +25,15 @@ void Draw_vn_inoutplane( TString inputfilename = "rootfiles/Raw_spectrum_inoutpl
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
+	Initiate_EPSPresolution();
 
     //decide event plane resolution
     double resolution_EP_v1 = 1., resolution_EP_v2 = 1., resolution_EP_v3 = 1., resolution_EP_v4 = 1.;
     int icentbin = Decide_centbin_for_EPresolution( cent_low, cent_high);
     if( icentbin != -99 )
     {
-        resolution_EP_v1 = (EPm_resolution_v1[icentbin] + EPp_resolution_v1[icentbin]) / 2.0;
-        resolution_EP_v2 = (EPm_resolution_v2[icentbin] + EPp_resolution_v2[icentbin]) / 2.0;
-        resolution_EP_v3 = (EPm_resolution_v3[icentbin] + EPp_resolution_v3[icentbin]) / 2.0;
-        resolution_EP_v4 = (EPm_resolution_v4[icentbin] + EPp_resolution_v4[icentbin]) / 2.0;
+        resolution_EP_v2 = (EPm_resolution_v2_etagap[0][icentbin] + EPp_resolution_v2_etagap[0][icentbin]) / 2.0;
+        resolution_EP_v3 = (EPm_resolution_v3_etagap[0][icentbin] + EPp_resolution_v3_etagap[0][icentbin]) / 2.0;
     }
     cout << "EP resolution, v1: " << resolution_EP_v1 << " v2: " << resolution_EP_v2 << " v3: " << resolution_EP_v3 << " v4: " << resolution_EP_v4 << endl;
 

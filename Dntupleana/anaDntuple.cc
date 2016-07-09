@@ -1140,6 +1140,8 @@ void anaDntuple::LoopOverDcandidates()
 		int iptbin = decideptbin( Dpt[icand], ptbins, Nptbin);
 		DcandDCA = DsvpvDistance[icand] * TMath::Sin(Dalpha[icand]);
 
+		if( DcandDCA > DcandDCA_cut_default ) continue;
+
 		//topological cuts
 		if( isPbPbCollision )
 		{

@@ -18,7 +18,7 @@ float DlxyBScut_pp_MB = -1.5;
 float DlxyBScut_pp_Dtrig = 1.5;
 
 ////DCA cut for default histogram
-//float DcandDCA_cut_default = 0.008;
+float DcandDCA_cut_default = 0.008;
 //DCA sequence cut
 //#define NDCAcut 7 
 //float DcandDCA_cut_sequence[NDCAcut] = { 99999., 0.04, 0.03, 0.02, 0.01, 0.008, 0.005};

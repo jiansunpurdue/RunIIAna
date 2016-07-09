@@ -212,9 +212,15 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	h_vnvspt->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(12));
 	h_vnvspt->SetBinError( ipt+1, fvn_combinemassvnfit->GetParError(12));
 
-	h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13) + fvn_combinemassvnfit->GetParameter(14) * 1.864);
+	//double x[2] = {1.73, 1.864};
+	//double error[2];
+	//does not work
+	//result.GetConfidenceIntervals(2, 1, 1, x, error, 0.683, false);
+
+	//h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13) + fvn_combinemassvnfit->GetParameter(14) * 1.864);
+	//h_vnvspt_bkg->SetBinError( ipt+1, error[0]);
+	h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13) + fvn_combinemassvnfit->GetParameter(14) * 1.85);
 	h_vnvspt_bkg->SetBinError( ipt+1, 0. );
-	//h_vnvspt_bkg->SetBinError( ipt+1, TMath::Sqrt( fvn_combinemassvnfit->GetParError(13) * fvn_combinemassvnfit->GetParError(13) + 1.864 * 1.864 * fvn_combinemassvnfit->GetParError(14) * fvn_combinemassvnfit->GetParError(14)));
 
 	TCanvas* cfg_massfit_combinemassvn = new TCanvas(Form("cfg_poly3bkg_floatwidth_combinemassvnfit_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),Form("cfg_poly3bkg_floatwidth_combinemassvnfit_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),600,600);
 
