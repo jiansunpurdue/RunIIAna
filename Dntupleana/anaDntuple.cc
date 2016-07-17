@@ -1464,8 +1464,8 @@ void anaDntuple::Dtrig_combination( int icand )
 	if( isPbPbCollision )
 	{
 		if(
-				(HLT_HIDmesonHITrackingGlobal_Dpt20_combined&&Dpt[icand]>20.&&Dpt[icand]<40.)||
-				(HLT_HIDmesonHITrackingGlobal_Dpt40_v1&&Dpt[icand]>40.&&Dpt[icand]<60.)||
+				(HLT_HIDmesonHITrackingGlobal_Dpt20_combined&&Dpt[icand]>20.&&Dpt[icand]>20.&&Dpt[icand]<40.)||
+				(HLT_HIDmesonHITrackingGlobal_Dpt40_v1&&Dpt[icand]>40.&&Dpt[icand]>40.&&Dpt[icand]<60.)||
 				(HLT_HIDmesonHITrackingGlobal_Dpt60_v1&&Dpt[icand]>60.)	
 		  )
 			Dtrig_combined = 1;
