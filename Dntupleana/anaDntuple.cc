@@ -1221,9 +1221,9 @@ void anaDntuple::LoopOverDcandidates()
 		//for D cand Q vectore recenter
 		h_hiBin_Dcandphi->Fill( hiBin, Dphi[icand]);
 		h_hiBin_cosnphi_v2->Fill( hiBin, TMath::Cos(2.*Dphi[icand]));
-		h_hiBin_cosnphi_v2->Fill( hiBin, TMath::Sin(2.*Dphi[icand]));
+		h_hiBin_sinnphi_v2->Fill( hiBin, TMath::Sin(2.*Dphi[icand]));
 		h_hiBin_cosnphi_v3->Fill( hiBin, TMath::Cos(3.*Dphi[icand]));
-		h_hiBin_cosnphi_v3->Fill( hiBin, TMath::Sin(3.*Dphi[icand]));
+		h_hiBin_sinnphi_v3->Fill( hiBin, TMath::Sin(3.*Dphi[icand]));
 
 		FillMBhisto( icand, iptbin);
 		if( isMC ) FillMCMBhisto( icand, iptbin);
