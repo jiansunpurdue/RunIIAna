@@ -956,10 +956,10 @@ void anaDntuple::readDntupletree(TTree * Dtree, bool isDkpi, bool detailedmoed)
 	Dtree->SetBranchAddress("DlxyBS", DlxyBS);
 	Dtree->SetBranchAddress("DlxyBSErr", DlxyBSErr);
 	Dtree->SetBranchAddress("DMaxDoca", DMaxDoca);
-	Dtree->SetBranchAddress("Dmaxpt", Dmaxpt);
-	Dtree->SetBranchAddress("Dmaxprob", Dmaxprob);
-	Dtree->SetBranchAddress("DmaxptMatched", DmaxptMatched);
-	Dtree->SetBranchAddress("DmaxprobMatched", DmaxprobMatched);
+//	Dtree->SetBranchAddress("Dmaxpt", Dmaxpt);
+//	Dtree->SetBranchAddress("Dmaxprob", Dmaxprob);
+//	Dtree->SetBranchAddress("DmaxptMatched", DmaxptMatched);
+//	Dtree->SetBranchAddress("DmaxprobMatched", DmaxprobMatched);
 	Dtree->SetBranchAddress("Dtrk1Pt", Dtrk1Pt);
 	Dtree->SetBranchAddress("Dtrk2Pt", Dtrk2Pt);
 	Dtree->SetBranchAddress("Dtrk1Eta", Dtrk1Eta);

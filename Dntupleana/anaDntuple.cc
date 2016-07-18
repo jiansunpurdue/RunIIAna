@@ -44,6 +44,9 @@ void anaDntuple::Histobookforanalysis()
 	h_v4_hiBin_cosndiffeppepm->Sumw2();
 
 	h_hiBin_Dcandphi->Sumw2();
+	h_hiBin_cosnphi_v2->Sumw2(); h_hiBin_sinnphi_v2->Sumw2();
+	h_hiBin_cosnphi_v3->Sumw2(); h_hiBin_sinnphi_v3->Sumw2();
+
 	h_v2_hiBin_HFm_cosndiffepAB->Sumw2(); h_v2_hiBin_HFm_cosndiffepAC->Sumw2(); h_v2_hiBin_HFm_cosndiffepBC->Sumw2();
 	h_v2_hiBin_HFp_cosndiffepAB->Sumw2(); h_v2_hiBin_HFp_cosndiffepAC->Sumw2(); h_v2_hiBin_HFp_cosndiffepBC->Sumw2();
 	h_v3_hiBin_HFm_cosndiffepAB->Sumw2(); h_v3_hiBin_HFm_cosndiffepAC->Sumw2(); h_v3_hiBin_HFm_cosndiffepBC->Sumw2();
@@ -1217,6 +1220,10 @@ void anaDntuple::LoopOverDcandidates()
 		//
 		//for D cand Q vectore recenter
 		h_hiBin_Dcandphi->Fill( hiBin, Dphi[icand]);
+		h_hiBin_cosnphi_v2->Fill( hiBin, TMath::Cos(2.*Dphi[icand]));
+		h_hiBin_cosnphi_v2->Fill( hiBin, TMath::Sin(2.*Dphi[icand]));
+		h_hiBin_cosnphi_v3->Fill( hiBin, TMath::Cos(3.*Dphi[icand]));
+		h_hiBin_cosnphi_v3->Fill( hiBin, TMath::Sin(3.*Dphi[icand]));
 
 		FillMBhisto( icand, iptbin);
 		if( isMC ) FillMCMBhisto( icand, iptbin);
@@ -1229,9 +1236,9 @@ void anaDntuple::LoopOverDcandidates()
 		if( (Dtrk1PixelHit[icand]+Dtrk1StripHit[icand]) < TkHitCut_Trig || (Dtrk2PixelHit[icand]+Dtrk2StripHit[icand]) < TkHitCut_Trig ) continue;
 		if( Dtrk1Chi2ndf[icand]/(Dtrk1nStripLayer[icand]+Dtrk1nPixelLayer[icand]) > Tknorchi2overlayers_Trig || 
 				Dtrk2Chi2ndf[icand]/(Dtrk2nStripLayer[icand]+Dtrk2nPixelLayer[icand]) > Tknorchi2overlayers_Trig ) continue;
-		if( !isPbPbCollision && ( Dtrk1Algo[icand] > TkAlgoCut_Trig || Dtrk2Algo[icand] > TkAlgoCut_Trig ) ) continue;
-		if( isPbPbCollision && ( ( Dtrk1Algo[icand] > TkAlgoCut_Trig && Dtrk1Algo[icand] != 11 ) || 
-					( Dtrk2Algo[icand] > TkAlgoCut_Trig && Dtrk1Algo[icand] != 11 ) ) ) continue;
+//		if( !isPbPbCollision && ( Dtrk1Algo[icand] > TkAlgoCut_Trig || Dtrk2Algo[icand] > TkAlgoCut_Trig ) ) continue;
+//		if( isPbPbCollision && ( ( Dtrk1Algo[icand] > TkAlgoCut_Trig && Dtrk1Algo[icand] != 11 ) || 
+//					( Dtrk2Algo[icand] > TkAlgoCut_Trig && Dtrk1Algo[icand] != 11 ) ) ) continue;
 
 		if( isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_PbPb_Dtrig ) continue;
 		if( !isPbPbCollision && DlxyBS[icand]/DlxyBSErr[icand] < DlxyBScut_pp_Dtrig ) continue;
@@ -1877,6 +1884,11 @@ void anaDntuple::Write()
 	h_v4_hiBin_cosndiffeppepm->Write();
 
 	h_hiBin_Dcandphi->Write();
+	h_hiBin_cosnphi_v2->Write();
+	h_hiBin_sinnphi_v2->Write();
+	h_hiBin_cosnphi_v3->Write();
+	h_hiBin_sinnphi_v3->Write();
+
 	h_v2_hiBin_HFm_cosndiffepAB->Write();
 	h_v2_hiBin_HFm_cosndiffepAC->Write();
 	h_v2_hiBin_HFm_cosndiffepBC->Write();

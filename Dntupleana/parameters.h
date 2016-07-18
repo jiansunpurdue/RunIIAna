@@ -72,6 +72,11 @@ double hibinbins[NCentbins+1] = { -0.5, 19.5, 59.5, 99.5, 139.5, 179.5, 199.5};
 //for D cand Q vector recenter
 TH2D * h_hiBin_Dcandphi = new TH2D("h_hiBin_Dcandphi","h_hiBin_Dcandphi",200,0,200,400,-4.,4.);
 
+TH2D * h_hiBin_cosnphi_v2 = new TH2D("h_hiBin_cosnphi_v2","h_hiBin_cosnphi_v2",200,0,200,2200,-1.1,1.1);
+TH2D * h_hiBin_sinnphi_v2 = new TH2D("h_hiBin_sinnphi_v2","h_hiBin_sinnphi_v2",200,0,200,2200,-1.1,1.1);
+TH2D * h_hiBin_cosnphi_v3 = new TH2D("h_hiBin_cosnphi_v3","h_hiBin_cosnphi_v3",200,0,200,2200,-1.1,1.1);
+TH2D * h_hiBin_sinnphi_v3 = new TH2D("h_hiBin_sinnphi_v3","h_hiBin_sinnphi_v3",200,0,200,2200,-1.1,1.1);
+
 //for event plane resolution with 2-sub and 3-sub event
 TProfile * h_v1_hiBin_cosndiffeppepm = new TProfile("h_v1_hiBin_cosndiffeppepm","h_v1_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm","h_v2_hiBin_cosndiffeppepm", NCentbins, hibinbins);

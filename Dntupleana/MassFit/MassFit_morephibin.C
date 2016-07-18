@@ -100,6 +100,35 @@ void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dn
 	Fithisto_morephibin( hmass_MBorDtrig_v2, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, "v2", dNdpt_v2_phibins_in_oneptbin, fitoption, effcorrected);
 	Fithisto_morephibin( hmass_MBorDtrig_v3, mc_matched_signal, mc_matched_kpiswapped, MBorDtrig, iptstart, iptend, isPbPb, centlow, centhigh, "v3", dNdpt_v3_phibins_in_oneptbin, fitoption, effcorrected);
 
+	////bkg dNdpt
+	TH1D * dNdpt_v2_phibins_in_oneptbin_bkg[Nptbin];
+	TH1D * dNdpt_v3_phibins_in_oneptbin_bkg[Nptbin];
+	for(int ipt = 0; ipt < Nptbin; ipt++ )
+	{
+		dNdpt_v2_phibins_in_oneptbin_bkg[ipt] = new TH1D( Form("dNdpt_v2_%s_phibins_in_oneptbin_bkg_%d", fitoption.Data(), ipt), Form("dNdpt_v2_%s_phibins_in_oneptbin_bkg_%d", fitoption.Data(), ipt), Nphibinmore, 0, PI/2.);
+		dNdpt_v3_phibins_in_oneptbin_bkg[ipt] = new TH1D( Form("dNdpt_v3_%s_phibins_in_oneptbin_bkg_%d", fitoption.Data(), ipt), Form("dNdpt_v3_%s_phibins_in_oneptbin_bkg_%d", fitoption.Data(), ipt), Nphibinmore, 0, PI/3.);
+		dNdpt_v2_phibins_in_oneptbin_bkg[ipt]->Sumw2();
+		dNdpt_v3_phibins_in_oneptbin_bkg[ipt]->Sumw2();
+	}
+	for(int ipt = iptstart; ipt < iptend; ipt++ )
+	{
+		float ptmin = ptbins[ipt];
+		float ptmax = ptbins[ipt+1];
+
+		for(int iphi = 0; iphi < Nphibinmore; iphi++)
+		{
+			double dNdptbkg_v2 = hmass_MBorDtrig_v2[ipt][iphi]->GetEntries()/(ptmax-ptmin) - dNdpt_v2_phibins_in_oneptbin[ipt]->GetBinContent(iphi+1);;
+			double dNdptbkg_v3 = hmass_MBorDtrig_v3[ipt][iphi]->GetEntries()/(ptmax-ptmin) - dNdpt_v2_phibins_in_oneptbin[ipt]->GetBinContent(iphi+1);;
+
+			dNdpt_v2_phibins_in_oneptbin_bkg[ipt]->SetBinContent( iphi+1, dNdptbkg_v2);
+			dNdpt_v3_phibins_in_oneptbin_bkg[ipt]->SetBinContent( iphi+1, dNdptbkg_v3);
+
+			//approximate, actually wrong
+			dNdpt_v2_phibins_in_oneptbin_bkg[ipt]->SetBinError( iphi+1, TMath::Sqrt(dNdptbkg_v2/(ptmax-ptmin)));
+			dNdpt_v3_phibins_in_oneptbin_bkg[ipt]->SetBinError( iphi+1, TMath::Sqrt(dNdptbkg_v3/(ptmax-ptmin)));
+		}
+	}
+
 	TFile * output = new TFile(Form("rootfiles/Raw_spectrum_morephibin_%s_%s_effcorrected%d.root",(fs::basename(inputdatafilename)).c_str(), fitoption.Data(), effcorrected),"RECREATE");
 
 	dNdpt->Write();
@@ -108,6 +137,12 @@ void MassFit_morephibin(string inputdatafilename = "./../rootfiles/anaDntuple_Dn
 	{
 		dNdpt_v2_phibins_in_oneptbin[ipt]->Write();
 		dNdpt_v3_phibins_in_oneptbin[ipt]->Write();
+	}
+
+	for(int ipt = 0; ipt < Nptbin; ipt++ )
+	{
+		dNdpt_v2_phibins_in_oneptbin_bkg[ipt]->Write();
+		dNdpt_v3_phibins_in_oneptbin_bkg[ipt]->Write();
 	}
 
 	output->Close();
