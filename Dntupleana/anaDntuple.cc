@@ -12,6 +12,8 @@ const int v2HFp = HFp2;
 const int v3HFm = HFm3;
 const int v3HFp = HFp3;
 
+bool doDcandQvectorrecenter = true;
+
 //
 anaDntuple::anaDntuple()
 {
@@ -1173,15 +1175,34 @@ void anaDntuple::LoopOverDcandidates()
 
 		if( isPbPbCollision )
 		{
+			//efficiency correction study (data) and pthat weight study (MC)
 			if( Dpt[icand] < 40 && Dpt[icand] > 3 ) effcorrection = 1.0/EfficiencyCurve->Eval( Dpt[icand] );
 			else effcorrection = 1.0;
 			if( isMC ) effcorrection = pthatweight;
 			//cout << " Dpt[icand]: " << Dpt[icand] << "  effcorrection: " << effcorrection << endl;
 
-			dcanddeltaphiv1 = Calculatedeltaphi( icand, 1);
-			dcanddeltaphiv2 = Calculatedeltaphi( icand, 2);
-			dcanddeltaphiv3 = Calculatedeltaphi( icand, 3);
-			dcanddeltaphiv4 = Calculatedeltaphi( icand, 4);
+//departed, not used any more
+//			dcanddeltaphiv1 = Calculatedeltaphi( icand, 1);
+//			dcanddeltaphiv2 = Calculatedeltaphi( icand, 2);
+//			dcanddeltaphiv3 = Calculatedeltaphi( icand, 3);
+//			dcanddeltaphiv4 = Calculatedeltaphi( icand, 4);
+//
+			DecideEPindexusedandCalculateEPparameters(icand);
+			DecideEPSPresolutionandMeanQvector( icand );
+			//cout << " DefaultEPlist: " << DefaultEPlist << " isMC: " << isMC << "  cent_low: " << cent_low << " cent_high: " << cent_high << " deta: " << Deta[icand] << endl;
+			//cout << " EP_resolution_v2: " << EP_resolution_v2 << " EP_resolution_v3: " << EP_resolution_v3 << " SP_EP_resolution_v2: " << SP_EP_resolution_v2 << " SP_EP_resolution_v3: " << SP_EP_resolution_v3 << endl;
+
+			QDcand_v2 = comp( TMath::Cos(2.*Dphi[icand]), TMath::Sin(2.*Dphi[icand]));
+			QDcand_v3 = comp( TMath::Cos(3.*Dphi[icand]), TMath::Sin(3.*Dphi[icand]));
+
+			QDcand_v2_mean = comp(cosnphi_mean_v2, sinnphi_mean_v2);
+			QDcand_v3_mean = comp(cosnphi_mean_v3, sinnphi_mean_v3);
+
+			if( doDcandQvectorrecenter )
+			{
+				QDcand_v2 = QDcand_v2 - QDcand_v2_mean;
+				QDcand_v3 = QDcand_v3 - QDcand_v3_mean;
+			}
 
 			dcandiphiv1 = Decideinoutplane( dcanddeltaphiv1, 1);
 			dcandiphiv2 = Decideinoutplane( dcanddeltaphiv2, 2);
@@ -1201,10 +1222,6 @@ void anaDntuple::LoopOverDcandidates()
 				cout << " dcandiphiv2_morephibin: " << dcandiphiv2_morephibin << " dcandiphiv3_morephibin: " << dcandiphiv3_morephibin << endl;
 				exit(2);
 			}
-
-			DecideEPSPresolutionandMeanQvector( icand );
-			//cout << " DefaultEPlist: " << DefaultEPlist << " isMC: " << isMC << "  cent_low: " << cent_low << " cent_high: " << cent_high << " deta: " << Deta[icand] << endl;
-			//cout << " EP_resolution_v2: " << EP_resolution_v2 << " EP_resolution_v3: " << EP_resolution_v3 << " SP_EP_resolution_v2: " << SP_EP_resolution_v2 << " SP_EP_resolution_v3: " << SP_EP_resolution_v3 << endl;
 		}
 
 		//apply MB track pt cut first. After MB histograms are filled, apply trig track pt cut
@@ -1537,6 +1554,43 @@ void anaDntuple::Dtrig_combination( int icand )
 	}
 }
 
+void anaDntuple::DecideEPindexusedandCalculateEPparameters( int icand )
+{
+	float dcandeta = Deta[icand];
+	float dcandphi = Dphi[icand];
+
+	if( dcandeta >= 0 )
+	{
+		EPindex_v1 = 0;
+		EPindex_v2 = v2HFm;
+		EPindex_v3 = v3HFm;
+		EPindex_v4 = 19;
+	}
+	else
+	{
+		EPindex_v1 = 1;
+		EPindex_v2 = v2HFp;
+		EPindex_v3 = v3HFp;
+		EPindex_v4 = 20;
+	}
+
+	dcanddeltaphiv1 = dcandphi - hiEvtPlanes[EPindex_v1];
+	dcanddeltaphiv2 = dcandphi - hiEvtPlanes[EPindex_v2];
+	dcanddeltaphiv3 = dcandphi - hiEvtPlanes[EPindex_v3];
+	dcanddeltaphiv4 = dcandphi - hiEvtPlanes[EPindex_v4];
+
+	SP_Qmag_v1 = TMath::Sqrt( hiEvtPlanesqx[EPindex_v1] * hiEvtPlanesqx[EPindex_v1] + hiEvtPlanesqy[EPindex_v1] * hiEvtPlanesqy[EPindex_v1] );
+	SP_Qmag_v2 = TMath::Sqrt( hiEvtPlanesqx[EPindex_v2] * hiEvtPlanesqx[EPindex_v2] + hiEvtPlanesqy[EPindex_v2] * hiEvtPlanesqy[EPindex_v2] );
+	SP_Qmag_v3 = TMath::Sqrt( hiEvtPlanesqx[EPindex_v3] * hiEvtPlanesqx[EPindex_v3] + hiEvtPlanesqy[EPindex_v3] * hiEvtPlanesqy[EPindex_v3] );
+	SP_Qmag_v4 = TMath::Sqrt( hiEvtPlanesqx[EPindex_v4] * hiEvtPlanesqx[EPindex_v4] + hiEvtPlanesqy[EPindex_v4] * hiEvtPlanesqy[EPindex_v4] );
+
+	QA_v2 = comp( hiEvtPlanesqx[EPindex_v2], hiEvtPlanesqy[EPindex_v2]);
+	QA_v3 = comp( hiEvtPlanesqx[EPindex_v3], hiEvtPlanesqy[EPindex_v3]);
+
+	//cout << "EP v2, qx: " << hiEvtPlanesqx[EPindex_v2] << " qy: " << hiEvtPlanesqy[EPindex_v2] << " SP_Qmag_v2: " << SP_Qmag_v2 << " hiEvtPlanes: " << hiEvtPlanes[EPindex_v2] << " mag*cos: " << SP_Qmag_v2*TMath::Cos(2.*hiEvtPlanes[EPindex_v2]) << " mag*sin: " << SP_Qmag_v2*TMath::Sin(2.*hiEvtPlanes[EPindex_v2]) << endl; 
+}
+
+//not used anymore
 float anaDntuple::Calculatedeltaphi( int icand, int floworder )
 {
 	if( floworder < 1 || floworder > 5 )    { cout << "floworder out of range!!!!!!!" << endl; return -99.; }
@@ -1748,8 +1802,12 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 				hmass_MB_HFandpart_v2_morephibin_effcorrected[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand], effcorrection);
 
 				h_mass_v2_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
-				h_mass_v2_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
-				h_mass_v2_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2, effcorrection);
+				//h_mass_v2_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
+				//h_mass_v2_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2, effcorrection);
+				//change to calculation with Q vectors
+				h_mass_v2_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], (QDcand_v2*std::conj(QA_v2)).real()/SP_EP_resolution_v2);
+				h_mass_v2_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], (QDcand_v2*std::conj(QA_v2)).real()/SP_EP_resolution_v2, effcorrection);
+				//cout << " SP v2: " << SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2) << " Q vector: " << (QDcand_v2*std::conj(QA_v2)).real() << endl;
 			}
 
 			if( isGoodforv3 ) 
@@ -1760,8 +1818,11 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 				hmass_MB_HFandpart_v3_morephibin_effcorrected[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand], effcorrection);
 
 				h_mass_v3_MB_HFandpart[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
-				h_mass_v3_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
-				h_mass_v3_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3, effcorrection);
+				//h_mass_v3_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
+				//h_mass_v3_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3, effcorrection);
+				h_mass_v3_SP_MB_HFandpart[iptbin]->Fill(Dmass[icand], (QDcand_v3*std::conj(QA_v3)).real()/SP_EP_resolution_v3);
+				h_mass_v3_SP_MB_HFandpart_effcorrected[iptbin]->Fill(Dmass[icand], (QDcand_v3*std::conj(QA_v3)).real()/SP_EP_resolution_v3, effcorrection);
+				//cout << " SP v3: " << SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3) << " Q vector: " << (QDcand_v3*std::conj(QA_v3)).real() << endl;
 			}
 		}
 	}
@@ -1857,7 +1918,8 @@ void anaDntuple::FillDtrighisto_PbPb(int icand, int iptbin)
 			hmass_Dtrig_combined_v2[iptbin][dcandiphiv2]->Fill(Dmass[icand]);
 			hmass_Dtrig_combined_v2_morephibin[iptbin][dcandiphiv2_morephibin]->Fill(Dmass[icand]);
 			h_mass_v2_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(2.*dcanddeltaphiv2)/EP_resolution_v2);
-			h_mass_v2_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
+			//h_mass_v2_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v2 * TMath::Cos(2.*dcanddeltaphiv2)/SP_EP_resolution_v2);
+			h_mass_v2_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], (QDcand_v2*std::conj(QA_v2)).real()/SP_EP_resolution_v2);
 		}
 
 		if( isGoodforv3 )
@@ -1865,7 +1927,8 @@ void anaDntuple::FillDtrighisto_PbPb(int icand, int iptbin)
 			hmass_Dtrig_combined_v3[iptbin][dcandiphiv3]->Fill(Dmass[icand]);
 			hmass_Dtrig_combined_v3_morephibin[iptbin][dcandiphiv3_morephibin]->Fill(Dmass[icand]);
 			h_mass_v3_Dtrig_combined[iptbin]->Fill(Dmass[icand], TMath::Cos(3.*dcanddeltaphiv3)/EP_resolution_v3);
-			h_mass_v3_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
+			//h_mass_v3_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], SP_Qmag_v3 * TMath::Cos(3.*dcanddeltaphiv3)/SP_EP_resolution_v3);
+			h_mass_v3_SP_Dtrig_combined[iptbin]->Fill(Dmass[icand], (QDcand_v3*std::conj(QA_v3)).real()/SP_EP_resolution_v3);
 		}
 	}
 }

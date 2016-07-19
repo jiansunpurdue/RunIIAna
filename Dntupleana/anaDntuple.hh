@@ -65,6 +65,7 @@ class anaDntuple
 		void FillMCDtrighisto(int icand, int iptbin);
 		void FillJettrighisto(int icand, int iptbin);
 		float Calculatedeltaphi( int icand, int floworder);
+		void DecideEPindexusedandCalculateEPparameters( int icand);
 		int  Decideinoutplane(float deltaphi, int floworder);
 		int  Decidephibin_morephibin(float deltaphi, int floworder);
 		void DecideEPSPresolutionandMeanQvector( int icand);
@@ -88,6 +89,11 @@ class anaDntuple
 		bool isGoodforv3;
 
 	private:
+		int EPindex_v1;
+		int EPindex_v2;
+		int EPindex_v3;
+		int EPindex_v4;
+
 		float dcanddeltaphiv1;
 		float dcanddeltaphiv2;
 		float dcanddeltaphiv3;
@@ -120,7 +126,14 @@ class anaDntuple
 		float SP_EP_resolution_v3;
 		float SP_EP_resolution_v4;
 
+		comp QA_v2;
+		comp QA_v3;
+
 		float DcandDCA;
+		comp QDcand_v2;
+		comp QDcand_v3;
+		comp QDcand_v2_mean;
+		comp QDcand_v3_mean;
 
 	private:
 		//version combined trig decision
