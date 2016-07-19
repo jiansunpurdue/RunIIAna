@@ -46,6 +46,8 @@ void anaDntuple::Histobookforanalysis()
 	h_hiBin_Dcandphi->Sumw2();
 	h_hiBin_cosnphi_v2->Sumw2(); h_hiBin_sinnphi_v2->Sumw2();
 	h_hiBin_cosnphi_v3->Sumw2(); h_hiBin_sinnphi_v3->Sumw2();
+	h_hiBin_cosnphi_v2_profile->Sumw2(); h_hiBin_sinnphi_v2_profile->Sumw2();
+	h_hiBin_cosnphi_v3_profile->Sumw2(); h_hiBin_sinnphi_v3_profile->Sumw2();
 
 	h_v2_hiBin_HFm_cosndiffepAB->Sumw2(); h_v2_hiBin_HFm_cosndiffepAC->Sumw2(); h_v2_hiBin_HFm_cosndiffepBC->Sumw2();
 	h_v2_hiBin_HFp_cosndiffepAB->Sumw2(); h_v2_hiBin_HFp_cosndiffepAC->Sumw2(); h_v2_hiBin_HFp_cosndiffepBC->Sumw2();
@@ -1200,7 +1202,7 @@ void anaDntuple::LoopOverDcandidates()
 				exit(2);
 			}
 
-			DecideEPSPresolution( icand );
+			DecideEPSPresolutionandMeanQvector( icand );
 			//cout << " DefaultEPlist: " << DefaultEPlist << " isMC: " << isMC << "  cent_low: " << cent_low << " cent_high: " << cent_high << " deta: " << Deta[icand] << endl;
 			//cout << " EP_resolution_v2: " << EP_resolution_v2 << " EP_resolution_v3: " << EP_resolution_v3 << " SP_EP_resolution_v2: " << SP_EP_resolution_v2 << " SP_EP_resolution_v3: " << SP_EP_resolution_v3 << endl;
 		}
@@ -1224,6 +1226,10 @@ void anaDntuple::LoopOverDcandidates()
 		h_hiBin_sinnphi_v2->Fill( hiBin, TMath::Sin(2.*Dphi[icand]));
 		h_hiBin_cosnphi_v3->Fill( hiBin, TMath::Cos(3.*Dphi[icand]));
 		h_hiBin_sinnphi_v3->Fill( hiBin, TMath::Sin(3.*Dphi[icand]));
+		h_hiBin_cosnphi_v2_profile->Fill( hiBin, TMath::Cos(2.*Dphi[icand]));
+		h_hiBin_sinnphi_v2_profile->Fill( hiBin, TMath::Sin(2.*Dphi[icand]));
+		h_hiBin_cosnphi_v3_profile->Fill( hiBin, TMath::Cos(3.*Dphi[icand]));
+		h_hiBin_sinnphi_v3_profile->Fill( hiBin, TMath::Sin(3.*Dphi[icand]));
 
 		FillMBhisto( icand, iptbin);
 		if( isMC ) FillMCMBhisto( icand, iptbin);
@@ -1254,10 +1260,15 @@ void anaDntuple::LoopOverDcandidates()
 	}
 }
 
-void anaDntuple::DecideEPSPresolution( int icand )
+void anaDntuple::DecideEPSPresolutionandMeanQvector( int icand )
 {
 	//decide EP resolution
 	int icentbin = Decide_centbin_for_EPresolution( cent_low, cent_high, isMC);
+
+	cosnphi_mean_v2 = v2_meancosnphi[icentbin];
+	sinnphi_mean_v2 = v2_meansinnphi[icentbin];
+	cosnphi_mean_v3 = v3_meancosnphi[icentbin];
+	sinnphi_mean_v3 = v3_meansinnphi[icentbin];
 
 	EP_resolution_v1 = 1;
 	EP_resolution_v2 = 99999.;
@@ -1888,6 +1899,10 @@ void anaDntuple::Write()
 	h_hiBin_sinnphi_v2->Write();
 	h_hiBin_cosnphi_v3->Write();
 	h_hiBin_sinnphi_v3->Write();
+	h_hiBin_cosnphi_v2_profile->Write();
+	h_hiBin_sinnphi_v2_profile->Write();
+	h_hiBin_cosnphi_v3_profile->Write();
+	h_hiBin_sinnphi_v3_profile->Write();
 
 	h_v2_hiBin_HFm_cosndiffepAB->Write();
 	h_v2_hiBin_HFm_cosndiffepAC->Write();

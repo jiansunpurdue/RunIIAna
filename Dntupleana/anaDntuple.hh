@@ -67,7 +67,7 @@ class anaDntuple
 		float Calculatedeltaphi( int icand, int floworder);
 		int  Decideinoutplane(float deltaphi, int floworder);
 		int  Decidephibin_morephibin(float deltaphi, int floworder);
-		void DecideEPSPresolution( int icand);
+		void DecideEPSPresolutionandMeanQvector( int icand);
 
 	private:
 		bool isPbPbCollision;
@@ -100,6 +100,11 @@ class anaDntuple
 
 		int dcandiphiv2_morephibin;
 		int dcandiphiv3_morephibin;
+
+		double cosnphi_mean_v2;
+		double sinnphi_mean_v2;
+		double cosnphi_mean_v3;
+		double sinnphi_mean_v3;
 		
 		float EP_resolution_v1;
 		float EP_resolution_v2;

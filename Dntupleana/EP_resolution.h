@@ -46,6 +46,12 @@ double SP_EPp_resolution_v3_MC[NCentbin_MC] = { 71.055, 62.5361, 36.5589, 15.315
 
 int centbins[NCentbin+1] = { 0, 10, 30, 50, 70, 90, 100};
 
+//D candidate Q vector recenter
+double v2_meancosnphi[NCentbin] = { 0.00239109, 0.00428512, 0.00112981, 0.0128266, 0., 0.};
+double v2_meansinnphi[NCentbin] = { 0.00294925, 0.00937768, 0.01653460, 0.0214646, 0., 0.};
+double v3_meancosnphi[NCentbin] = { 0.00839557, 0.00429976, -0.0001893, -0.002187, 0., 0.};
+double v3_meansinnphi[NCentbin] = { -0.0171459, -0.0159969, -0.0157925, -0.023782, 0., 0.};
+
 //for default EP list
 //errors are wrong
 double EPm_resolution_v1[NCentbin] = { 0.18244, 0.17418, 0.16040, 0.14045, 0.175546, 0.166938};

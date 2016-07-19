@@ -77,6 +77,11 @@ TH2D * h_hiBin_sinnphi_v2 = new TH2D("h_hiBin_sinnphi_v2","h_hiBin_sinnphi_v2",2
 TH2D * h_hiBin_cosnphi_v3 = new TH2D("h_hiBin_cosnphi_v3","h_hiBin_cosnphi_v3",200,0,200,2200,-1.1,1.1);
 TH2D * h_hiBin_sinnphi_v3 = new TH2D("h_hiBin_sinnphi_v3","h_hiBin_sinnphi_v3",200,0,200,2200,-1.1,1.1);
 
+TProfile * h_hiBin_cosnphi_v2_profile = new TProfile("h_hiBin_cosnphi_v2_profile","h_hiBin_cosnphi_v2_profile", NCentbins, hibinbins);
+TProfile * h_hiBin_sinnphi_v2_profile = new TProfile("h_hiBin_sinnphi_v2_profile","h_hiBin_sinnphi_v2_profile", NCentbins, hibinbins);
+TProfile * h_hiBin_cosnphi_v3_profile = new TProfile("h_hiBin_cosnphi_v3_profile","h_hiBin_cosnphi_v3_profile", NCentbins, hibinbins);
+TProfile * h_hiBin_sinnphi_v3_profile = new TProfile("h_hiBin_sinnphi_v3_profile","h_hiBin_sinnphi_v3_profile", NCentbins, hibinbins);
+
 //for event plane resolution with 2-sub and 3-sub event
 TProfile * h_v1_hiBin_cosndiffeppepm = new TProfile("h_v1_hiBin_cosndiffeppepm","h_v1_hiBin_cosndiffeppepm", NCentbins, hibinbins);
 TProfile * h_v2_hiBin_cosndiffeppepm = new TProfile("h_v2_hiBin_cosndiffeppepm","h_v2_hiBin_cosndiffeppepm", NCentbins, hibinbins);
