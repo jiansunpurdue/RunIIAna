@@ -42,13 +42,13 @@ float DcandDCA_cut_default = 0.008;
 
 //D rapidity and track eta cuts
 #define Drapiditycut 1.0
-#define TkPtresolution_MB 0.1
-#define TkHitCut_MB 10.5 //>=
-#define Tknorchi2overlayers_MB 0.15 //no cut //<
+#define TkPtresolution_MB 0.3
+#define TkHitCut_MB -1.0 //>=
+#define Tknorchi2overlayers_MB 99999 //no cut //<
 
-#define TkPtresolution_Trig 0.1
-#define TkHitCut_Trig 10.5 //>=
-#define Tknorchi2overlayers_Trig 0.15 //<
+#define TkPtresolution_Trig 0.3
+#define TkHitCut_Trig -1.0 //>=
+#define Tknorchi2overlayers_Trig 99999 //<
 //#define TkAlgoCut_Trig 7.5 //<=
 
 #endif //  Dcand_tk_cuts_H

@@ -30,12 +30,12 @@ float DcandDCA_cut_default = 0.008;
 
 //track cuts
 //PbPb
-#define MBTkptcut_PbPb 0.7
+#define MBTkptcut_PbPb 0.5
 #define Tketacut_PbPb 1.5
 //#define Tketacut_PbPb 1.5
 #define TrigTkptcut_PbPb 8.5
 //pp
-#define MBTkptcut_pp 0.7
+#define MBTkptcut_pp 0.5
 #define Tketacut_pp 1.5
 //#define Tketacut_pp 1.5
 #define TrigTkptcut_pp 3.0
