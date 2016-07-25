@@ -160,11 +160,11 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple
 	{       
 		TF1* signalfittedfunc = NULL;
 
-		int iptmc;
-		if( ipt > 2 ) 
-			iptmc = ipt;
-		else    
-			iptmc = 3;
+		int iptmc = ipt;
+//		if( ipt > 2 ) 
+//			iptmc = ipt;
+//		else    
+//			iptmc = 3;
 
 		hmass_MBorDtrig[ipt]->SetAxisRange(0,hmass_MBorDtrig[ipt]->GetMaximum()*1.4*1.2,"Y");
 		

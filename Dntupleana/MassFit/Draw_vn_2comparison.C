@@ -93,5 +93,5 @@ void Drawcomparison(TH1D * vn_1, TH1D * vn_2, TString trigname = "MBtrig", TStri
 	fun->SetLineWidth(1);
 	fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_%s_%s_%s_cent%dto%d.pdf", cfgname.Data(), trigname.Data(), vnname.Data(), cent_low, cent_high));
+	cfg_vn->SaveAs(Form("plots_otherstudy/cfg_%s_%s_%s_cent%dto%d.pdf", cfgname.Data(), trigname.Data(), vnname.Data(), cent_low, cent_high));
 }

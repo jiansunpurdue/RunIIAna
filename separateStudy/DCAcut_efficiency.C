@@ -117,6 +117,8 @@ void DCAcut_efficiency()
 	leg->AddEntry( h_DCAeff_nonprompt, "Non-prompt D^{0}");
 	leg->Draw();
 
+	cfg_DCAeff->SaveAs("cfg_DCAeff_promptandnonprompt.pdf");
+
 	TFile * output = new TFile("DCAeff_prompt.root","RECREATE");
 	h_DCAeff_prompt->Write();
 	h_DCAeff_nonprompt->Write();

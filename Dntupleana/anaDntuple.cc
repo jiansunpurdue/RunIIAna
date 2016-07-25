@@ -1344,6 +1344,7 @@ void anaDntuple::DecideEPSPresolutionandMeanQvector( int icand )
 				}
 			}
 		}
+		//need to comment out to run default event plane list
 		else if( !isMC )//not default event plane lists and not MC
 		{
 			if( v2HFm == HFm2 && v2HFp == HFp2 ) //eta gap 3.0
@@ -1486,6 +1487,7 @@ void anaDntuple::DecideEPSPresolutionandMeanQvector( int icand )
 				}
 			}
 		}
+/////for default event plane list, comment to here
 	}
 }
 

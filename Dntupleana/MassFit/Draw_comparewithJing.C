@@ -17,7 +17,7 @@
 #include <TGraphErrors.h>
 #include <TMultiGraph.h>
 
-void Draw_comparewithJing( TString inputdefault = "rootfiles/vn_morephibin_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString inputfromJing = "v2outputfilesfromJing/V2PtHisto_cent_30_50.root", TString method = "deltaphibins", TString MBorDtrig= "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0)
+void Draw_comparewithJing( TString inputdefault = "rootfiles/vn_morephibin_MBtrig_cent10to30_poly3bkg_effcorrected0.root", TString inputfromJing = "v2outputfilesfromJing/V2PtHisto_cent_10_30.root", TString method = "deltaphibins", TString MBorDtrig= "MBtrig", int cent_low = 10, int cent_high = 30, double ptlow = 0.0, double pthigh = 40.0)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -99,7 +99,7 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_fromJing, TString vnname, TStri
 	leg->SetBorderSize(0);
 	leg->SetFillStyle(0);
 	leg->AddEntry( (TObject*)0, Form("Cent. %d-%d%%", cent_low, cent_high) , "");
-	leg->AddEntry( vn_default, "Jian");
+	leg->AddEntry( vn_default, "Default");
 	leg->AddEntry( vn_fromJing, "Jing");
 	leg->Draw();
 
