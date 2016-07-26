@@ -7,15 +7,20 @@ DODrawmorephibinvn=1
 DOVncomparison=1
 
 ptbinstart=2
-ptbinend=11 #not included
+ptbinend=12 #not included
 ptmin=0.0
 ptmax=40.0
 MBorDtrig="MBtrig"
 Fitoption_SP="poly3bkg_floatwidth"
 
 Fitoption_DeltaPhibin="poly3bkg"
+#Fitoption_DeltaPhibin="poly3bkg_floatwidth"
 
 Doefficiencycorrection=0 #only if poly3bkg_floatwidth
+
+File_promptfraction_cent0to10="promptD0_totaluncertainties/Promptfraction_DCAcut1_cent0to10.root"
+File_promptfraction_cent10to30="promptD0_totaluncertainties/Promptfraction_DCAcut1_cent10to30.root"
+File_promptfraction_cent30to50="promptD0_totaluncertainties/Promptfraction_DCAcut1_cent30to50.root"
 
 FileVnMB0to10_SP_combinedfit="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent0to10_${Fitoption_SP}_effcorrected${Doefficiencycorrection}.root"
 FileVnMB10to30_SP_combinedfit="rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent10to30_${Fitoption_SP}_effcorrected${Doefficiencycorrection}.root"
@@ -40,28 +45,48 @@ FinalFileVnMB50to70_morephibin="rootfiles/vn_finalmorephibin_MBtrig_cent50to70_$
 #####################################
 
 Drawchargedparticle=0
+DrawBfeeddownsys=0
 if [ $DoDrawcombindfitvn -eq 1 ]; then
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys')'
+#root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB50to70_SP_combinedfit'","'$MBorDtrig'",50,70,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
+fi
+
+Drawchargedparticle=0
+DrawBfeeddownsys=1
+if [ $DoDrawcombindfitvn -eq 1 ]; then
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys')'
 #root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB50to70_SP_combinedfit'","'$MBorDtrig'",50,70,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
 fi
 
 Drawchargedparticle=1
+DrawBfeeddownsys=1
 if [ $DoDrawcombindfitvn -eq 1 ]; then
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys')'
 #root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB50to70_SP_combinedfit'","'$MBorDtrig'",50,70,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'")'
 fi
 
 ###################################
 ######## deltaphibins method
 
+DrawBfeeddownsys=0
 if [ $DODrawmorephibinvn -eq 1 ]; then
-root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB0to10_morephibin'","'$MBorDtrig'",0,10,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'")'
-root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB10to30_morephibin'","'$MBorDtrig'",10,30,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'")'
-root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB30to50_morephibin'","'$MBorDtrig'",30,50,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'")'
+root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB0to10_morephibin'","'$MBorDtrig'",0,10,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB10to30_morephibin'","'$MBorDtrig'",10,30,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB30to50_morephibin'","'$MBorDtrig'",30,50,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys')'
+#root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB50to70_morephibin'","'$MBorDtrig'",50,70,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'")'
+fi
+
+DrawBfeeddownsys=1
+if [ $DODrawmorephibinvn -eq 1 ]; then
+root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB0to10_morephibin'","'$MBorDtrig'",0,10,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB10to30_morephibin'","'$MBorDtrig'",10,30,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys')'
+root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB30to50_morephibin'","'$MBorDtrig'",30,50,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys')'
 #root -l -b -q 'Draw_vn_finalmorephibin.C++("'$FileVnMB50to70_morephibin'","'$MBorDtrig'",50,70,'$ptmin','$ptmax',"'$Fitoption_DeltaPhibin'")'
 fi
 
