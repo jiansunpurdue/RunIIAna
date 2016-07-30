@@ -19,7 +19,7 @@
 
 #include <./DataPoints_HIN_15_014.C>
 
-void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorephibin_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg")
+void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorephibin_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_finalcombinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -27,7 +27,7 @@ void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorep
 
 	DataPoints();
 
-	void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vnvsmass_SP, TH1D * vn_vnvsmass_SP_sys, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg");
+	void Drawcomparison(TH1D * vn_morephibin, TGraphErrors* gr_vn_morephibin_sys, TH1D * vn_vnvsmass_SP, TGraphErrors* gr_vn_vnvsmass_SP_sys, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg");
 
 	TFile * inputdata_morephibin = new TFile(input_morephibin);
 	TFile * inputdata_vnvsmass_SP = new TFile(input_vnvmass_SP);
@@ -37,35 +37,39 @@ void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorep
 	v2_morephibin->SetName("v2_morephibin"); v2_morephibin->SetTitle("v2_morephibin");
 	v3_morephibin->SetName("v3_morephibin"); v3_morephibin->SetTitle("v3_morephibin");
 
-	TH1D * v2_morephibin_sys = (TH1D *) inputdata_morephibin->Get("v2_morephibin_sys");
-	TH1D * v3_morephibin_sys = (TH1D *) inputdata_morephibin->Get("v3_morephibin_sys");
-	v2_morephibin_sys->SetName("v2_morephibin_sys"); v2_morephibin_sys->SetTitle("v2_morephibin_sys");
-	v3_morephibin_sys->SetName("v3_morephibin_sys"); v3_morephibin_sys->SetTitle("v3_morephibin_sys");
+	TGraphErrors * gr_v2_morephibin_sys = (TGraphErrors *) inputdata_morephibin->Get("gr_v2_pt_sys");
+	TGraphErrors * gr_v3_morephibin_sys = (TGraphErrors *) inputdata_morephibin->Get("gr_v3_pt_sys");
+	gr_v2_morephibin_sys->SetName("gr_v2_morephibin_sys"); gr_v2_morephibin_sys->SetTitle("gr_v2_morephibin_sys");
+	gr_v3_morephibin_sys->SetName("gr_v3_morephibin_sys"); gr_v3_morephibin_sys->SetTitle("gr_v3_morephibin_sys");
 
 	TH1D * h_v2_pt_SP = (TH1D *) inputdata_vnvsmass_SP->Get("h_v2_pt");
 	TH1D * h_v3_pt_SP = (TH1D *) inputdata_vnvsmass_SP->Get("h_v3_pt");
 	h_v2_pt_SP->SetName("h_v2_pt_SP"); h_v2_pt_SP->SetTitle("h_v2_pt_SP");
 	h_v3_pt_SP->SetName("h_v3_pt_SP"); h_v3_pt_SP->SetTitle("h_v3_pt_SP");
 
-	TH1D * h_v2_pt_sys_SP = (TH1D *) inputdata_vnvsmass_SP->Get("h_v2_pt_sys");
-	TH1D * h_v3_pt_sys_SP = (TH1D *) inputdata_vnvsmass_SP->Get("h_v3_pt_sys");
-	h_v2_pt_sys_SP->SetName("h_v2_pt_sys_SP"); h_v2_pt_sys_SP->SetTitle("h_v2_pt_sys_SP");
-	h_v3_pt_sys_SP->SetName("h_v3_pt_sys_SP"); h_v3_pt_sys_SP->SetTitle("h_v3_pt_sys_SP");
+	TGraphErrors * gr_v2_pt_SP_sys = (TGraphErrors *) inputdata_vnvsmass_SP->Get("gr_v2_pt_sys");
+	TGraphErrors * gr_v3_pt_SP_sys = (TGraphErrors *) inputdata_vnvsmass_SP->Get("gr_v3_pt_sys");
+	gr_v2_pt_SP_sys->SetName("gr_v2_pt_SP_sys"); gr_v2_pt_SP_sys->SetTitle("gr_v2_pt_SP_sys");
+	gr_v3_pt_SP_sys->SetName("gr_v3_pt_SP_sys"); gr_v3_pt_SP_sys->SetTitle("gr_v3_pt_SP_sys");
 
-	Drawcomparison( v2_morephibin, v2_morephibin_sys, h_v2_pt_SP, h_v2_pt_sys_SP, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption);
+	Drawcomparison( v2_morephibin, gr_v2_morephibin_sys, h_v2_pt_SP, gr_v2_pt_SP_sys, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption);
 
 	if( Drawchargedparticle ) return;
-	Drawcomparison( v3_morephibin, v3_morephibin_sys, h_v3_pt_SP, h_v3_pt_sys_SP, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, false, fitoption);
+	Drawcomparison( v3_morephibin, gr_v3_morephibin_sys, h_v3_pt_SP, gr_v3_pt_SP_sys, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, false, fitoption);
 
 	TFile * output = new TFile(Form("rootfiles/vn_phibinandSP_%s_cent%dto%d_%s.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 	v2_morephibin->Write();
 	v3_morephibin->Write();
 	h_v2_pt_SP->Write();
 	h_v3_pt_SP->Write();
+	gr_v2_morephibin_sys->Write();
+	gr_v3_morephibin_sys->Write();
+	gr_v2_pt_SP_sys->Write();
+	gr_v3_pt_SP_sys->Write();
 	output->Close();
 }
 
-void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vnvsmass_SP, TH1D * vn_vnvsmass_SP_sys, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg")
+void Drawcomparison(TH1D * vn_morephibin, TGraphErrors* gr_vn_morephibin_sys, TH1D * vn_vnvsmass_SP, TGraphErrors* gr_vn_vnvsmass_SP_sys, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg")
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 
@@ -74,18 +78,18 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vn
 	if( Drawchargedparticle )
 	{
 		grSteveSPv2[8]->SetMarkerStyle(24);
-		grSteveSPv2[8]->SetMarkerColor(14);
-		grSteveSPv2[8]->SetLineColor(14);
+		grSteveSPv2[8]->SetMarkerColor(1);
+		grSteveSPv2[8]->SetLineColor(1);
 		grSteveSPv2[8]->SetMarkerSize(1);
 
 		grSteveSPv2[9]->SetMarkerStyle(24);
-		grSteveSPv2[9]->SetMarkerColor(14);
-		grSteveSPv2[9]->SetLineColor(14);
+		grSteveSPv2[9]->SetMarkerColor(1);
+		grSteveSPv2[9]->SetLineColor(1);
 		grSteveSPv2[9]->SetMarkerSize(1);
 
 		grSteveSPv2[10]->SetMarkerStyle(24);
-		grSteveSPv2[10]->SetMarkerColor(14);
-		grSteveSPv2[10]->SetLineColor(14);
+		grSteveSPv2[10]->SetMarkerColor(1);
+		grSteveSPv2[10]->SetLineColor(1);
 		grSteveSPv2[10]->SetMarkerSize(1);
 
 		if( cent_low == 0 && cent_high == 10 ) 
@@ -105,9 +109,9 @@ void Drawcomparison(TH1D * vn_morephibin, TH1D * vn_morephibin_sys, TH1D * vn_vn
 		}
 	}
 
-	vn_morephibin_sys->Draw("E2same");
+	gr_vn_morephibin_sys->Draw("E2same");
 	vn_morephibin->Draw("same");
-	vn_vnvsmass_SP_sys->Draw("E2same");
+	gr_vn_vnvsmass_SP_sys->Draw("E2same");
 	vn_vnvsmass_SP->Draw("same");
 
 	TLatex Tl;

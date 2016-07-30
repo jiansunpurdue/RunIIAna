@@ -98,21 +98,30 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 	
 	vn_vnvsmass_SP->Draw();
 
+    gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerColor(4.0);
+    gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerStyle(21);
+    gr_vn_vnvsmass_sys_Bfeeddown->SetLineWidth(0);
+    gr_vn_vnvsmass_sys_Bfeeddown->SetFillStyle(1001);
+	gr_vn_vnvsmass_sys_Bfeeddown->SetFillColor(kBlue-10);
+    gr_vn_vnvsmass_sys_Bfeeddown->SetLineColor(kBlue-10);
+
+	if( DrawsysBfeeddown ) gr_vn_vnvsmass_sys_Bfeeddown->Draw("2same");
+
 	if( Drawchargedparticle )
 	{
 		grSteveSPv2[8]->SetMarkerStyle(24);
-		grSteveSPv2[8]->SetMarkerColor(14);
-		grSteveSPv2[8]->SetLineColor(14);
+		grSteveSPv2[8]->SetMarkerColor(1.0);
+		grSteveSPv2[8]->SetLineColor(1.0);
 		grSteveSPv2[8]->SetMarkerSize(1);
 
 		grSteveSPv2[9]->SetMarkerStyle(24);
-		grSteveSPv2[9]->SetMarkerColor(14);
-		grSteveSPv2[9]->SetLineColor(14);
+		grSteveSPv2[9]->SetMarkerColor(1.0);
+		grSteveSPv2[9]->SetLineColor(1.0);
 		grSteveSPv2[9]->SetMarkerSize(1);
 
 		grSteveSPv2[10]->SetMarkerStyle(24);
-		grSteveSPv2[10]->SetMarkerColor(14);
-		grSteveSPv2[10]->SetLineColor(14);
+		grSteveSPv2[10]->SetMarkerColor(1.0);
+		grSteveSPv2[10]->SetLineColor(1.0);
 		grSteveSPv2[10]->SetMarkerSize(1);
 
 		if( cent_low == 0 && cent_high == 10 ) 
@@ -140,15 +149,6 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
     gr_vn_vnvsmass_SP_sys->SetLineWidth(0);
     gr_vn_vnvsmass_SP_sys->SetFillStyle(0);
     gr_vn_vnvsmass_SP_sys->SetLineColor(4.0);
-
-    gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerColor(4.0);
-    gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerStyle(21);
-    gr_vn_vnvsmass_sys_Bfeeddown->SetLineWidth(0);
-    gr_vn_vnvsmass_sys_Bfeeddown->SetFillStyle(1001);
-	gr_vn_vnvsmass_sys_Bfeeddown->SetFillColor(kBlue-10);
-    gr_vn_vnvsmass_sys_Bfeeddown->SetLineColor(kBlue-10);
-
-	if( DrawsysBfeeddown ) gr_vn_vnvsmass_sys_Bfeeddown->Draw("2same");
 
 	gr_vn_vnvsmass_SP_sys->Draw("2same");
 	vn_vnvsmass_SP->Draw("same");
