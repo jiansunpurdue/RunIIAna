@@ -19,8 +19,9 @@
 #include <TMultiGraph.h>
 
 #include <./DataPoints_HIN_15_014.C>
+#include <./Systematics.h>
 
-void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = true, TString fitoption = "poly3bkg_floatwidth", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawsysBfeeddown = true)
+void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawsysBfeeddown_Alice = true, bool DrawsysBfeeddown_data = false)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -29,7 +30,7 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 	DataPoints();
 
 	void CalculateBfeeddownError( TH1D * h_promptf_totaluncertainties, TGraphAsymmErrors * gr_vn_pt_sys_Bfeeddown);
-	void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_SP_sys, TGraphAsymmErrors * gr_vn_vnvsmass_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg", bool DrawsysBfeeddown = false);
+	void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_SP_sys, TGraphAsymmErrors * gr_vn_vnvsmass_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg", bool DrawsysBfeeddown_Alice = false, bool DrawsysBfeeddown_data = false);
 
 	TFile * inputdata_promptD0fraction = new TFile(input_promptD0fraction);
 	TH1D * h_promptf_totaluncertainties = (TH1D *) inputdata_promptD0fraction->Get("h_promptf_totaluncertainties_DCAcut");
@@ -52,15 +53,23 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 	TGraphAsymmErrors* gr_v2_pt_sys_Bfeeddown = new TGraphAsymmErrors(h_v2_pt_sys); gr_v2_pt_sys_Bfeeddown->SetName("gr_v2_pt_sys_Bfeeddown");
 	TGraphAsymmErrors* gr_v3_pt_sys_Bfeeddown = new TGraphAsymmErrors(h_v3_pt_sys); gr_v3_pt_sys_Bfeeddown->SetName("gr_v3_pt_sys_Bfeeddown");
 
-	CalculateBfeeddownError( h_promptf_totaluncertainties, gr_v2_pt_sys_Bfeeddown);
-	CalculateBfeeddownError( h_promptf_totaluncertainties, gr_v3_pt_sys_Bfeeddown);
+	if( DrawsysBfeeddown_Alice )
+	{
+		CalculateBfeeddownError( h_promptf_totaluncertainties, gr_v2_pt_sys_Bfeeddown);
+		CalculateBfeeddownError( h_promptf_totaluncertainties, gr_v3_pt_sys_Bfeeddown);
+	}
+	
+	if( DrawsysBfeeddown_data )
+	{
+		Calculate_sys_Bfeeddown( cent_low, cent_high, 1.0, 40.0, "SP", "v2", h_v2_pt, gr_v2_pt_sys_Bfeeddown);
+		Calculate_sys_Bfeeddown( cent_low, cent_high, 1.0, 40.0, "SP", "v3", h_v3_pt, gr_v3_pt_sys_Bfeeddown);
+	}
 
-	Drawfinalcombinedfit( h_v2_pt, gr_v2_pt_sys, gr_v2_pt_sys_Bfeeddown, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption, DrawsysBfeeddown);
+	Drawfinalcombinedfit( h_v2_pt, gr_v2_pt_sys, gr_v2_pt_sys_Bfeeddown, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data);
 
-	if( Drawchargedparticle ) return;
-	Drawfinalcombinedfit( h_v3_pt, gr_v3_pt_sys, gr_v3_pt_sys_Bfeeddown, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, false, fitoption, DrawsysBfeeddown);
+	Drawfinalcombinedfit( h_v3_pt, gr_v3_pt_sys, gr_v3_pt_sys_Bfeeddown, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, false, fitoption, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data);
 
-	TFile * output = new TFile(Form("rootfiles/vn_finalcombinedfit_vnvsmass_%s_SP_cent%dto%d_%s_effcorrected0.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
+	TFile * output = new TFile(Form("rootfiles/vn_finalcombinedfit_vnvsmass_%s_SP_cent%dto%d_%s_Bfeeddownsys_Alice%d_data%d_effcorrected0.root", trigname.Data(), cent_low, cent_high, fitoption.Data(), DrawsysBfeeddown_Alice, DrawsysBfeeddown_data),"RECREATE");
 	h_v2_pt->Write();
 	h_v3_pt->Write();
 	gr_v2_pt_sys->Write();
@@ -92,7 +101,7 @@ void CalculateBfeeddownError( TH1D * h_promptf_totaluncertainties, TGraphAsymmEr
 	}
 }
 
-void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_SP_sys, TGraphAsymmErrors * gr_vn_vnvsmass_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg", bool DrawsysBfeeddown = false)
+void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_SP_sys, TGraphAsymmErrors * gr_vn_vnvsmass_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg", bool DrawsysBfeeddown_Alice = false, bool DrawsysBfeeddown_data = false)
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 	
@@ -105,7 +114,7 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 	gr_vn_vnvsmass_sys_Bfeeddown->SetFillColor(kBlue-10);
     gr_vn_vnvsmass_sys_Bfeeddown->SetLineColor(kBlue-10);
 
-	if( DrawsysBfeeddown ) gr_vn_vnvsmass_sys_Bfeeddown->Draw("2same");
+	if( DrawsysBfeeddown_Alice || DrawsysBfeeddown_data ) gr_vn_vnvsmass_sys_Bfeeddown->Draw("2same");
 
 	if( Drawchargedparticle )
 	{
@@ -196,5 +205,5 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 	fun->SetLineWidth(1);
 	fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_finalcombinedfit_vnvsmass_%s_%s_SP_cent%dto%d_charged%d_Bfeeddownsys%d_%s_effcorrected0.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, Drawchargedparticle, DrawsysBfeeddown, fitoption.Data()));
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_finalcombinedfit_vnvsmass_%s_%s_SP_cent%dto%d_charged%d_Bfeeddownsys_Alice%d_data%d_%s_effcorrected0.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, Drawchargedparticle, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data, fitoption.Data()));
 }

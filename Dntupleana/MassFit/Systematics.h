@@ -4,6 +4,9 @@
 #include <map>
 #include <iostream>
 #include "./../Dcand_tk_cuts.h"
+#include <TGraphErrors.h>
+#include <TGraphAsymmErrors.h>
+
 using namespace std;
 
 enum vnordercentralityandmethod   { v2cent0to10SP, v2cent10to30SP, v2cent30to50SP, v2cent50to70SP, 
@@ -18,12 +21,31 @@ typedef std::array<double, Nptbin> Row;
 std::array<Row, 16> sys_bkgmass;
 std::array<Row, 16> sys_effcorr;
 std::array<Row, 16> sys_bkgvn;
+//draw separately
+std::array<Row, 16> sys_Bfeeddown;
 
 void Initialize_Sysvalues()
 {
 	//#define Nptbin 15
 	//float ptbins[Nptbin+1]   =      { 0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 15.0, 20.0, 40.0, 60.0, 100.0, 200.0};
 	// 1-2 GeV ptbin 2, 2-8 GeV ptbin 3, 4, 5, 6, 7 8-20 GeV ptbin 8, 9, 10  20-40 GeV pt bin 11
+	//
+	// systematics B feeddown
+	sys_Bfeeddown[v2cent0to10SP] =  { 0., 0., 0.00, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0., 0., 0.};
+	sys_Bfeeddown[v2cent10to30SP] = { 0., 0., 0.05, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0., 0., 0.};
+	sys_Bfeeddown[v2cent30to50SP] = { 0., 0., 0.05, 0.030, 0.030, 0.030, 0.030, 0.030, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	
+	sys_Bfeeddown[v3cent0to10SP] =  { 0., 0., 0.00, 0.100, 0.100, 0.100, 0.100, 0.100, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
+	sys_Bfeeddown[v3cent10to30SP] = { 0., 0., 0.10, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	sys_Bfeeddown[v3cent30to50SP] = { 0., 0., 0.10, 0.050, 0.050, 0.050, 0.050, 0.030, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
+
+	sys_Bfeeddown[v2cent0to10deltaphibins] =  { 0., 0., 0.00, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0., 0., 0.};
+	sys_Bfeeddown[v2cent10to30deltaphibins] = { 0., 0., 0.05, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0., 0., 0.};
+	sys_Bfeeddown[v2cent30to50deltaphibins] = { 0., 0., 0.05, 0.030, 0.030, 0.030, 0.030, 0.030, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	
+	sys_Bfeeddown[v3cent0to10deltaphibins] =  { 0., 0., 0.00, 0.100, 0.100, 0.100, 0.100, 0.100, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
+	sys_Bfeeddown[v3cent10to30deltaphibins] = { 0., 0., 0.10, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	sys_Bfeeddown[v3cent30to50deltaphibins] = { 0., 0., 0.10, 0.050, 0.050, 0.050, 0.050, 0.030, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
 
 	//SP method, absolute error
 	sys_bkgmass[v2cent0to10SP] = { 0., 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
@@ -150,5 +172,46 @@ void Calculatetotalsys( int cent_low, int cent_high, double ptstart, double pten
 
 		h_vn_relativesys->SetBinContent(ipt+1,totalrelativesys);
 		h_vn_relativesys->SetBinError( ipt+1, 0);
+	}
+}
+
+void Calculate_sys_Bfeeddown( int cent_low, int cent_high, double ptstart, double ptend, TString method, TString vnorder, TH1D * h_vn, TGraphAsymmErrors * gr_vn_sys_Bfeeddown)
+{
+	Initialize_Sysvalues();
+	Initialize_map();
+
+	string vntype = Form( "%scent%dto%d%s", vnorder.Data(), cent_low, cent_high, method.Data());
+	cout << "string name: "<< vntype << endl;
+	cout << " vntypemethodtoindex[vntype]: " << vntypemethodtoindex[vntype] << endl;
+
+	if( vntype != "v2cent0to10SP" && vntype != "v2cent10to30SP" && vntype != "v2cent30to50SP" && vntype != "v2cent50to70SP"
+	 && vntype != "v3cent0to10SP" && vntype != "v3cent10to30SP" && vntype != "v3cent30to50SP" && vntype != "v3cent50to70SP"
+	 && vntype != "v2cent0to10deltaphibins" && vntype != "v2cent10to30deltaphibins" && vntype != "v2cent30to50deltaphibins" && vntype != "v2cent50to70deltaphibins"
+	 && vntype != "v3cent0to10deltaphibins" && vntype != "v3cent10to30deltaphibins" && vntype != "v3cent30to50deltaphibins" && vntype != "v3cent50to70deltaphibins"
+	 )
+	{
+		cout << "Wrong type!!!!!!!!!, Error!!!!!!!!!!!!, error, fail, Fail!!!!!!!!!!!!!!!" << endl;
+		exit(2);
+	}
+
+	int arrayindextouse = vntypemethodtoindex[vntype];
+
+    //histogram bin from 1
+	int ptbinstart = h_vn->FindBin( ptstart+0.5 ) - 1;
+	int ptbinend = h_vn->FindBin( ptend-0.5 );
+
+	for( int ipt = ptbinstart; ipt < ptbinend; ipt++ )
+	{
+		double vnvalue = h_vn->GetBinContent( ipt+1 );
+		double sys_notrelative_Bfeeddown = sys_Bfeeddown[arrayindextouse][ipt];
+
+		cout << " ipt: " << ipt << " sys_Bfeeddown: " << sys_notrelative_Bfeeddown << endl;
+
+		gr_vn_sys_Bfeeddown->GetY()[ipt] = vnvalue;
+		gr_vn_sys_Bfeeddown->GetEYhigh()[ipt] = sys_notrelative_Bfeeddown;
+		gr_vn_sys_Bfeeddown->GetEYlow()[ipt] = sys_notrelative_Bfeeddown;
+
+		gr_vn_sys_Bfeeddown->GetEXhigh()[ipt] = 0.5;
+		gr_vn_sys_Bfeeddown->GetEXlow()[ipt] = 0.5;
 	}
 }
