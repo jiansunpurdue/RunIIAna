@@ -20,7 +20,7 @@
 
 #include <./DataPoints_HIN_15_014.C>
 
-void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = true, TString fitoption = "poly3bkg_floatwidth", TString input_promptD0fraction = "promptD0_totaluncertainties/Promptfraction_DCAcut1_cent30to50.root", bool DrawsysBfeeddown = true)
+void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = true, TString fitoption = "poly3bkg_floatwidth", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawsysBfeeddown = true)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -32,7 +32,7 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 	void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_SP_sys, TGraphAsymmErrors * gr_vn_vnvsmass_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg", bool DrawsysBfeeddown = false);
 
 	TFile * inputdata_promptD0fraction = new TFile(input_promptD0fraction);
-	TH1D * h_promptf_totaluncertainties = (TH1D *) inputdata_promptD0fraction->Get("h_promptf_totaluncertainties");
+	TH1D * h_promptf_totaluncertainties = (TH1D *) inputdata_promptD0fraction->Get("h_promptf_totaluncertainties_DCAcut");
 
 	TFile * inputdata_vnvsmass_SP = new TFile(input_vnvmass_SP);
 

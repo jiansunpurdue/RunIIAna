@@ -20,7 +20,7 @@
 
 #include <./Systematics.h>
 
-void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent0to10_poly3bkg_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, double ptlow = 0.0, double pthigh = 40.0, TString fitoption = "poly3bkg", TString input_promptD0fraction = "promptD0_totaluncertainties/Promptfraction_DCAcut1_cent0to10.root", bool DrawsysBfeeddown = true)
+void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent0to10_poly3bkg_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, double ptlow = 0.0, double pthigh = 40.0, TString fitoption = "poly3bkg", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", bool DrawsysBfeeddown = true)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -30,7 +30,7 @@ void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin
 	void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys, TGraphAsymmErrors * gr_vn_morephibin_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 40.0, TString fitoption = "poly3bkg", bool DrawsysBfeeddown = false);
 
     TFile * inputdata_promptD0fraction = new TFile(input_promptD0fraction);
-    TH1D * h_promptf_totaluncertainties = (TH1D *) inputdata_promptD0fraction->Get("h_promptf_totaluncertainties");
+    TH1D * h_promptf_totaluncertainties = (TH1D *) inputdata_promptD0fraction->Get("h_promptf_totaluncertainties_DCAcut");
 
 	TFile * inputdata_morephibin = new TFile(input_morephibin);
 
