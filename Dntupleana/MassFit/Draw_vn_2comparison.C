@@ -93,7 +93,7 @@ void Drawcomparison(TH1D * vn_1, TH1D * vn_2, TString trigname = "MBtrig", TStri
 	fun->SetLineWidth(1);
 	fun->Draw("same");
 
-	cfg_vn->SaveAs(Form("plots_otherstudy/cfg_%s_%s_%s_cent%dto%d.pdf", cfgname.Data(), trigname.Data(), vnname.Data(), cent_low, cent_high));
+	cfg_vn->SaveAs(Form("plots_comparision/cfg_%s_%s_%s_cent%dto%d.pdf", cfgname.Data(), trigname.Data(), vnname.Data(), cent_low, cent_high));
 
 	TCanvas * cfg_diff_vn = new TCanvas(Form("cfg_diff_%s_%s", trigname.Data(), vnname.Data()),Form("cfg_diff_%s_%s", trigname.Data(), vnname.Data())); 
 
@@ -113,5 +113,5 @@ void Drawcomparison(TH1D * vn_1, TH1D * vn_2, TString trigname = "MBtrig", TStri
     fun1->SetLineWidth(1);
     fun1->Draw("same");
 
-	cfg_diff_vn->SaveAs(Form("plots_otherstudy/cfg_%s_%s_%s_cent%dto%d_diff.pdf", cfgname.Data(), trigname.Data(), vnname.Data(), cent_low, cent_high));
+	cfg_diff_vn->SaveAs(Form("plots_comparision/cfg_%s_%s_%s_cent%dto%d_diff.pdf", cfgname.Data(), trigname.Data(), vnname.Data(), cent_low, cent_high));
 }

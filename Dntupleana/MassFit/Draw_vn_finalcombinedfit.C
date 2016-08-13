@@ -21,7 +21,7 @@
 #include <./DataPoints_HIN_15_014.C>
 #include <./Systematics.h>
 
-void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawsysBfeeddown_Alice = true, bool DrawsysBfeeddown_data = false)
+void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = true, TString fitoption = "poly3bkg_floatwidth", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawsysBfeeddown_Alice = false, bool DrawsysBfeeddown_data = true)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -67,7 +67,7 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 
 	Drawfinalcombinedfit( h_v2_pt, gr_v2_pt_sys, gr_v2_pt_sys_Bfeeddown, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data);
 
-	Drawfinalcombinedfit( h_v3_pt, gr_v3_pt_sys, gr_v3_pt_sys_Bfeeddown, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, false, fitoption, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data);
+	Drawfinalcombinedfit( h_v3_pt, gr_v3_pt_sys, gr_v3_pt_sys_Bfeeddown, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data);
 
 	TFile * output = new TFile(Form("rootfiles/vn_finalcombinedfit_vnvsmass_%s_SP_cent%dto%d_%s_Bfeeddownsys_Alice%d_data%d_effcorrected0.root", trigname.Data(), cent_low, cent_high, fitoption.Data(), DrawsysBfeeddown_Alice, DrawsysBfeeddown_data),"RECREATE");
 	h_v2_pt->Write();
@@ -111,42 +111,114 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
     gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerStyle(21);
     gr_vn_vnvsmass_sys_Bfeeddown->SetLineWidth(0);
     gr_vn_vnvsmass_sys_Bfeeddown->SetFillStyle(1001);
-	gr_vn_vnvsmass_sys_Bfeeddown->SetFillColor(kBlue-10);
-    gr_vn_vnvsmass_sys_Bfeeddown->SetLineColor(kBlue-10);
+	gr_vn_vnvsmass_sys_Bfeeddown->SetFillColor(kBlue-9);
+    gr_vn_vnvsmass_sys_Bfeeddown->SetLineColor(kBlue-9);
 
 	if( DrawsysBfeeddown_Alice || DrawsysBfeeddown_data ) gr_vn_vnvsmass_sys_Bfeeddown->Draw("2same");
 
-	if( Drawchargedparticle )
+	if( Drawchargedparticle && vnname == "v2" )
 	{
-		grSteveSPv2[8]->SetMarkerStyle(24);
+		grSteveSPv2[8]->SetMarkerStyle(33);
 		grSteveSPv2[8]->SetMarkerColor(1.0);
 		grSteveSPv2[8]->SetLineColor(1.0);
 		grSteveSPv2[8]->SetMarkerSize(1);
 
-		grSteveSPv2[9]->SetMarkerStyle(24);
+		grSteveSPv2[9]->SetMarkerStyle(33);
 		grSteveSPv2[9]->SetMarkerColor(1.0);
 		grSteveSPv2[9]->SetLineColor(1.0);
 		grSteveSPv2[9]->SetMarkerSize(1);
 
-		grSteveSPv2[10]->SetMarkerStyle(24);
+		grSteveSPv2[10]->SetMarkerStyle(33);
 		grSteveSPv2[10]->SetMarkerColor(1.0);
 		grSteveSPv2[10]->SetLineColor(1.0);
 		grSteveSPv2[10]->SetMarkerSize(1);
 
+		grSteveSPv2sys[8]->SetFillStyle(0);
+		//grSteveSPv2sys[8]->SetFillColor(16);
+		grSteveSPv2sys[8]->SetLineColor(1);
+
+		grSteveSPv2sys[9]->SetFillStyle(0);
+		//grSteveSPv2sys[9]->SetFillColor(16);
+		grSteveSPv2sys[9]->SetLineColor(1);
+
+		grSteveSPv2sys[10]->SetFillStyle(0);
+		//grSteveSPv2sys[10]->SetFillColor(16);
+		grSteveSPv2sys[10]->SetLineColor(1);
+
+		for( int ibin = 0; ibin < grSteveSPv2sys[8]->GetN(); ibin++)
+		{
+			grSteveSPv2sys[8]->GetEX()[ibin] = 0.5;
+			grSteveSPv2sys[9]->GetEX()[ibin] = 0.5;
+			grSteveSPv2sys[10]->GetEX()[ibin] = 0.5;
+		}
+
 		if( cent_low == 0 && cent_high == 10 ) 
 		{
-			//grSteveSPv2sys[8]->Draw("2same");
+			grSteveSPv2sys[8]->Draw("2same");
 			grSteveSPv2[8]->Draw("psame");
 		}
 		if( cent_low == 10 && cent_high == 30 ) 
 		{
-			//grSteveSPv2sys[9]->Draw("2same");
+			grSteveSPv2sys[9]->Draw("2same");
 			grSteveSPv2[9]->Draw("psame");
 		}
 		if( cent_low == 30 && cent_high == 50 ) 
 		{
-			//grSteveSPv2sys[10]->Draw("2same");
+			grSteveSPv2sys[10]->Draw("2same");
 			grSteveSPv2[10]->Draw("psame");
+		}
+	}
+
+	if( Drawchargedparticle && vnname == "v3" )
+	{
+		grSteveSPv3[8]->SetMarkerStyle(33);
+		grSteveSPv3[8]->SetMarkerColor(1.0);
+		grSteveSPv3[8]->SetLineColor(1.0);
+		grSteveSPv3[8]->SetMarkerSize(1);
+
+		grSteveSPv3[9]->SetMarkerStyle(33);
+		grSteveSPv3[9]->SetMarkerColor(1.0);
+		grSteveSPv3[9]->SetLineColor(1.0);
+		grSteveSPv3[9]->SetMarkerSize(1);
+
+		grSteveSPv3[10]->SetMarkerStyle(33);
+		grSteveSPv3[10]->SetMarkerColor(1.0);
+		grSteveSPv3[10]->SetLineColor(1.0);
+		grSteveSPv3[10]->SetMarkerSize(1);
+
+		grSteveSPv3sys[8]->SetFillStyle(0);
+		//grSteveSPv3sys[8]->SetFillColor(16);
+		grSteveSPv3sys[8]->SetLineColor(1);
+
+		grSteveSPv3sys[9]->SetFillStyle(0);
+		//grSteveSPv3sys[9]->SetFillColor(16);
+		grSteveSPv3sys[9]->SetLineColor(1);
+
+		grSteveSPv3sys[10]->SetFillStyle(0);
+		//grSteveSPv3sys[10]->SetFillColor(16);
+		grSteveSPv3sys[10]->SetLineColor(1);
+
+		for( int ibin = 0; ibin < grSteveSPv3sys[8]->GetN(); ibin++)
+		{
+			grSteveSPv3sys[8]->GetEX()[ibin] = 0.5;
+			grSteveSPv3sys[9]->GetEX()[ibin] = 0.5;
+			grSteveSPv3sys[10]->GetEX()[ibin] = 0.5;
+		}
+
+		if( cent_low == 0 && cent_high == 10 ) 
+		{
+			grSteveSPv3sys[8]->Draw("2same");
+			grSteveSPv3[8]->Draw("psame");
+		}
+		if( cent_low == 10 && cent_high == 30 ) 
+		{
+			grSteveSPv3sys[9]->Draw("2same");
+			grSteveSPv3[9]->Draw("psame");
+		}
+		if( cent_low == 30 && cent_high == 50 ) 
+		{
+			grSteveSPv3sys[10]->Draw("2same");
+			grSteveSPv3[10]->Draw("psame");
 		}
 	}
 
@@ -176,8 +248,9 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 		leg->SetTextSize(0.05);
 		leg->SetTextFont(42);
 		leg->AddEntry(vn_vnvsmass_SP, "D^{0}");
-		leg->AddEntry(grSteveSPv2[10], "Charged particle", "p");
-		leg->AddEntry((TObject*)0, "#scale[0.7]{HIN-15-014}", "");
+		if( vnname == "v2" ) leg->AddEntry(grSteveSPv2[10], "Charged particle", "p");
+		if( vnname == "v3" ) leg->AddEntry(grSteveSPv3[10], "Charged particle", "p");
+		leg->AddEntry((TObject*)0, "#scale[0.7]{CMS-PAS-HIN-15-014}", "");
 
 		leg->SetBorderSize(0);
 		leg->SetFillStyle(0);
@@ -198,6 +271,24 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 	tex->SetTextSize(0.05);
 	tex->SetLineWidth(2);
 	tex->Draw();
+	
+	if( DrawsysBfeeddown_Alice || DrawsysBfeeddown_data )
+	{
+		tex = new TLatex(0.3,0.25,"Filled box: syst. from non-prompt D^{0}");
+		tex->SetNDC();
+		tex->SetTextFont(42);
+		tex->SetTextSize(0.04);
+		tex->SetLineWidth(2);
+		tex->Draw();
+
+		//tex = new TLatex(0.45,0.20,Form("Open box: other syst. for inclusive D^{0} %s",Ytitle.Data()));
+		tex = new TLatex(0.3,0.20,"Open box: other syst.");
+		tex->SetNDC();
+		tex->SetTextFont(42);
+		tex->SetTextSize(0.04);
+		tex->SetLineWidth(2);
+		tex->Draw();
+	}
 
 	TF1 * fun = new TF1("fun", "0.0", 0, 100);
 	fun->SetLineColor(1.0);

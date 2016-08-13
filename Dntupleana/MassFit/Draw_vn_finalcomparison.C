@@ -144,7 +144,7 @@ void Drawcomparison(TH1D * vn_morephibin, TGraphErrors* gr_vn_morephibin_sys, TH
 		leg->AddEntry(vn_vnvsmass_SP, "SP method");
 		leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
 		leg->AddEntry(grSteveSPv2[10], "Charged particle", "p");
-		leg->AddEntry((TObject*)0, "#scale[0.7]{HIN-15-014}", "");
+		leg->AddEntry((TObject*)0, "#scale[0.7]{CMS-PAS-HIN-15-014}", "");
 
 		leg->SetBorderSize(0);
 		leg->SetFillStyle(0);

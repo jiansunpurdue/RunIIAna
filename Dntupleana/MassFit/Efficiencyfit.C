@@ -75,5 +75,10 @@ void Efficiencyfit(TString filenamemc = "./../rootfiles/anaDntuple_ntD_EvtBase_2
 
 	h_accxeff->Draw();
 
+//	TGraph * gr_accxeff = new TGraph( h_accxeff );
+//	gr_accxeff->Draw("Csame");
+//	cout << " Eval(38.0): " << gr_accxeff->Eval(38.0) << endl;
+//	cout << " Eval(1.2): " << gr_accxeff->Eval(1.2) << endl;
+
 	cfg_efffit->SaveAs("Plots_random/Efficiency_fit_cent0to100.pdf");
 }

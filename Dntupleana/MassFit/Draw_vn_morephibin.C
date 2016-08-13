@@ -101,8 +101,10 @@ void Get_vn_morephibin( TH1D * vn_morephibin, TH1D * dNdpt_phibins_in_oneptbin[]
     //vn_morephibin->GetXaxis()->SetRangeUser(ptbins[iptstart]+0.05, ptbins[iptend]-0.05);
     vn_morephibin->GetXaxis()->SetRangeUser(0+0.05, ptbins[iptend]-0.05);
     vn_morephibin->GetYaxis()->SetRangeUser(-0.2, 0.4);
-    vn_morephibin->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
+    vn_morephibin->GetXaxis()->SetTitle("p_{T} (GeV/c)");
     vn_morephibin->GetYaxis()->SetTitle(Ytitle);
+	vn_morephibin->GetYaxis()->CenterTitle();
+	vn_morephibin->GetXaxis()->CenterTitle();
 
     vn_morephibin->GetYaxis()->SetTitleSize(0.05);
     vn_morephibin->GetXaxis()->SetTitleSize(0.05);

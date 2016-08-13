@@ -20,6 +20,7 @@ map< string, int > vntypemethodtoindex;
 typedef std::array<double, Nptbin> Row;
 std::array<Row, 16> sys_bkgmass;
 std::array<Row, 16> sys_effcorr;
+std::array<Row, 16> sys_tkcutva;
 std::array<Row, 16> sys_bkgvn;
 //draw separately
 std::array<Row, 16> sys_Bfeeddown;
@@ -37,27 +38,30 @@ void Initialize_Sysvalues()
 	
 	sys_Bfeeddown[v3cent0to10SP] =  { 0., 0., 0.00, 0.100, 0.100, 0.100, 0.100, 0.100, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
 	sys_Bfeeddown[v3cent10to30SP] = { 0., 0., 0.10, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
-	sys_Bfeeddown[v3cent30to50SP] = { 0., 0., 0.10, 0.050, 0.050, 0.050, 0.050, 0.030, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
-
+	sys_Bfeeddown[v3cent30to50SP] = { 0., 0., 0.10, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
+	
 	sys_Bfeeddown[v2cent0to10deltaphibins] =  { 0., 0., 0.00, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0.050, 0., 0., 0.};
 	sys_Bfeeddown[v2cent10to30deltaphibins] = { 0., 0., 0.05, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0., 0., 0.};
 	sys_Bfeeddown[v2cent30to50deltaphibins] = { 0., 0., 0.05, 0.030, 0.030, 0.030, 0.030, 0.030, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 	
 	sys_Bfeeddown[v3cent0to10deltaphibins] =  { 0., 0., 0.00, 0.100, 0.100, 0.100, 0.100, 0.100, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
 	sys_Bfeeddown[v3cent10to30deltaphibins] = { 0., 0., 0.10, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
-	sys_Bfeeddown[v3cent30to50deltaphibins] = { 0., 0., 0.10, 0.050, 0.050, 0.050, 0.050, 0.030, 0.030, 0.030, 0.030, 0.030, 0., 0., 0.};
+	sys_Bfeeddown[v3cent30to50deltaphibins] = { 0., 0., 0.10, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
 
 	//SP method, absolute error
 	sys_bkgmass[v2cent0to10SP] = { 0., 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
 	sys_effcorr[v2cent0to10SP] = { 0., 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v2cent0to10SP] = { 0., 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
 	sys_bkgvn[v2cent0to10SP]   = { 0., 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 
 	sys_bkgmass[v2cent10to30SP] = { 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
 	sys_effcorr[v2cent10to30SP] = { 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v2cent10to30SP] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.020, 0., 0., 0.};
 	sys_bkgvn[v2cent10to30SP]   = { 0., 0., 0.060, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
 
 	sys_bkgmass[v2cent30to50SP] = { 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
 	sys_effcorr[v2cent30to50SP] = { 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v2cent30to50SP] = { 0., 0., 0.020, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.020, 0., 0., 0.};
 	sys_bkgvn[v2cent30to50SP]   = { 0., 0., 0.030, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 
 	//#define Nptbin 15
@@ -65,14 +69,17 @@ void Initialize_Sysvalues()
 	// 1-2 GeV ptbin 2, 2-8 GeV ptbin 3, 4, 5, 6, 7 8-20 GeV ptbin 8, 9, 10  20-40 GeV pt bin 11
 	sys_bkgmass[v3cent0to10SP] = { 0., 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
 	sys_effcorr[v3cent0to10SP] = { 0., 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v3cent0to10SP] = { 0., 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.020, 0., 0., 0.};
 	sys_bkgvn[v3cent0to10SP]   = { 0., 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
 
 	sys_bkgmass[v3cent10to30SP] = { 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
 	sys_effcorr[v3cent10to30SP] = { 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v3cent10to30SP] = { 0., 0., 0.040, 0.015, 0.015, 0.015, 0.015, 0.015, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
 	sys_bkgvn[v3cent10to30SP]   = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 
 	sys_bkgmass[v3cent30to50SP] = { 0., 0., 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0., 0., 0.};
 	sys_effcorr[v3cent30to50SP] = { 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v3cent30to50SP] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 	sys_bkgvn[v3cent30to50SP] =   { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
 
 	//#define Nptbin 15
@@ -80,24 +87,30 @@ void Initialize_Sysvalues()
 	// 1-2 GeV ptbin 2, 2-8 GeV ptbin 3, 4, 5, 6, 7 8-20 GeV ptbin 8, 9, 10  20-40 GeV pt bin 11
 	sys_bkgmass[v2cent0to10deltaphibins] = { 0., 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 	sys_effcorr[v2cent0to10deltaphibins] = { 0., 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v2cent0to10deltaphibins] = { 0., 0., 0., 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
 
 	sys_bkgmass[v2cent10to30deltaphibins] = { 0., 0., 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
 	sys_effcorr[v2cent10to30deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	sys_tkcutva[v2cent10to30deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 
 	sys_bkgmass[v2cent30to50deltaphibins] = { 0., 0., 0.015, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
 	sys_effcorr[v2cent30to50deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.005, 0.005, 0.005, 0.005, 0., 0., 0.};
+	sys_tkcutva[v2cent30to50deltaphibins] = { 0., 0., 0.020, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 
 	//#define Nptbin 15
 	//float ptbins[Nptbin+1]   =      { 0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 15.0, 20.0, 40.0, 60.0, 100.0, 200.0};
 	// 1-2 GeV ptbin 2, 2-8 GeV ptbin 3, 4, 5, 6, 7 8-20 GeV ptbin 8, 9, 10  20-40 GeV pt bin 11
 	sys_bkgmass[v3cent0to10deltaphibins] = { 0., 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 	sys_effcorr[v3cent0to10deltaphibins] = { 0., 0., 0., 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
+	sys_tkcutva[v3cent0to10deltaphibins] = { 0., 0., 0., 0.020, 0.020, 0.020, 0.020, 0.020, 0.030, 0.030, 0.030, 0.040, 0., 0., 0.};
 
 	sys_bkgmass[v3cent10to30deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 	sys_effcorr[v3cent10to30deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	sys_tkcutva[v3cent10to30deltaphibins] = { 0., 0., 0.040, 0.010, 0.010, 0.010, 0.010, 0.010, 0.020, 0.020, 0.020, 0.020, 0., 0., 0.};
 
 	sys_bkgmass[v3cent30to50deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
 	sys_effcorr[v3cent30to50deltaphibins] = { 0., 0., 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0., 0., 0.};
+	sys_tkcutva[v3cent30to50deltaphibins] = { 0., 0., 0.040, 0.010, 0.010, 0.010, 0.010, 0.010, 0.015, 0.015, 0.015, 0.015, 0., 0., 0.};
 }
 
 void Initialize_map()
@@ -160,12 +173,13 @@ void Calculatetotalsys( int cent_low, int cent_high, double ptstart, double pten
 		//convert absolute error to relative error
 		double sys_relative_bkgmass = sys_bkgmass[arrayindextouse][ipt]/vnvalue;
 		double sys_relative_effcorr = sys_effcorr[arrayindextouse][ipt]/vnvalue;
+		double sys_relative_tkcutva = sys_tkcutva[arrayindextouse][ipt]/vnvalue;
 		double sys_relative_bkgvn = sys_bkgvn[arrayindextouse][ipt]/vnvalue;
 
-		cout << " ipt: " << ipt << " sys_bkgmass: " << sys_bkgmass[arrayindextouse][ipt] << " sys_effcorr: " << sys_effcorr[arrayindextouse][ipt] << " sys_bkgvn: " << sys_bkgvn[arrayindextouse][ipt] << endl;
+		cout << " ipt: " << ipt << " sys_bkgmass: " << sys_bkgmass[arrayindextouse][ipt] << " sys_effcorr: " << sys_effcorr[arrayindextouse][ipt] << " sys_tkcutva: " << sys_tkcutva[arrayindextouse][ipt]<< " sys_bkgvn: " << sys_bkgvn[arrayindextouse][ipt] << endl;
 
 		//sum relative systematic uncertainties
-		double totalrelativesys = TMath::Sqrt( sys_relative_bkgmass*sys_relative_bkgmass + sys_relative_effcorr* sys_relative_effcorr + sys_relative_bkgvn * sys_relative_bkgvn);
+		double totalrelativesys = TMath::Sqrt( sys_relative_bkgmass*sys_relative_bkgmass + sys_relative_effcorr* sys_relative_effcorr + sys_relative_tkcutva * sys_relative_tkcutva + sys_relative_bkgvn * sys_relative_bkgvn);
 
 		h_vn_sys->SetBinContent( ipt+1, vnvalue);
 		h_vn_sys->SetBinError( ipt+1, vnvalue * totalrelativesys);

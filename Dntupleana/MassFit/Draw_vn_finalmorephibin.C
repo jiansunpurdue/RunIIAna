@@ -20,14 +20,14 @@
 
 #include <./Systematics.h>
 
-void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent0to10_poly3bkg_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, double ptlow = 0.0, double pthigh = 40.0, TString fitoption = "poly3bkg", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", bool DrawsysBfeeddown = true)
+void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin_MBtrig_cent0to10_poly3bkg_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 0, int cent_high = 10, double ptlow = 0.0, double pthigh = 40.0, TString fitoption = "poly3bkg", TString input_promptD0fraction = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", bool DrawsysBfeeddown_Alice = true)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
 
 	void CalculateBfeeddownError( TH1D * h_promptf_totaluncertainties, TGraphAsymmErrors * gr_vn_pt_sys_Bfeeddown);
-	void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys, TGraphAsymmErrors * gr_vn_morephibin_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 40.0, TString fitoption = "poly3bkg", bool DrawsysBfeeddown = false);
+	void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys, TGraphAsymmErrors * gr_vn_morephibin_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 40.0, TString fitoption = "poly3bkg", bool DrawsysBfeeddown_Alice = false);
 
     TFile * inputdata_promptD0fraction = new TFile(input_promptD0fraction);
     TH1D * h_promptf_totaluncertainties = (TH1D *) inputdata_promptD0fraction->Get("h_promptf_totaluncertainties_DCAcut");
@@ -60,8 +60,8 @@ void Draw_vn_finalmorephibin(TString input_morephibin = "rootfiles/vn_morephibin
 	CalculateBfeeddownError( h_promptf_totaluncertainties, gr_v2_pt_sys_Bfeeddown);
 	CalculateBfeeddownError( h_promptf_totaluncertainties, gr_v3_pt_sys_Bfeeddown);
 
-	Drawmorephibinvn( v2_morephibin, gr_v2_pt_sys, gr_v2_pt_sys_Bfeeddown, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, fitoption, DrawsysBfeeddown);
-	Drawmorephibinvn( v3_morephibin, gr_v3_pt_sys, gr_v3_pt_sys_Bfeeddown, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, fitoption, DrawsysBfeeddown);
+	Drawmorephibinvn( v2_morephibin, gr_v2_pt_sys, gr_v2_pt_sys_Bfeeddown, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, fitoption, DrawsysBfeeddown_Alice);
+	Drawmorephibinvn( v3_morephibin, gr_v3_pt_sys, gr_v3_pt_sys_Bfeeddown, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, fitoption, DrawsysBfeeddown_Alice);
 
 	TFile * output = new TFile(Form("rootfiles/vn_finalmorephibin_%s_cent%dto%d_%s_effcorrected0.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 
@@ -97,7 +97,7 @@ void CalculateBfeeddownError( TH1D * h_promptf_totaluncertainties, TGraphAsymmEr
     }
 }
 
-void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys, TGraphAsymmErrors * gr_vn_morephibin_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 40.0, TString fitoption = "poly3bkg", bool DrawsysBfeeddown = false)
+void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys, TGraphAsymmErrors * gr_vn_morephibin_sys_Bfeeddown, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 40.0, TString fitoption = "poly3bkg", bool DrawsysBfeeddown_Alice = false)
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 
@@ -136,10 +136,10 @@ void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys,
     gr_vn_morephibin_sys_Bfeeddown->SetMarkerStyle(20);
     gr_vn_morephibin_sys_Bfeeddown->SetLineWidth(0);
     gr_vn_morephibin_sys_Bfeeddown->SetFillStyle(1001);
-    gr_vn_morephibin_sys_Bfeeddown->SetFillColor(kRed-10);
-    gr_vn_morephibin_sys_Bfeeddown->SetLineColor(kRed-10);
+    gr_vn_morephibin_sys_Bfeeddown->SetFillColor(kRed-9);
+    gr_vn_morephibin_sys_Bfeeddown->SetLineColor(kRed-9);
 
-    if( DrawsysBfeeddown ) gr_vn_morephibin_sys_Bfeeddown->Draw("2same");
+    if( DrawsysBfeeddown_Alice ) gr_vn_morephibin_sys_Bfeeddown->Draw("2same");
 
 	if( fitoption == "poly3bkg" ) gr_vn_morephibin_sys->Draw("E2same");
 	vn_morephibin->Draw("same");
@@ -172,6 +172,23 @@ void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys,
 	fun->SetLineStyle(3);
 	fun->SetLineWidth(1);
 	fun->Draw("same");
+    
+    if( DrawsysBfeeddown_Alice )
+    {   
+        tex = new TLatex(0.3,0.25,Form("Open box: syst. for inclusive D^{0} %s",Ytitle.Data()));
+        tex->SetNDC();
+        tex->SetTextFont(42);
+        tex->SetTextSize(0.04);
+        tex->SetLineWidth(2);
+        tex->Draw();
 
-	cfg_vn->SaveAs(Form("Plots_vn/cfg_finalmorephibin_%s_%s_cent%dto%d_Bfeeddownsys%d_%s_effcorrected0.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, DrawsysBfeeddown, fitoption.Data()));
+        tex = new TLatex(0.3,0.20,"Filled box: syst. from non-prompt D^{0}");
+        tex->SetNDC();
+        tex->SetTextFont(42);
+        tex->SetTextSize(0.04);
+        tex->SetLineWidth(2);
+        tex->Draw();
+    }   
+
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_finalmorephibin_%s_%s_cent%dto%d_Bfeeddownsys%d_%s_effcorrected0.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, DrawsysBfeeddown_Alice, fitoption.Data()));
 }

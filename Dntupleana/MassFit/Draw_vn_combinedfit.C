@@ -67,8 +67,10 @@ void Draw_vn( TH1D * h_vn_pt, TH1D * h_vn_pt_sys, TString MBorDtrig = "MBtrig", 
 
 	h_vn_pt->GetXaxis()->SetRangeUser(ptlow+0.05, pthigh-0.05);
 	h_vn_pt->GetYaxis()->SetRangeUser(-0.2, 0.4);
-	h_vn_pt->GetXaxis()->SetTitle("D^{0} p_{T} (GeV/c)");
+	h_vn_pt->GetXaxis()->SetTitle("p_{T} (GeV/c)");
 	h_vn_pt->GetYaxis()->SetTitle(Ytitle);
+	h_vn_pt->GetYaxis()->CenterTitle();
+	h_vn_pt->GetXaxis()->CenterTitle();
 
 	h_vn_pt->GetYaxis()->SetTitleSize(0.05);
 	h_vn_pt->GetXaxis()->SetTitleSize(0.05);
