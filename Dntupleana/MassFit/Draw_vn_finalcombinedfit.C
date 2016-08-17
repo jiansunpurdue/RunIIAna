@@ -297,4 +297,5 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 	fun->Draw("same");
 
 	cfg_vn->SaveAs(Form("Plots_vn/cfg_finalcombinedfit_vnvsmass_%s_%s_SP_cent%dto%d_charged%d_Bfeeddownsys_Alice%d_data%d_%s_effcorrected0.pdf", trigname.Data(), vnname.Data(), cent_low, cent_high, Drawchargedparticle, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data, fitoption.Data()));
+	cfg_vn->SaveAs(Form("Plots_vn/cfg_finalcombinedfit_vnvsmass_%s_%s_SP_cent%dto%d_charged%d_Bfeeddownsys_Alice%d_data%d_%s_effcorrected0.png", trigname.Data(), vnname.Data(), cent_low, cent_high, Drawchargedparticle, DrawsysBfeeddown_Alice, DrawsysBfeeddown_data, fitoption.Data()));
 }

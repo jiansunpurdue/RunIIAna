@@ -1,13 +1,13 @@
 #!/bin/sh
 
 DoCombinemassvnfit=0
-DoDrawcombindfitvn=0
+DoDrawcombindfitvn=1
 DoCompare2stepfit_combinefit_vn=0
 
 DoMassFitMorephibin=0
-DODrawmorephibinvn=0
+DODrawmorephibinvn=1
 
-DOVncomparison=0
+DOVncomparison=1
 
 ptbinstart=2
 ptbinend=12 #not included
@@ -26,7 +26,7 @@ Fitoption_DeltaPhibin="poly3bkg"
 
 Doefficiencycorrection=0 #only if poly3bkg_floatwidth
 
-InputMC="./../rootfiles/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root"
+InputMC="./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root"
 
 InputMBdata0to100="./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent-0to100.root"
 InputMBdata0to10="./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent-0to10.root"
@@ -51,11 +51,11 @@ FileVnMB10to30_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent10to30_${Fitopti
 FileVnMB30to50_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent30to50_${Fitoption_SP}.root"
 FileVnMB50to70_SP_Vnvsmass="rootfiles/vn_vnvsmass_MBtrig_SP_cent50to70_${Fitoption_SP}.root"
 
-DoEPCombinemassvnfit=1
-DoEPDrawcombindfitvn=1
+DoEPCombinemassvnfit=0
+DoEPDrawcombindfitvn=0
 Fitoption_EP="poly3bkg_floatwidth"
 
-DOVnvsmasscomparison=1
+DOVnvsmasscomparison=0
 
 InputMB0to100_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent-0to100_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"
 InputMB0to10_drawvn_combinemassvnfit_EP="rootfiles/Raw_spectrum_combinemassvnfit_EP_anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent-0to10_${Fitoption_EP}_effcorrected${Doefficiencycorrection}.root"

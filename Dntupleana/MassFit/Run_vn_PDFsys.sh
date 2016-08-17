@@ -5,7 +5,7 @@ ptmax=40.0
 MBorDtrig="MBtrig"
 Doefficiencycorrection=0
 
-for algo in 1 2 3 4
+for algo in 1 2 3
 do
 
 if [ "$algo" -eq 1 ]
