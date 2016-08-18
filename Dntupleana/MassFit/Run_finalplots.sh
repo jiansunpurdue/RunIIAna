@@ -6,6 +6,8 @@ DODrawmorephibinvn=1
 
 DOVncomparison=1
 
+Drawtheory=1
+
 ptbinstart=2
 ptbinend=12 #not included
 ptmin=0.0
@@ -66,27 +68,27 @@ Drawchargedparticle=1
 DrawBfeeddownsys_Alice=0
 DrawBfeeddownsys_data=0
 if [ $DoDrawcombindfitvn -eq 1 ]; then
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
 fi
 
 Drawchargedparticle=1
 DrawBfeeddownsys_Alice=1
 DrawBfeeddownsys_data=0
 if [ $DoDrawcombindfitvn -eq 1 ]; then
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
 fi
 
 Drawchargedparticle=1
 DrawBfeeddownsys_Alice=0
 DrawBfeeddownsys_data=1
 if [ $DoDrawcombindfitvn -eq 1 ]; then
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
-root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB0to10_SP_combinedfit'","'$MBorDtrig'",0,10,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent0to10'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB10to30_SP_combinedfit'","'$MBorDtrig'",10,30,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent10to30'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
+root -l -b -q 'Draw_vn_finalcombinedfit.C++("'$FileVnMB30to50_SP_combinedfit'","'$MBorDtrig'",30,50,'$ptmin','$ptmax','$Drawchargedparticle',"'$Fitoption_SP'","'$File_promptfraction_cent30to50'",'$DrawBfeeddownsys_Alice','$DrawBfeeddownsys_data','$Drawtheory')'
 fi
 
 ###################################

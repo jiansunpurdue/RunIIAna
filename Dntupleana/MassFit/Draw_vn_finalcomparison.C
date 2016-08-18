@@ -17,15 +17,15 @@
 #include <TGraphErrors.h>
 #include <TMultiGraph.h>
 
-#include <./DataPoints_HIN_15_014.C>
+#include <./SetChargedparticle_vn.C>
 
-void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorephibin_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_finalcombinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg")
+void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorephibin_MBtrig_cent30to50_poly3bkg_effcorrected0.root", TString input_vnvmass_SP = "rootfiles/vn_finalcombinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_Bfeeddownsys_Alice0_data1_effcorrected0.root", TString trigname = "MBtrig", int cent_low = 30, int cent_high = 50, double ptlow = 0.0, double pthigh = 40.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg_floatwidth_poly3bkg")
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
 
-	DataPoints();
+	Getchargedparticle( cent_low, cent_high );
 
 	void Drawcomparison(TH1D * vn_morephibin, TGraphErrors* gr_vn_morephibin_sys, TH1D * vn_vnvsmass_SP, TGraphErrors* gr_vn_vnvsmass_SP_sys, TString trigname = "MBtrig", TString vnname = "v2", TString Ytitle = "v_{2}", int cent_low = 0, int cent_high = 100, double ptlow = 1.0, double pthigh = 35.0, bool Drawchargedparticle = false, TString fitoption = "poly3bkg");
 
@@ -54,8 +54,7 @@ void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorep
 
 	Drawcomparison( v2_morephibin, gr_v2_morephibin_sys, h_v2_pt_SP, gr_v2_pt_SP_sys, trigname, "v2", "v_{2}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption);
 
-	if( Drawchargedparticle ) return;
-	Drawcomparison( v3_morephibin, gr_v3_morephibin_sys, h_v3_pt_SP, gr_v3_pt_SP_sys, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, false, fitoption);
+	Drawcomparison( v3_morephibin, gr_v3_morephibin_sys, h_v3_pt_SP, gr_v3_pt_SP_sys, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption);
 
 	TFile * output = new TFile(Form("rootfiles/vn_phibinandSP_%s_cent%dto%d_%s.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 	v2_morephibin->Write();
@@ -66,6 +65,10 @@ void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorep
 	gr_v3_morephibin_sys->Write();
 	gr_v2_pt_SP_sys->Write();
 	gr_v3_pt_SP_sys->Write();
+    grSteveSPv2_chargeparticle->Write();
+    grSteveSPv2_sys_chargeparticle->Write();
+    grSteveSPv3_chargeparticle->Write();
+    grSteveSPv2_sys_chargeparticle->Write();
 	output->Close();
 }
 
@@ -75,39 +78,17 @@ void Drawcomparison(TH1D * vn_morephibin, TGraphErrors* gr_vn_morephibin_sys, TH
 
 	vn_morephibin->Draw();
 
-	if( Drawchargedparticle )
-	{
-		grSteveSPv2[8]->SetMarkerStyle(24);
-		grSteveSPv2[8]->SetMarkerColor(1);
-		grSteveSPv2[8]->SetLineColor(1);
-		grSteveSPv2[8]->SetMarkerSize(1);
+    if( Drawchargedparticle && vnname == "v2" )
+    {
+        grSteveSPv2_sys_chargeparticle->Draw("2same");
+        grSteveSPv2_chargeparticle->Draw("psame");
+    }
 
-		grSteveSPv2[9]->SetMarkerStyle(24);
-		grSteveSPv2[9]->SetMarkerColor(1);
-		grSteveSPv2[9]->SetLineColor(1);
-		grSteveSPv2[9]->SetMarkerSize(1);
-
-		grSteveSPv2[10]->SetMarkerStyle(24);
-		grSteveSPv2[10]->SetMarkerColor(1);
-		grSteveSPv2[10]->SetLineColor(1);
-		grSteveSPv2[10]->SetMarkerSize(1);
-
-		if( cent_low == 0 && cent_high == 10 ) 
-		{
-			//grSteveSPv2sys[8]->Draw("2same");
-			grSteveSPv2[8]->Draw("psame");
-		}
-		if( cent_low == 10 && cent_high == 30 ) 
-		{
-			//grSteveSPv2sys[9]->Draw("2same");
-			grSteveSPv2[9]->Draw("psame");
-		}
-		if( cent_low == 30 && cent_high == 50 ) 
-		{
-			//grSteveSPv2sys[10]->Draw("2same");
-			grSteveSPv2[10]->Draw("psame");
-		}
-	}
+    if( Drawchargedparticle && vnname == "v3" )
+    {
+        grSteveSPv3_sys_chargeparticle->Draw("2same");
+        grSteveSPv3_chargeparticle->Draw("psame");
+    }
 
 	gr_vn_morephibin_sys->Draw("E2same");
 	vn_morephibin->Draw("same");
@@ -143,7 +124,7 @@ void Drawcomparison(TH1D * vn_morephibin, TGraphErrors* gr_vn_morephibin_sys, TH
 		//	leg->AddEntry(vn_vnvsmass_SP, Form("%s vs mass method {SP}", Ytitle.Data()));
 		leg->AddEntry(vn_vnvsmass_SP, "SP method");
 		leg->AddEntry(vn_morephibin, "#Delta#Phi bins method");
-		leg->AddEntry(grSteveSPv2[10], "Charged particle", "p");
+		leg->AddEntry(grSteveSPv2_chargeparticle, "Charged particle", "p");
 		leg->AddEntry((TObject*)0, "#scale[0.7]{CMS-PAS-HIN-15-014}", "");
 
 		leg->SetBorderSize(0);
