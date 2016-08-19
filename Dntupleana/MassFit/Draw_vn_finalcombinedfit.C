@@ -35,6 +35,7 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 	//theory predictions
 	TFile * input_CUJET3 = new TFile("TheoryCalculation/CUJet3p0/PredictionsCUJET3_Dv2_pt.root");
 	TGraphAsymmErrors * gv2Dmeson5TeV_CUJET3 = ( TGraphAsymmErrors *) input_CUJET3->Get(Form("gv2Dmeson5TeV_CUJET3_cent%dto%d",cent_low,cent_high));
+	gv2Dmeson5TeV_CUJET3->SetName("gv2Dmeson5TeV_CUJET3");
 	//end theory predictions
 
 	TFile * inputdata_promptD0fraction = new TFile(input_promptD0fraction);

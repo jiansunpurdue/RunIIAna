@@ -56,7 +56,7 @@ void Draw_vn_finalcomparison(TString input_morephibin = "rootfiles/vn_finalmorep
 
 	Drawcomparison( v3_morephibin, gr_v3_morephibin_sys, h_v3_pt_SP, gr_v3_pt_SP_sys, trigname, "v3", "v_{3}", cent_low, cent_high, ptlow, pthigh, Drawchargedparticle, fitoption);
 
-	TFile * output = new TFile(Form("rootfiles/vn_phibinandSP_%s_cent%dto%d_%s.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
+	TFile * output = new TFile(Form("rootfiles/vn_finalphibinandSP_%s_cent%dto%d_%s.root", trigname.Data(), cent_low, cent_high, fitoption.Data()),"RECREATE");
 	v2_morephibin->Write();
 	v3_morephibin->Write();
 	h_v2_pt_SP->Write();
