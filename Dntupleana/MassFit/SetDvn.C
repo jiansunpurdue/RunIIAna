@@ -67,3 +67,21 @@ void Readvn_SP()
 		grSteveSPv3_sys_chargeparticle[icen] = ( TGraphErrors * ) input[icen]->Get("grSteveSPv3_sys_chargeparticle");
 	}
 }
+
+void Readvn_phibin()
+{
+	TFile * input_phibin[3];
+	input_phibin[0] = new TFile("rootfiles/vn_finalmorephibin_MBtrig_cent0to10_poly3bkg_Bfeeddownsys_Alice0_data1_effcorrected0.root");
+	input_phibin[1] = new TFile("rootfiles/vn_finalmorephibin_MBtrig_cent10to30_poly3bkg_Bfeeddownsys_Alice0_data1_effcorrected0.root");
+	input_phibin[2] = new TFile("rootfiles/vn_finalmorephibin_MBtrig_cent30to50_poly3bkg_Bfeeddownsys_Alice0_data1_effcorrected0.root");
+
+	for( int icen = 0; icen < 3; icen++ )
+	{
+		h_v2_pt_phibin[icen] = (TH1D *) input_phibin[icen]->Get("v2_morephibin");
+		h_v3_pt_phibin[icen] = (TH1D *) input_phibin[icen]->Get("v3_morephibin");
+		gr_v2_pt_sys_phibin[icen] = (TGraphErrors *) input_phibin[icen]->Get("gr_v2_pt_sys");
+		gr_v3_pt_sys_phibin[icen] = (TGraphErrors *) input_phibin[icen]->Get("gr_v3_pt_sys");
+		gr_v2_pt_sys_Bfeeddown_phibin[icen] = (TGraphAsymmErrors *) input_phibin[icen]->Get("gr_v2_pt_sys_Bfeeddown");
+		gr_v3_pt_sys_Bfeeddown_phibin[icen] = (TGraphAsymmErrors *) input_phibin[icen]->Get("gr_v3_pt_sys_Bfeeddown");
+	}
+}

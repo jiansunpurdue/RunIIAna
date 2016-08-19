@@ -28,6 +28,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true)
 	gStyle->SetOptStat(0);
 	
 	Readvn_SP();
+	Readvn_phibin();
 
     TF1 * fun = new TF1("fun", "0.0", 0, 100);
     fun->SetLineColor(1.0);
@@ -247,7 +248,6 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true)
     latex.DrawLatex(3, 0.35, "Cent. 30-50%");
 
 	cfg_Dv3_charged_theory->cd(1);
-
     if( Drawchargedparticle )
     {   
         TLegend * leg = new TLegend(0.55, 0.70, 0.75, 0.87);
