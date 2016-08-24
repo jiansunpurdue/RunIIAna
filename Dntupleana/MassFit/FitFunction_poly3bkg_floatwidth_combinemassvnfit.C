@@ -65,6 +65,10 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	float ptmin = ptbins[ipt];
 	float ptmax = ptbins[ipt+1];
 
+	//remove the fit function from v2 fit when perform v3 fit
+	if( histo->GetListOfFunctions()->FindObject(Form("fmass_combinemassvnfit_%s_%d",cfgname.Data(),ipt)) )
+		histo->GetListOfFunctions()->Remove( histo->GetListOfFunctions()->FindObject(Form("fmass_combinemassvnfit_%s_%d",cfgname.Data(),ipt)) );
+
 	TH1F* histo_copy_nofitfun = ( TH1F * ) histo->Clone("histo_copy_nofitfun");
 	TH1F* histo_massfit = ( TH1F * ) histo->Clone("histo_massfit");
 
@@ -350,7 +354,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 		tex->SetTextFont(42);
 		tex->SetTextSize(0.04);
 		tex->SetLineWidth(2);
-		tex->Draw();
+	//	tex->Draw();
 	}
 	else
 	{
@@ -373,7 +377,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 		tex->SetTextFont(42);
 		tex->SetTextSize(0.04);
 		tex->SetLineWidth(2);
-		tex->Draw();
+	//	tex->Draw();
 	}
 
 	histo_copy_nofitfun->Draw("esame");
