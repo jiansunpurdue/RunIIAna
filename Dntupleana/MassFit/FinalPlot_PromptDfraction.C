@@ -37,7 +37,7 @@
 
 using namespace std;
 
-void FinalPlot_PromptDfraction(TString inputfilename_cent0to10 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", TString inputfilename_cent10to30 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent10to30.root", TString inputfilename_cent30to50 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawnoDCAcut = false)
+void FinalPlot_PromptDfraction(TString inputfilename_cent0to10 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", TString inputfilename_cent10to30 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent10to30.root", TString inputfilename_cent30to50 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawnoDCAcut = true)
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -46,38 +46,38 @@ void FinalPlot_PromptDfraction(TString inputfilename_cent0to10 = "promptD0_total
 	TFile * input_cent10to30 = new TFile(inputfilename_cent10to30);
 	TFile * input_cent30to50 = new TFile(inputfilename_cent30to50);
 
-	TGraphErrors * promptfraction_DCAcut_cent0to10 = ( TGraphErrors * ) input_cent0to10->Get("promptfraction_DCAcut");
-	TGraphErrors * systematics_promptfraction_DCAcut_cent0to10 = ( TGraphErrors * ) input_cent0to10->Get("systematics_promptfraction_DCAcut");
+	TGraphAsymmErrors * promptfraction_DCAcut_cent0to10 = ( TGraphAsymmErrors * ) input_cent0to10->Get("promptfraction_DCAcut");
+	TGraphAsymmErrors * systematics_promptfraction_DCAcut_cent0to10 = ( TGraphAsymmErrors * ) input_cent0to10->Get("systematics_promptfraction_DCAcut");
 	promptfraction_DCAcut_cent0to10->SetName("promptfraction_DCAcut_cent0to10");
 	systematics_promptfraction_DCAcut_cent0to10->SetName("systematics_promptfraction_DCAcut_cent0to10");
 
-	TGraphErrors * promptfraction_DCAcut_cent10to30 = ( TGraphErrors * ) input_cent10to30->Get("promptfraction_DCAcut");
-	TGraphErrors * systematics_promptfraction_DCAcut_cent10to30 = ( TGraphErrors * ) input_cent10to30->Get("systematics_promptfraction_DCAcut");
+	TGraphAsymmErrors * promptfraction_DCAcut_cent10to30 = ( TGraphAsymmErrors * ) input_cent10to30->Get("promptfraction_DCAcut");
+	TGraphAsymmErrors * systematics_promptfraction_DCAcut_cent10to30 = ( TGraphAsymmErrors * ) input_cent10to30->Get("systematics_promptfraction_DCAcut");
 	promptfraction_DCAcut_cent10to30->SetName("promptfraction_DCAcut_cent10to30");
 	systematics_promptfraction_DCAcut_cent10to30->SetName("systematics_promptfraction_DCAcut_cent10to30");
 
-	TGraphErrors * promptfraction_DCAcut_cent30to50 = ( TGraphErrors * ) input_cent30to50->Get("promptfraction_DCAcut");
-	TGraphErrors * systematics_promptfraction_DCAcut_cent30to50 = ( TGraphErrors * ) input_cent30to50->Get("systematics_promptfraction_DCAcut");
+	TGraphAsymmErrors * promptfraction_DCAcut_cent30to50 = ( TGraphAsymmErrors * ) input_cent30to50->Get("promptfraction_DCAcut");
+	TGraphAsymmErrors * systematics_promptfraction_DCAcut_cent30to50 = ( TGraphAsymmErrors * ) input_cent30to50->Get("systematics_promptfraction_DCAcut");
 	promptfraction_DCAcut_cent30to50->SetName("promptfraction_DCAcut_cent30to50");
 	systematics_promptfraction_DCAcut_cent30to50->SetName("systematics_promptfraction_DCAcut_cent30to50");
 
 	//no DCA cut
-	TGraphErrors * promptfraction_noDCAcut_cent0to10 = ( TGraphErrors * ) input_cent0to10->Get("promptfraction_noDCAcut");
-	TGraphErrors * systematics_promptfraction_noDCAcut_cent0to10 = ( TGraphErrors * ) input_cent0to10->Get("systematics_promptfraction_noDCAcut");
+	TGraphAsymmErrors * promptfraction_noDCAcut_cent0to10 = ( TGraphAsymmErrors * ) input_cent0to10->Get("promptfraction_noDCAcut");
+	TGraphAsymmErrors * systematics_promptfraction_noDCAcut_cent0to10 = ( TGraphAsymmErrors * ) input_cent0to10->Get("systematics_promptfraction_noDCAcut");
 	promptfraction_noDCAcut_cent0to10->SetName("promptfraction_noDCAcut_cent0to10");
 	systematics_promptfraction_noDCAcut_cent0to10->SetName("systematics_promptfraction_noDCAcut_cent0to10");
 
-	TGraphErrors * promptfraction_noDCAcut_cent10to30 = ( TGraphErrors * ) input_cent10to30->Get("promptfraction_noDCAcut");
-	TGraphErrors * systematics_promptfraction_noDCAcut_cent10to30 = ( TGraphErrors * ) input_cent10to30->Get("systematics_promptfraction_noDCAcut");
+	TGraphAsymmErrors * promptfraction_noDCAcut_cent10to30 = ( TGraphAsymmErrors * ) input_cent10to30->Get("promptfraction_noDCAcut");
+	TGraphAsymmErrors * systematics_promptfraction_noDCAcut_cent10to30 = ( TGraphAsymmErrors * ) input_cent10to30->Get("systematics_promptfraction_noDCAcut");
 	promptfraction_noDCAcut_cent10to30->SetName("promptfraction_noDCAcut_cent10to30");
 	systematics_promptfraction_noDCAcut_cent10to30->SetName("systematics_promptfraction_noDCAcut_cent10to30");
 
-	TGraphErrors * promptfraction_noDCAcut_cent30to50 = ( TGraphErrors * ) input_cent30to50->Get("promptfraction_noDCAcut");
-	TGraphErrors * systematics_promptfraction_noDCAcut_cent30to50 = ( TGraphErrors * ) input_cent30to50->Get("systematics_promptfraction_noDCAcut");
+	TGraphAsymmErrors * promptfraction_noDCAcut_cent30to50 = ( TGraphAsymmErrors * ) input_cent30to50->Get("promptfraction_noDCAcut");
+	TGraphAsymmErrors * systematics_promptfraction_noDCAcut_cent30to50 = ( TGraphAsymmErrors * ) input_cent30to50->Get("systematics_promptfraction_noDCAcut");
 	promptfraction_noDCAcut_cent30to50->SetName("promptfraction_noDCAcut_cent30to50");
 	systematics_promptfraction_noDCAcut_cent30to50->SetName("systematics_promptfraction_noDCAcut_cent30to50");
 
-	TH2F* hempty = new TH2F("hempty","",20,0.01,41.,10.,0.,1.);
+	TH2F* hempty = new TH2F("hempty","",20,0.01,41.,10.,0.,1.02);
 	hempty->GetXaxis()->SetTitle("p_{T} (GeV/c)");
 	hempty->GetYaxis()->SetTitle("Prompt D^{0} fraction");
 	hempty->GetXaxis()->CenterTitle();

@@ -51,10 +51,12 @@ void Drawcomparison(TH1D * vn_1, TH1D * vn_2, TString trigname = "MBtrig", TStri
 {
 	TCanvas * cfg_vn = new TCanvas(Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()),Form("cfg_comparison_%s_%s", trigname.Data(), vnname.Data()));
 
-	vn_1->SetMarkerColor(4);
-	vn_1->SetLineColor(4);
-	vn_2->SetMarkerColor(2);
-	vn_2->SetLineColor(2);
+	vn_1->SetMarkerColor(2);
+	vn_1->SetLineColor(2);
+	vn_1->SetMarkerStyle(20);
+	vn_2->SetMarkerColor(4);
+	vn_2->SetLineColor(4);
+	vn_2->SetMarkerStyle(21);
 
 	vn_1->Draw();
 	vn_2->Draw("same");
@@ -70,8 +72,8 @@ void Drawcomparison(TH1D * vn_1, TH1D * vn_2, TString trigname = "MBtrig", TStri
 	TLegend * leg = new TLegend(0.50, 0.74, 0.70, 0.87);
 	leg->SetTextSize(0.05);
 	leg->SetTextFont(42);
-	leg->AddEntry(vn_1, str_legend1);
 	leg->AddEntry(vn_2, str_legend2);
+	leg->AddEntry(vn_1, str_legend1);
 
 	leg->SetBorderSize(0);
 	leg->SetFillStyle(0);
