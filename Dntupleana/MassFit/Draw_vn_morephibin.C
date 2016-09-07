@@ -234,4 +234,5 @@ void Fit_dNdpt_phibins_in_oneptbin( int ipt, TH1D * dNdpt_phibins_in_oneptbin, T
 //	tex->Draw();
 	
 	cfg->SaveAs(Form("Plots_vn/fitmorephibin/cfg_fit_dNdpt_phibins_in_oneptbin_%s_cent%dto%d_%d_%s_effcorrected%d.pdf", (trigname+vnname).Data(), cent_low, cent_high, ipt, fitoption.Data(), effcorrected));
+	cfg->SaveAs(Form("Plots_vn/fitmorephibin/cfg_fit_dNdpt_phibins_in_oneptbin_%s_cent%dto%d_%d_%s_effcorrected%d.png", (trigname+vnname).Data(), cent_low, cent_high, ipt, fitoption.Data(), effcorrected));
 }

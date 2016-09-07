@@ -20,13 +20,14 @@
 #include <TMultiGraph.h>
 
 #include "./SetDvn.C"
+#include "./Set_theoryD.C"
 #include "style.h"
 
 //1, 0, 0, 1
 //1, 1, 0, 1
 //0, 0, 1, 0
 
-void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bool Drawphibinmethod = true, bool Drawsysfromnonprompt = false)
+void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -35,6 +36,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 
 	Readvn_SP();
 	Readvn_phibin();
+	Set_theoryD();
 
 	TF1 * fun = new TF1("fun", "0.0", 0, 100);
 	fun->SetLineColor(1.0);
@@ -75,6 +77,8 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 	{
 		gv2Dmeson5TeV_CUJET3[0]->Draw("3same");
 		gv2Dmeson5TeV_CUJET3[0]->Draw("CXsame");
+		gv2Dmeson5TeV_TAMU[0]->Draw("3same");
+		gv2Dmeson5TeV_TAMU[0]->Draw("CXsame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -107,6 +111,8 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 	{
 		gv2Dmeson5TeV_CUJET3[1]->Draw("3same");
 		gv2Dmeson5TeV_CUJET3[1]->Draw("CXsame");
+		gv2Dmeson5TeV_TAMU[1]->Draw("3same");
+		gv2Dmeson5TeV_TAMU[1]->Draw("CXsame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -138,6 +144,8 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 	{
 		gv2Dmeson5TeV_CUJET3[2]->Draw("3same");
 		gv2Dmeson5TeV_CUJET3[2]->Draw("CXsame");
+		gv2Dmeson5TeV_TAMU[2]->Draw("3same");
+		gv2Dmeson5TeV_TAMU[2]->Draw("CXsame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -225,11 +233,18 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 
 	if( Drawtheory )
 	{   
-		TLegend * leg1 = new TLegend(0.25, 0.65, 0.45, 0.78);
+		TLatex Ttheory;
+		Ttheory.SetTextFont(43);
+		Ttheory.SetTextSize(15);
+		Ttheory.SetTextAlign(13);
+		Ttheory.DrawLatex(13, 0.3, "Theory prediction for prompt D");
+
+		TLegend * leg1 = new TLegend(0.30, 0.60, 0.60, 0.73);
 		leg1->SetTextSize(15);
 		leg1->SetTextFont(43);
-		leg1->AddEntry((TObject*)0, "Theory prediction for prompt D^{0}", "");
+		//leg1->AddEntry((TObject*)0, "Theory prediction for prompt D", "");
 		leg1->AddEntry(gv2Dmeson5TeV_CUJET3[0], "CUJET3", "l");
+		leg1->AddEntry(gv2Dmeson5TeV_TAMU[0], "TAMU", "l");
 		leg1->SetBorderSize(0);
 		leg1->SetFillStyle(0);
 		leg1->Draw();

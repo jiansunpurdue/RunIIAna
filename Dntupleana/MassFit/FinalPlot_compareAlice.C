@@ -112,11 +112,12 @@ void FinalPlot_compareAlice()
 
 	cfg_Dv2_compareAlice->cd(1);
 
-	TLegend * leg = new TLegend(0.55, 0.70, 0.75, 0.87);
+	TLegend * leg = new TLegend(0.55, 0.65, 0.75, 0.87);
 	leg->SetTextSize(18);
 	leg->SetTextFont(43);
 	leg->AddEntry(h_v3_pt[0], "CMS, |y| < 1.0");
 	leg->AddEntry(gr_v2_Alice_stat[0], "ALICE, |y| < 0.8", "p");
+	leg->AddEntry((TObject*)0, "#scale[0.7]{PbPb #sqrt{s_{NN}} = 2.76 TeV}", "");
 	leg->AddEntry((TObject*)0, "#scale[0.7]{PRC 90 (2014) 034904}", "");
 
 	leg->SetBorderSize(0);
