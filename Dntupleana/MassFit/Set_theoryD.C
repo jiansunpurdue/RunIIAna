@@ -18,6 +18,7 @@
 #include <TGraphAsymmErrors.h>
 #include <TMultiGraph.h>
 
+TGraphAsymmErrors * gv2Dmeson5TeV_CUJET3[3];
 TGraphAsymmErrors * gv2Dmeson5TeV_TAMU[3];
 
 void Set_TAMU()
@@ -37,7 +38,24 @@ void Set_TAMU()
 	}
 }
 
+void Set_CUJET3()
+{
+	TFile * inputCUJET3 = new TFile("TheoryCalculation/CUJet3p0/PredictionsCUJET3_Dv2_pt.root");
+	gv2Dmeson5TeV_CUJET3[0] = ( TGraphAsymmErrors * ) inputCUJET3->Get("gv2Dmeson5TeV_CUJET3_cent0to10");
+	gv2Dmeson5TeV_CUJET3[1] = ( TGraphAsymmErrors * ) inputCUJET3->Get("gv2Dmeson5TeV_CUJET3_cent10to30");
+	gv2Dmeson5TeV_CUJET3[2] = ( TGraphAsymmErrors * ) inputCUJET3->Get("gv2Dmeson5TeV_CUJET3_cent30to50");
+
+	for( int ibin = 0; ibin < 3; ibin++ )
+	{
+		gv2Dmeson5TeV_CUJET3[ibin]->SetLineColor(8);
+		gv2Dmeson5TeV_CUJET3[ibin]->SetLineWidth(2);
+		gv2Dmeson5TeV_CUJET3[ibin]->SetFillStyle(1001);
+		gv2Dmeson5TeV_CUJET3[ibin]->SetFillColor(kGreen-10);
+	}
+}
+
 void Set_theoryD()
 {
+	Set_CUJET3();
 	Set_TAMU();
 }

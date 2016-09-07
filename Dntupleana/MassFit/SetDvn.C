@@ -27,9 +27,6 @@ TGraphErrors * gr_v3_pt_sys[3];
 TGraphAsymmErrors * gr_v2_pt_sys_Bfeeddown[3];
 TGraphAsymmErrors * gr_v3_pt_sys_Bfeeddown[3];
 
-//theory
-TGraphAsymmErrors * gv2Dmeson5TeV_CUJET3[3];
-
 //charged particle SP
 TGraphErrors * grSteveSPv2_chargeparticle[3];
 TGraphErrors * grSteveSPv2_sys_chargeparticle[3];
@@ -59,7 +56,6 @@ void Readvn_SP()
 		gr_v3_pt_sys[icen] = ( TGraphErrors * ) input[icen]->Get("gr_v3_pt_sys");
 		gr_v2_pt_sys_Bfeeddown[icen] = ( TGraphAsymmErrors * ) input[icen]->Get("gr_v2_pt_sys_Bfeeddown");
 		gr_v3_pt_sys_Bfeeddown[icen] = ( TGraphAsymmErrors * ) input[icen]->Get("gr_v3_pt_sys_Bfeeddown");
-		gv2Dmeson5TeV_CUJET3[icen] = ( TGraphAsymmErrors * ) input[icen]->Get("gv2Dmeson5TeV_CUJET3");
 
 		grSteveSPv2_chargeparticle[icen] = ( TGraphErrors * ) input[icen]->Get("grSteveSPv2_chargeparticle");
 		grSteveSPv2_sys_chargeparticle[icen] = ( TGraphErrors * ) input[icen]->Get("grSteveSPv2_sys_chargeparticle");
