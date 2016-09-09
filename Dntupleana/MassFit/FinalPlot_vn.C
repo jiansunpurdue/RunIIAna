@@ -27,7 +27,7 @@
 //1, 1, 0, 1
 //0, 0, 1, 0
 
-void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
+void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
