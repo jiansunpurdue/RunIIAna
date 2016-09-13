@@ -27,7 +27,7 @@
 //1, 1, 0, 1
 //0, 0, 1, 0
 
-void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
+void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -79,6 +79,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 		gv2Dmeson5TeV_CUJET3[0]->Draw("CXsame");
 		gv2Dmeson5TeV_TAMU[0]->Draw("3same");
 		gv2Dmeson5TeV_TAMU[0]->Draw("CXsame");
+		gv2Dmeson5TeV_LBT[0]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -113,6 +114,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 		gv2Dmeson5TeV_CUJET3[1]->Draw("CXsame");
 		gv2Dmeson5TeV_TAMU[1]->Draw("3same");
 		gv2Dmeson5TeV_TAMU[1]->Draw("CXsame");
+		gv2Dmeson5TeV_LBT[1]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -146,6 +148,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 		gv2Dmeson5TeV_CUJET3[2]->Draw("CXsame");
 		gv2Dmeson5TeV_TAMU[2]->Draw("3same");
 		gv2Dmeson5TeV_TAMU[2]->Draw("CXsame");
+		gv2Dmeson5TeV_LBT[2]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -239,15 +242,22 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 		Ttheory.SetTextAlign(13);
 		Ttheory.DrawLatex(13, 0.3, "Theory prediction for prompt D");
 
-		TLegend * leg1 = new TLegend(0.30, 0.60, 0.60, 0.73);
+		TLegend * leg1 = new TLegend(0.30, 0.61, 0.60, 0.73);
 		leg1->SetTextSize(15);
 		leg1->SetTextFont(43);
-		//leg1->AddEntry((TObject*)0, "Theory prediction for prompt D", "");
-		leg1->AddEntry(gv2Dmeson5TeV_CUJET3[0], "CUJET3", "l");
+		leg1->AddEntry(gv2Dmeson5TeV_LBT[0], "LBT", "l");
 		leg1->AddEntry(gv2Dmeson5TeV_TAMU[0], "TAMU", "l");
 		leg1->SetBorderSize(0);
 		leg1->SetFillStyle(0);
 		leg1->Draw();
+
+		TLegend * leg2 = new TLegend(0.60, 0.67, 0.90, 0.73);
+		leg2->SetTextSize(15);
+		leg2->SetTextFont(43);
+		leg2->AddEntry(gv2Dmeson5TeV_CUJET3[0], "CUJET3", "l");
+		leg2->SetBorderSize(0);
+		leg2->SetFillStyle(0);
+		leg2->Draw();
 	}   
 
 	cfg_Dv2_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv2SP_charged%d_theory%d_phibin%d.pdf",Drawchargedparticle,Drawtheory, Drawphibinmethod));
@@ -269,6 +279,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 	}
 	if( Drawtheory )
 	{
+		gv3Dmeson5TeV_LBT[0]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -299,6 +310,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 	}
 	if( Drawtheory )
 	{
+		gv3Dmeson5TeV_LBT[1]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -328,6 +340,7 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 	}
 	if( Drawtheory )
 	{
+		gv3Dmeson5TeV_LBT[2]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -415,8 +428,21 @@ void FinalPlot_vn( bool Drawchargedparticle = false, bool Drawtheory = false, bo
 
 	if( Drawtheory )
 	{   
+		TLatex Ttheory;
+		Ttheory.SetTextFont(43);
+		Ttheory.SetTextSize(15);
+		Ttheory.SetTextAlign(13);
+		Ttheory.DrawLatex(13, 0.3, "Theory prediction for prompt D");
+
+		TLegend * leg1 = new TLegend(0.30, 0.67, 0.60, 0.73);
+		leg1->SetTextSize(15);
+		leg1->SetTextFont(43);
+		leg1->AddEntry(gv2Dmeson5TeV_LBT[0], "LBT", "l");
+		leg1->SetBorderSize(0);
+		leg1->SetFillStyle(0);
+		leg1->Draw();
 	}   
 
-	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.pdf",Drawchargedparticle,0,Drawphibinmethod));
-	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.png",Drawchargedparticle,0,Drawphibinmethod));
+	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.pdf",Drawchargedparticle,Drawtheory,Drawphibinmethod));
+	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.png",Drawchargedparticle,Drawtheory,Drawphibinmethod));
 }

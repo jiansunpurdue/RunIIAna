@@ -21,6 +21,35 @@
 TGraphAsymmErrors * gv2Dmeson5TeV_CUJET3[3];
 TGraphAsymmErrors * gv2Dmeson5TeV_TAMU[3];
 
+TGraph * gv2Dmeson5TeV_LBT[3];
+TGraph * gv3Dmeson5TeV_LBT[3];
+
+void Set_LBT()
+{
+	gv2Dmeson5TeV_LBT[0] = new TGraph("TheoryCalculation/LBT/v2_cen-00-10.dat");
+	gv2Dmeson5TeV_LBT[1] = new TGraph("TheoryCalculation/LBT/v2_cen-10-30.dat");
+	gv2Dmeson5TeV_LBT[2] = new TGraph("TheoryCalculation/LBT/v2_cen-30-50.dat");
+	gv2Dmeson5TeV_LBT[0]->SetName("gv2Dmeson5TeV_LBT_cent0to10");
+	gv2Dmeson5TeV_LBT[1]->SetName("gv2Dmeson5TeV_LBT_cent10to30");
+	gv2Dmeson5TeV_LBT[2]->SetName("gv2Dmeson5TeV_LBT_cent30to50");
+
+	gv3Dmeson5TeV_LBT[0] = new TGraph("TheoryCalculation/LBT/v3_cen-00-10.dat");
+	gv3Dmeson5TeV_LBT[1] = new TGraph("TheoryCalculation/LBT/v3_cen-10-30.dat");
+	gv3Dmeson5TeV_LBT[2] = new TGraph("TheoryCalculation/LBT/v3_cen-30-50.dat");
+	gv3Dmeson5TeV_LBT[0]->SetName("gv3Dmeson5TeV_LBT_cent0to10");
+	gv3Dmeson5TeV_LBT[1]->SetName("gv3Dmeson5TeV_LBT_cent10to30");
+	gv3Dmeson5TeV_LBT[2]->SetName("gv3Dmeson5TeV_LBT_cent30to50");
+
+	for( int ibin = 0; ibin < 3; ibin++ )
+	{
+		gv2Dmeson5TeV_LBT[ibin]->SetLineWidth(2);
+		gv2Dmeson5TeV_LBT[ibin]->SetLineColor(6);
+		
+		gv3Dmeson5TeV_LBT[ibin]->SetLineWidth(2);
+		gv3Dmeson5TeV_LBT[ibin]->SetLineColor(6);
+	}
+}
+
 void Set_TAMU()
 {
 	TFile * inputTAMU = new TFile("TheoryCalculation/TAMU/PredictionsTAMU_Dv2_pt.root");
@@ -58,4 +87,5 @@ void Set_theoryD()
 {
 	Set_CUJET3();
 	Set_TAMU();
+	Set_LBT();
 }
