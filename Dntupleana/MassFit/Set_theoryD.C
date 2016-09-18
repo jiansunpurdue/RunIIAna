@@ -24,6 +24,25 @@ TGraphAsymmErrors * gv2Dmeson5TeV_TAMU[3];
 TGraph * gv2Dmeson5TeV_LBT[3];
 TGraph * gv3Dmeson5TeV_LBT[3];
 
+TGraph * gv2Dmeson5TeV_LPang[3];
+
+void Set_LPang()
+{
+	gv2Dmeson5TeV_LPang[0] = new TGraph("TheoryCalculation/Longgang/v2_D0_cent0to10.dat");
+	gv2Dmeson5TeV_LPang[1] = new TGraph("TheoryCalculation/Longgang/v2_D0_cent10to30.dat");
+	gv2Dmeson5TeV_LPang[2] = new TGraph("TheoryCalculation/Longgang/v2_D0_cent30to50.dat");
+	gv2Dmeson5TeV_LPang[0]->SetName("gv2Dmeson5TeV_LPang_cent0to10");
+	gv2Dmeson5TeV_LPang[1]->SetName("gv2Dmeson5TeV_LPang_cent10to30");
+	gv2Dmeson5TeV_LPang[2]->SetName("gv2Dmeson5TeV_LPang_cent30to50");
+
+	for( int ibin = 0; ibin < 3; ibin++ )
+	{
+		gv2Dmeson5TeV_LPang[ibin]->SetLineWidth(2);
+		//gv2Dmeson5TeV_LPang[ibin]->SetLineColor(kOrange-2);
+		gv2Dmeson5TeV_LPang[ibin]->SetLineColor(kMagenta+2);
+	}
+}
+
 void Set_LBT()
 {
 	gv2Dmeson5TeV_LBT[0] = new TGraph("TheoryCalculation/LBT/v2_cen-00-10.dat");
@@ -43,10 +62,10 @@ void Set_LBT()
 	for( int ibin = 0; ibin < 3; ibin++ )
 	{
 		gv2Dmeson5TeV_LBT[ibin]->SetLineWidth(2);
-		gv2Dmeson5TeV_LBT[ibin]->SetLineColor(6);
+		gv2Dmeson5TeV_LBT[ibin]->SetLineColor(4);
 		
 		gv3Dmeson5TeV_LBT[ibin]->SetLineWidth(2);
-		gv3Dmeson5TeV_LBT[ibin]->SetLineColor(6);
+		gv3Dmeson5TeV_LBT[ibin]->SetLineColor(4);
 	}
 }
 
@@ -61,8 +80,8 @@ void Set_TAMU()
 	{
 		gv2Dmeson5TeV_TAMU[ibin]->SetFillStyle(1001);
 		//gv2Dmeson5TeV_TAMU[ibin]->SetFillStyle(3001);
-		gv2Dmeson5TeV_TAMU[ibin]->SetFillColor(46);
-		gv2Dmeson5TeV_TAMU[ibin]->SetLineColor(46);
+		gv2Dmeson5TeV_TAMU[ibin]->SetFillColor(14);
+		gv2Dmeson5TeV_TAMU[ibin]->SetLineColor(14);
 		gv2Dmeson5TeV_TAMU[ibin]->SetLineWidth(2);
 	}
 }
@@ -88,4 +107,5 @@ void Set_theoryD()
 	Set_CUJET3();
 	Set_TAMU();
 	Set_LBT();
+	Set_LPang();
 }

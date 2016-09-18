@@ -109,10 +109,10 @@ void Get_vn_morephibin( TH1D * vn_morephibin, TH1D * dNdpt_phibins_in_oneptbin[]
     vn_morephibin->GetYaxis()->SetTitleSize(0.05);
     vn_morephibin->GetXaxis()->SetTitleSize(0.05);
 
-    vn_morephibin->SetMarkerColor(2.0);
-    vn_morephibin->SetMarkerStyle(20);
+    vn_morephibin->SetMarkerColor(4.0);
+    vn_morephibin->SetMarkerStyle(21);
     vn_morephibin->SetMarkerSize(1.0);
-    vn_morephibin->SetLineColor(2.0);
+    vn_morephibin->SetLineColor(4.0);
     vn_morephibin->Draw();
 
     TLatex Tl; 

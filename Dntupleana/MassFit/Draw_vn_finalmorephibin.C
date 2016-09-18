@@ -135,18 +135,18 @@ void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys,
 	for( int ibin = 0; ibin < gr_vn_morephibin_sys->GetN(); ibin++ )
 		gr_vn_morephibin_sys->GetEX()[ibin] = 0.5;
 
-    gr_vn_morephibin_sys->SetMarkerColor(2.0);
-    gr_vn_morephibin_sys->SetMarkerStyle(20);
+    gr_vn_morephibin_sys->SetMarkerColor(4.0);
+    gr_vn_morephibin_sys->SetMarkerStyle(21);
     gr_vn_morephibin_sys->SetLineWidth(0);
     gr_vn_morephibin_sys->SetFillStyle(0);
-    gr_vn_morephibin_sys->SetLineColor(2.0);
+    gr_vn_morephibin_sys->SetLineColor(4.0);
 
-    gr_vn_morephibin_sys_Bfeeddown->SetMarkerColor(2.0);
-    gr_vn_morephibin_sys_Bfeeddown->SetMarkerStyle(20);
+    gr_vn_morephibin_sys_Bfeeddown->SetMarkerColor(4.0);
+    gr_vn_morephibin_sys_Bfeeddown->SetMarkerStyle(21);
     gr_vn_morephibin_sys_Bfeeddown->SetLineWidth(0);
     gr_vn_morephibin_sys_Bfeeddown->SetFillStyle(1001);
-    gr_vn_morephibin_sys_Bfeeddown->SetFillColor(kRed-9);
-    gr_vn_morephibin_sys_Bfeeddown->SetLineColor(kRed-9);
+    gr_vn_morephibin_sys_Bfeeddown->SetFillColor(kBlue-9);
+    gr_vn_morephibin_sys_Bfeeddown->SetLineColor(kBlue-9);
 
     if( DrawsysBfeeddown_Alice || DrawsysBfeeddown_data ) gr_vn_morephibin_sys_Bfeeddown->Draw("2same");
 

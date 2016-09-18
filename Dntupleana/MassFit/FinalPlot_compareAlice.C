@@ -41,7 +41,7 @@ void FinalPlot_compareAlice()
 	fun->SetLineStyle(3);
 	fun->SetLineWidth(1);
 
-	TH2F* hemptyv2 = new TH2F("hemptyv2","",20,0.01,41.,10.,-0.18,0.4);
+	TH2F* hemptyv2 = new TH2F("hemptyv2","",20,0.01,41.,10.,-0.18,0.295);
 	hemptyv2->GetXaxis()->SetTitle("p_{T} (GeV/c)");
 	hemptyv2->GetYaxis()->SetTitle("v_{2}");
 	hemptyv2->GetXaxis()->CenterTitle();
@@ -49,8 +49,8 @@ void FinalPlot_compareAlice()
 	hemptyv2->GetYaxis()->SetTitleFont(43);
 	hemptyv2->GetXaxis()->SetTitleFont(43);
 	hemptyv2->SetTitleSize  (16,"X");
-	hemptyv2->SetTitleSize  (16,"Y");
-	hemptyv2->SetTitleOffset(1.5,"Y");
+	hemptyv2->SetTitleSize  (22,"Y");
+	hemptyv2->SetTitleOffset(1.2,"Y");
 	hemptyv2->SetTitleOffset(1.5,"X");
 	hemptyv2->SetLabelOffset(0.008,"Y");
 	hemptyv2->SetLabelFont  (43   ,"Y");
@@ -78,7 +78,7 @@ void FinalPlot_compareAlice()
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
 	//latex.DrawLatex(3, 0.3, "|y| < 1.0");
-	latex.DrawLatex(1, 0.35, "Cent. 0-10%");
+	latex.DrawLatex(1, 0.27, "Cent. 0-10%");
 
 	cfg_Dv2_compareAlice->cd(2);
 	hemptyv2->Draw();
@@ -93,7 +93,7 @@ void FinalPlot_compareAlice()
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(1, 0.35, "Cent. 10-30%");
+	latex.DrawLatex(1, 0.27, "Cent. 10-30%");
 
 	cfg_Dv2_compareAlice->cd(3);
 	hemptyv2->Draw();
@@ -108,7 +108,7 @@ void FinalPlot_compareAlice()
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(1, 0.35, "Cent. 30-50%");
+	latex.DrawLatex(1, 0.27, "Cent. 30-50%");
 
 	cfg_Dv2_compareAlice->cd(1);
 

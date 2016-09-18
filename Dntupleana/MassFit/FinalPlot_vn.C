@@ -23,6 +23,7 @@
 #include "./Set_theoryD.C"
 #include "style.h"
 
+//0, 0, 0, 1
 //1, 0, 0, 1
 //1, 1, 0, 1
 //0, 0, 1, 0
@@ -43,7 +44,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	fun->SetLineStyle(3);
 	fun->SetLineWidth(1);
 
-	TH2F* hemptyv2 = new TH2F("hemptyv2","",20,0.01,41.,10.,-0.18,0.4);
+	TH2F* hemptyv2 = new TH2F("hemptyv2","",20,0.01,41.,10.,-0.18,0.295);
 	hemptyv2->GetXaxis()->SetTitle("p_{T} (GeV/c)");
 	hemptyv2->GetYaxis()->SetTitle("v_{2}");
 	hemptyv2->GetXaxis()->CenterTitle();
@@ -51,8 +52,8 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	hemptyv2->GetYaxis()->SetTitleFont(43);
 	hemptyv2->GetXaxis()->SetTitleFont(43);
 	hemptyv2->SetTitleSize  (16,"X");
-	hemptyv2->SetTitleSize  (16,"Y");
-	hemptyv2->SetTitleOffset(1.5,"Y");
+	hemptyv2->SetTitleSize  (22,"Y");
+	hemptyv2->SetTitleOffset(1.2,"Y");
 	hemptyv2->SetTitleOffset(1.5,"X");
 	hemptyv2->SetLabelOffset(0.008,"Y");
 	hemptyv2->SetLabelFont  (43   ,"Y");
@@ -80,6 +81,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 		gv2Dmeson5TeV_TAMU[0]->Draw("3same");
 		gv2Dmeson5TeV_TAMU[0]->Draw("CXsame");
 		gv2Dmeson5TeV_LBT[0]->Draw("Csame");
+		gv2Dmeson5TeV_LPang[0]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -98,8 +100,8 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(3, 0.3, "|y| < 1.0");
-	latex.DrawLatex(3, 0.35, "Cent. 0-10%");
+	latex.DrawLatex(4, 0.23, "|y| < 1.0");
+	latex.DrawLatex(4, 0.27, "Cent. 0-10%");
 
 	cfg_Dv2_charged_theory->cd(2);
 	hemptyv2->Draw();
@@ -115,6 +117,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 		gv2Dmeson5TeV_TAMU[1]->Draw("3same");
 		gv2Dmeson5TeV_TAMU[1]->Draw("CXsame");
 		gv2Dmeson5TeV_LBT[1]->Draw("Csame");
+		gv2Dmeson5TeV_LPang[1]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -133,7 +136,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(3, 0.35, "Cent. 10-30%");
+	latex.DrawLatex(4, 0.27, "Cent. 10-30%");
 
 	cfg_Dv2_charged_theory->cd(3);
 	hemptyv2->Draw();
@@ -149,6 +152,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 		gv2Dmeson5TeV_TAMU[2]->Draw("3same");
 		gv2Dmeson5TeV_TAMU[2]->Draw("CXsame");
 		gv2Dmeson5TeV_LBT[2]->Draw("Csame");
+		gv2Dmeson5TeV_LPang[2]->Draw("Csame");
 	}
 	if( Drawchargedparticle )
 	{
@@ -167,7 +171,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(3, 0.35, "Cent. 30-50%");
+	latex.DrawLatex(4, 0.27, "Cent. 30-50%");
 
 	cfg_Dv2_charged_theory->cd(1);
 
@@ -240,9 +244,9 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 		Ttheory.SetTextFont(43);
 		Ttheory.SetTextSize(15);
 		Ttheory.SetTextAlign(13);
-		Ttheory.DrawLatex(13, 0.3, "Theory prediction for prompt D");
+		Ttheory.DrawLatex(13, 0.23, "Theory prediction for prompt D");
 
-		TLegend * leg1 = new TLegend(0.30, 0.61, 0.60, 0.73);
+		TLegend * leg1 = new TLegend(0.30, 0.66, 0.60, 0.76);
 		leg1->SetTextSize(15);
 		leg1->SetTextFont(43);
 		leg1->AddEntry(gv2Dmeson5TeV_LBT[0], "LBT", "l");
@@ -251,9 +255,10 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 		leg1->SetFillStyle(0);
 		leg1->Draw();
 
-		TLegend * leg2 = new TLegend(0.60, 0.67, 0.90, 0.73);
+		TLegend * leg2 = new TLegend(0.60, 0.66, 0.90, 0.76);
 		leg2->SetTextSize(15);
 		leg2->SetTextFont(43);
+		leg2->AddEntry(gv2Dmeson5TeV_LPang[0], "L. Pang", "l");
 		leg2->AddEntry(gv2Dmeson5TeV_CUJET3[0], "CUJET3", "l");
 		leg2->SetBorderSize(0);
 		leg2->SetFillStyle(0);
@@ -298,8 +303,8 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(3, 0.3, "|y| < 1.0");
-	latex.DrawLatex(3, 0.35, "Cent. 0-10%");
+	latex.DrawLatex(4, 0.23, "|y| < 1.0");
+	latex.DrawLatex(4, 0.27, "Cent. 0-10%");
 
 	cfg_Dv3_charged_theory->cd(2);
 	hemptyv3->Draw();
@@ -329,7 +334,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(3, 0.35, "Cent. 10-30%");
+	latex.DrawLatex(4, 0.27, "Cent. 10-30%");
 
 	cfg_Dv3_charged_theory->cd(3);
 	hemptyv3->Draw();
@@ -359,7 +364,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	latex.SetTextFont(43);
 	latex.SetTextSize(18);
 	latex.SetTextAlign(13);
-	latex.DrawLatex(3, 0.35, "Cent. 30-50%");
+	latex.DrawLatex(4, 0.27, "Cent. 30-50%");
 
 	cfg_Dv3_charged_theory->cd(1);
 
@@ -432,9 +437,9 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 		Ttheory.SetTextFont(43);
 		Ttheory.SetTextSize(15);
 		Ttheory.SetTextAlign(13);
-		Ttheory.DrawLatex(13, 0.3, "Theory prediction for prompt D");
+		Ttheory.DrawLatex(13, 0.23, "Theory prediction for prompt D");
 
-		TLegend * leg1 = new TLegend(0.30, 0.67, 0.60, 0.73);
+		TLegend * leg1 = new TLegend(0.30, 0.71, 0.60, 0.76);
 		leg1->SetTextSize(15);
 		leg1->SetTextFont(43);
 		leg1->AddEntry(gv2Dmeson5TeV_LBT[0], "LBT", "l");

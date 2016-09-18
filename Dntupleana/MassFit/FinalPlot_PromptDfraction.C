@@ -37,7 +37,7 @@
 
 using namespace std;
 
-void FinalPlot_PromptDfraction(TString inputfilename_cent0to10 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", TString inputfilename_cent10to30 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent10to30.root", TString inputfilename_cent30to50 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawnoDCAcut = true)
+void FinalPlot_PromptDfraction(TString inputfilename_cent0to10 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent0to10.root", TString inputfilename_cent10to30 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent10to30.root", TString inputfilename_cent30to50 = "promptD0_totaluncertainties/Fractionchange_ratioband_cent30to50.root", bool DrawnoDCAcut = false)
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
