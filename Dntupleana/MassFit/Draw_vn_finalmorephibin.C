@@ -137,7 +137,8 @@ void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys,
 
     gr_vn_morephibin_sys->SetMarkerColor(4.0);
     gr_vn_morephibin_sys->SetMarkerStyle(21);
-    gr_vn_morephibin_sys->SetLineWidth(0);
+    //gr_vn_morephibin_sys->SetLineWidth(1);
+    gr_vn_morephibin_sys->SetLineWidth(0);//hard probes
     gr_vn_morephibin_sys->SetFillStyle(0);
     gr_vn_morephibin_sys->SetLineColor(4.0);
 

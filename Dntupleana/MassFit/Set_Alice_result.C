@@ -74,6 +74,7 @@ void Set_Alice_result()
 		gr_v2_Alice_sys[ibin]->SetMarkerStyle(24);
 		gr_v2_Alice_sys[ibin]->SetMarkerSize(1.0);
 		gr_v2_Alice_sys[ibin]->SetFillStyle(0);
+		gr_v2_Alice_sys[ibin]->SetLineWidth(1);
 		
 		gr_v2_Alice_sys_np[ibin]->SetMarkerColor(1.0);
 		gr_v2_Alice_sys_np[ibin]->SetMarkerStyle(24);

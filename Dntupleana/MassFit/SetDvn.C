@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <iomanip>
 #include <TFile.h>
 #include <TH1F.h>
 #include <TH2F.h>
@@ -79,5 +80,24 @@ void Readvn_phibin()
 		gr_v3_pt_sys_phibin[icen] = (TGraphErrors *) input_phibin[icen]->Get("gr_v3_pt_sys");
 		gr_v2_pt_sys_Bfeeddown_phibin[icen] = (TGraphAsymmErrors *) input_phibin[icen]->Get("gr_v2_pt_sys_Bfeeddown");
 		gr_v3_pt_sys_Bfeeddown_phibin[icen] = (TGraphAsymmErrors *) input_phibin[icen]->Get("gr_v3_pt_sys_Bfeeddown");
+	}
+}
+
+void SetDvn()
+{
+	Readvn_SP();
+	Readvn_phibin();
+
+	for( int icen = 0; icen < 3; icen++ )
+	{
+		for( int ipt = 0; ipt < gr_v2_pt_sys[icen]->GetN(); ipt++ )
+		{
+			//cout << std::setprecision(3) << " pt center: " << gr_v2_pt_sys[icen]->GetX()[ipt];
+			//cout << std::setprecision(4) << " v2: " << h_v2_pt[icen]->GetBinContent(ipt+1) << " stat: " << h_v2_pt[icen]->GetBinError(ipt+1);
+			//cout << std::setprecision(4) << " B feed-down sys: " << gr_v2_pt_sys_Bfeeddown[icen]->GetEYlow()[ipt] << " other sys: " << gr_v2_pt_sys[icen]->GetEY()[ipt] << endl;
+			//cout << std::setprecision(3) << " pt center: " << gr_v2_pt_sys[icen]->GetX()[ipt];
+			cout << std::setprecision(4) << std::fixed << " " << h_v2_pt[icen]->GetBinContent(ipt+1) << " " << h_v2_pt[icen]->GetBinError(ipt+1);
+			cout << std::setprecision(4) << std::fixed << " " << gr_v2_pt_sys_Bfeeddown[icen]->GetEYlow()[ipt] << " " << gr_v2_pt_sys[icen]->GetEY()[ipt] << endl;
+		}
 	}
 }

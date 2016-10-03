@@ -175,7 +175,8 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 
     gr_vn_vnvsmass_SP_sys->SetMarkerColor(2.0);
     gr_vn_vnvsmass_SP_sys->SetMarkerStyle(20);
-    gr_vn_vnvsmass_SP_sys->SetLineWidth(0);
+    //gr_vn_vnvsmass_SP_sys->SetLineWidth(1);
+    gr_vn_vnvsmass_SP_sys->SetLineWidth(0);//hard probes
     gr_vn_vnvsmass_SP_sys->SetFillStyle(0);
     gr_vn_vnvsmass_SP_sys->SetLineColor(2.0);
 
