@@ -186,6 +186,10 @@ void anaDntuple::readtrees(bool isPbPb, bool isDkpi, bool detailedmoed)
 	if(isMC) readGenDtree(ntGen);
 }
 
+//PbPb golden json run: 262620 to 263614, json 262548-263757
+//PbPb tracker json run: 263685 to 263757, json 263685-263757
+//centrality triggers turned off since run 263728
+
 void anaDntuple::PbPbTrigComb_PDs()
 {
 	temp_HLT_HIL1MinimumBiasHF1AND_v1 = HLT_HIL1MinimumBiasHF1AND_v1;
@@ -254,7 +258,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part4_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part5_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part6_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part7_v1 = HLT_HIL1MinimumBiasHF2AND_part7_v1;
+		if( run < 263728 ) //not necessarly, but just to make it clear, HF2and_part7 is implemented from run 263728
+			HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part9_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part10_v1 = 0;
@@ -272,7 +277,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 = 0;
-		//HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1 = HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1;
+		if( run >= 263728 ) // large prescaled since run 263728, not used in analysis
+			HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1 = 0;
 	}
 
 	if( PbPbPD == 2 )
@@ -280,7 +286,7 @@ void anaDntuple::PbPbTrigComb_PDs()
 		//HLT_HIL1MinimumBiasHF1AND_v1 = HLT_HIL1MinimumBiasHF1AND_v1;
 		//if( run >= 263155 && run <= 263186 )
 		//	HLT_HIL1MinimumBiasHF2AND_v1 = HLT_HIL1MinimumBiasHF2AND_v1;
-		if( !(run >= 263155 && run <= 263186) )
+		if( !(run >= 263155 && run <= 263186) ) // golden json range, but no data certified, thus not really used
 			HLT_HIL1MinimumBiasHF2AND_v1 = 0;
 		//HLT_HIL1MinimumBiasHF2AND_part1_v1 = HLT_HIL1MinimumBiasHF2AND_part1_v1;
 		HLT_HIL1MinimumBiasHF2AND_part2_v1 = 0;
@@ -326,11 +332,12 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1Centralityext70100HFplusANDminusTH0_v1 = 0;
 		//if( run >= 263155 && run <= 263186 )
 		//	HLT_HIL1Centralityext30100MinimumumBiasHF1AND_v1 = HLT_HIL1Centralityext30100MinimumumBiasHF1AND_v1;
-		if( !( run >= 263155 && run <= 263186 ) )
+		if( !( run >= 263155 && run <= 263186 ) ) //golden json range, no data certified, so actually not useful
 			HLT_HIL1Centralityext30100MinimumumBiasHF1AND_v1 = 0;
 		HLT_HIL1Centralityext50100MinimumumBiasHF1AND_v1 = 0;
 		HLT_HIL1Centralityext70100MinimumumBiasHF1AND_v1 = 0;
-		//HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 = HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1;
+		if( !( run >= 263155 && run <= 263186 ) ) //golden json range, no data certified, so actually not useful
+			HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 = 0;
@@ -372,7 +379,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part1_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part2_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part3_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part4_v1 = HLT_HIL1MinimumBiasHF2AND_part4_v1;
+		if( run < 263728 ) //not necessary, just to make clear, HF2_part4 added since run 263728
+			HLT_HIL1MinimumBiasHF2AND_part4_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part5_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part6_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
@@ -387,7 +395,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1Centralityext50100MinimumumBiasHF1AND_v1 = 0;
 		HLT_HIL1Centralityext70100MinimumumBiasHF1AND_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 = 0;
-		//HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 = HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1;
+		if( run >= 263728 ) // large prescaled since run 263728, not used in analysis
+			HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 = 0;
 		HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1 = 0;
@@ -401,7 +410,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part2_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part3_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part4_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part5_v1 = HLT_HIL1MinimumBiasHF2AND_part5_v1;
+		if( run < 263728 ) //not necessary, just to make clear, HF2_part5 added since run 263728
+			HLT_HIL1MinimumBiasHF2AND_part5_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part6_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
@@ -416,7 +426,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1Centralityext70100MinimumumBiasHF1AND_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 = 0;
-		//HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 = HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1;
+		if( run >= 263728 )
+			HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 = 0;
 		HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1 = 0;
 	}
@@ -430,7 +441,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part3_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part4_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part5_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part6_v1 = HLT_HIL1MinimumBiasHF2AND_part6_v1;
+		if( run < 263728 )
+			HLT_HIL1MinimumBiasHF2AND_part6_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part9_v1 = 0;
@@ -445,7 +457,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 = 0;
 		HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 = 0;
-		//HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 = HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1;
+		if( run >= 263728 )
+			HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1 = 0;
 		HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1 = 0;
 	}
 
@@ -460,7 +473,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part5_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part6_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part8_v1 = HLT_HIL1MinimumBiasHF2AND_part8_v1;
+		if( run < 263741 ) //not necessary, HF2_part8 is added to PD 8 since run 263741
+			HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part9_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part10_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part11_v1 = 0;
@@ -489,7 +503,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part6_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part9_v1 = HLT_HIL1MinimumBiasHF2AND_part9_v1;
+		if( run < 263741 )
+			HLT_HIL1MinimumBiasHF2AND_part9_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part10_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part11_v1 = 0;
 		HLT_HIL1Centralityext30100HFplusANDminusTH0_v1 = 0;
@@ -518,7 +533,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part7_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part9_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part10_v1 = HLT_HIL1MinimumBiasHF2AND_part10_v1;
+		if( run < 263741 )
+			HLT_HIL1MinimumBiasHF2AND_part10_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part11_v1 = 0;
 		HLT_HIL1Centralityext30100HFplusANDminusTH0_v1 = 0;
 		HLT_HIL1Centralityext50100HFplusANDminusTH0_v1 = 0;
@@ -547,7 +563,8 @@ void anaDntuple::PbPbTrigComb_PDs()
 		HLT_HIL1MinimumBiasHF2AND_part8_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part9_v1 = 0;
 		HLT_HIL1MinimumBiasHF2AND_part10_v1 = 0;
-		//HLT_HIL1MinimumBiasHF2AND_part11_v1 = HLT_HIL1MinimumBiasHF2AND_part11_v1;
+		if( run < 263741 )
+			HLT_HIL1MinimumBiasHF2AND_part11_v1 = 0;
 		HLT_HIL1Centralityext30100HFplusANDminusTH0_v1 = 0;
 		HLT_HIL1Centralityext50100HFplusANDminusTH0_v1 = 0;
 		HLT_HIL1Centralityext70100HFplusANDminusTH0_v1 = 0;
@@ -692,6 +709,8 @@ void anaDntuple::Combine_TrigPart_TrigVersion()
 	{
 		if( run > 263155 )
 		{
+			//HLT_HIL1MinimumBiasHF2AND_v1, HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 not really used, no data certified in golden json
+			//for the run range these two triggers are used
 			MBtrig_part_combined = HLT_HIL1MinimumBiasHF2AND_v1 || HLT_HIL1MinimumBiasHF2AND_part1_v1 || HLT_HIL1MinimumBiasHF2AND_part2_v1 || HLT_HIL1MinimumBiasHF2AND_part3_v1 || HLT_HIL1MinimumBiasHF2AND_part4_v1 || HLT_HIL1MinimumBiasHF2AND_part5_v1 || HLT_HIL1MinimumBiasHF2AND_part6_v1 || HLT_HIL1MinimumBiasHF2AND_part7_v1 || HLT_HIL1MinimumBiasHF2AND_part8_v1 || HLT_HIL1MinimumBiasHF2AND_part9_v1 || HLT_HIL1MinimumBiasHF2AND_part10_v1 || HLT_HIL1MinimumBiasHF2AND_part11_v1;
 			MBtrig_cent30to100_part_combined = HLT_HIL1Centralityext30100MinimumumBiasHF2AND_v1 || HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part1_v1 || HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part2_v1 || HLT_HIL1Centralityext30100MinimumumBiasHF2AND_part3_v1;
 			MBtrig_cent50to100_part_combined = HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1;
@@ -702,7 +721,7 @@ void anaDntuple::Combine_TrigPart_TrigVersion()
 			temp_MBtrig_cent50to100_part_combined = temp_HLT_HIL1Centralityext50100MinimumumBiasHF2AND_v1;
 			temp_MBtrig_cent70to100_part_combined = 0;
 
-			if( run > 263728 )
+			if( run >= 263728 ) // centrality triggers are highly prescaled since run 263728, not used in analysis
 			{
 				MBtrig_cent30to100_part_combined = 0;
 				MBtrig_cent50to100_part_combined = 0;
@@ -724,7 +743,7 @@ void anaDntuple::Combine_TrigPart_TrigVersion()
 			temp_MBtrig_cent70to100_part_combined = temp_HLT_HIL1Centralityext70100HFplusANDminusTH0_v1 || temp_HLT_HIL1Centralityext70100MinimumumBiasHF1AND_v1;
 		}
 
-		//remove the overlap in event counts
+		//remove the overlap in event counts, not necessary since the double counting is removed again later in combination with MB trigger
 		MBtrig_cent30to100_part_combined = MBtrig_cent30to100_part_combined && !temp_MBtrig_part_combined;
 		MBtrig_cent50to100_part_combined = MBtrig_cent50to100_part_combined && !temp_MBtrig_part_combined && !temp_MBtrig_cent30to100_part_combined;
 		MBtrig_cent70to100_part_combined = MBtrig_cent70to100_part_combined && !temp_MBtrig_part_combined && !temp_MBtrig_cent30to100_part_combined && !temp_MBtrig_cent50to100_part_combined;
