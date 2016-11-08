@@ -37,10 +37,9 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	TH1F* histo_copy_nofitfun = ( TH1F * ) histo->Clone("histo_copy_nofitfun");
 	TCanvas* cfg= new TCanvas(Form("cfg_poly3bkg_floatwidth_%s_%d",cfgname.Data(),ipt),Form("cfg_poly3bkg_floatwidth_%s_%d",cfgname.Data(),ipt),600,600);
 
-	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x", fit_range_low, fit_range_high);
+	TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x", fit_range_low, fit_range_high);
 
-
-	f->SetParLimits(9,-1000,1000);
+	f->SetParLimits(10,-1000,1000);
 	f->SetParLimits(3,0.001,0.05);
 	f->SetParLimits(2,0.01,0.1);
 	f->SetParLimits(7,0.02,0.2);
@@ -54,12 +53,13 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	f->SetParameter(4,setparam4);
 
 	f->FixParameter(7,setparam7);
+	f->FixParameter(8,setparam1);
 	f->FixParameter(5,1);
 	f->FixParameter(1,fixparam1);
-	f->FixParameter(8,0);
 	f->FixParameter(9,0);
 	f->FixParameter(10,0);
 	f->FixParameter(11,0);
+	f->FixParameter(12,0);
 	f->FixParameter(6,0);
 
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"q","",fit_range_low,fit_range_high);
@@ -68,6 +68,8 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
+	
+	//cfg->SaveAs(Form("Massfitplots/PbPb/DMass_signal_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 
 	f->FixParameter(1,f->GetParameter(1));
 	f->FixParameter(2,f->GetParameter(2));
@@ -75,19 +77,26 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	f->FixParameter(4,f->GetParameter(4));
 	f->FixParameter(5,0);
 	f->ReleaseParameter(7);
+	f->ReleaseParameter(8);
 	f->SetParameter(7,setparam7);
+	f->SetParameter(8,setparam1);//mean for swapped candidates
+	//if want to fix parameter 8 to parameter 1
+	//f->FixParameter(8,f->GetParameter(1));
 
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
+	
+	//cfg->SaveAs(Form("Massfitplots/PbPb/DMass_kpiswapped_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 
 	f->FixParameter(5,h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
 	f->FixParameter(7,f->GetParameter(7));
-	f->ReleaseParameter(8);
+	f->FixParameter(8,f->GetParameter(8));
 	f->ReleaseParameter(9);
 	f->ReleaseParameter(10);
 	f->ReleaseParameter(11);
+	f->ReleaseParameter(12);
 
 	f->SetLineColor(kRed);
 
@@ -112,10 +121,10 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	}
 
 	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[0]+[1]*x+[2]*x*x+[3]*x*x*x");
-	background->SetParameter(0,f->GetParameter(8));
-	background->SetParameter(1,f->GetParameter(9));
-	background->SetParameter(2,f->GetParameter(10));
-	background->SetParameter(3,f->GetParameter(11));
+	background->SetParameter(0,f->GetParameter(9));
+	background->SetParameter(1,f->GetParameter(10));
+	background->SetParameter(2,f->GetParameter(11));
+	background->SetParameter(3,f->GetParameter(12));
 	background->SetLineColor(4);
 	background->SetRange(fit_range_low,fit_range_high);
 	background->SetLineStyle(2);
@@ -135,12 +144,13 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	mass->SetLineWidth(3);
 	mass->SetLineStyle(2);
 
-	TF1* massSwap = new TF1(Form("fmassSwap_%s_%d",cfgname.Data(),ipt),"[0]*(1-[2])*Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3])");
-	massSwap->SetParameters(f->GetParameter(0),f->GetParameter(1),f->GetParameter(5),f->GetParameter(7));
+	TF1* massSwap = new TF1(Form("fmassSwap_%s_%d",cfgname.Data(),ipt),"[0]*(1-[2])*Gaus(x,[1],[3]*(1.0 +[4]))/(sqrt(2*3.14159)*[3]*(1.0 +[4]))");
+	massSwap->SetParameters(f->GetParameter(0),f->GetParameter(8),f->GetParameter(5),f->GetParameter(7),f->GetParameter(6));
 	massSwap->SetParError(0,f->GetParError(0));
-	massSwap->SetParError(1,f->GetParError(1));
+	massSwap->SetParError(1,f->GetParError(8));
 	massSwap->SetParError(2,f->GetParError(5));
 	massSwap->SetParError(3,f->GetParError(7));
+	massSwap->SetParError(4,f->GetParError(6));
 	massSwap->SetFillColor(kGreen+4);
 	massSwap->SetFillStyle(3005);
 	massSwap->SetLineColor(kGreen+4);
@@ -197,7 +207,7 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	Tl.SetTextAlign(12);
 	Tl.SetTextSize(0.05);
 	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.18,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+	Tl.DrawLatex(0.18,0.965, "#font[61]{CMS}");
 	if( isPbPb )
 		Tl.DrawLatex(0.61,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 	else
@@ -233,7 +243,7 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 		tex->SetTextFont(42);
 		tex->SetTextSize(0.04);
 		tex->SetLineWidth(2);
-//		tex->Draw();
+		tex->Draw();
 	}
 	else
 	{
@@ -256,7 +266,7 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 		tex->SetTextFont(42);
 		tex->SetTextSize(0.04);
 		tex->SetLineWidth(2);
-//		tex->Draw();
+		tex->Draw();
 	}
 
 	histo_copy_nofitfun->Draw("esame");
@@ -303,8 +313,8 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 			Ratio_signal_foreground->SetBinError(ibin+1, ratioError);
 		}
 
-		TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x)", generalfitrange_masslow, generalfitrange_masshigh);
-		for( int ipar = 0; ipar < 12; ipar++ )
+		TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x)", generalfitrange_masslow, generalfitrange_masshigh);
+		for( int ipar = 0; ipar < 13; ipar++ )
 		{
 			Func_Ratio_signal_foreground->SetParameter( ipar, f->GetParameter(ipar));
 			Func_Ratio_signal_foreground->SetParError(ipar, f->GetParError(ipar));

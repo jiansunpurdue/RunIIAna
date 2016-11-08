@@ -24,8 +24,8 @@ extern float ptbins[Nptbin+1];
 extern const double generalfitrange_masslow;
 extern const double generalfitrange_masshigh;
 
-int iparmassfit_poly3bkg_floatwidth[12] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-int iparvnfit_poly3bkg_floatwidth[15] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+int iparmassfit_poly3bkg_floatwidth[13] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+int iparvnfit_poly3bkg_floatwidth[16] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
 struct GlobalChi2_poly3bkg_floatwidth {
 	GlobalChi2_poly3bkg_floatwidth(  ROOT::Math::IMultiGenFunction & f1,
@@ -35,11 +35,11 @@ struct GlobalChi2_poly3bkg_floatwidth {
 	// parameter vector is first background (in common 1 and 2)
 	// and then is signal (only in 2)
 	double operator() (const double *par) const {
-		double p1[12];
-		for(int i = 0; i < 12; ++i) p1[i] = par[iparmassfit_poly3bkg_floatwidth[i]];
+		double p1[13];
+		for(int i = 0; i < 13; ++i) p1[i] = par[iparmassfit_poly3bkg_floatwidth[i]];
 
-		double p2[15];
-		for(int i = 0; i < 15; ++i) p2[i] = par[iparvnfit_poly3bkg_floatwidth[i]];
+		double p2[16];
+		for(int i = 0; i < 16; ++i) p2[i] = par[iparvnfit_poly3bkg_floatwidth[i]];
 
 		return (*fChi2_1)(p1) + (*fChi2_2)(p2);
 	}
@@ -79,9 +79,9 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
     gPad->SetTopMargin(0.1);
     gPad->SetBottomMargin(0.145);
 
-    TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x", fit_range_low, fit_range_high);
+    TF1* f = new TF1(Form("f_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x", fit_range_low, fit_range_high);
 
-	f->SetParLimits(9,-1000,1000);
+	f->SetParLimits(10,-1000,1000);
 	f->SetParLimits(3,0.001,0.05);
 	f->SetParLimits(2,0.01,0.1);
 	f->SetParLimits(7,0.02,0.2);
@@ -95,12 +95,13 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	f->SetParameter(4,setparam4);
 
 	f->FixParameter(7,setparam7);
+	f->FixParameter(8,setparam1);
 	f->FixParameter(5,1);
 	f->FixParameter(1,fixparam1);
-	f->FixParameter(8,0);
 	f->FixParameter(9,0);
 	f->FixParameter(10,0);
 	f->FixParameter(11,0);
+	f->FixParameter(12,0);
 	f->FixParameter(6,0);
 
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"q","",fit_range_low,fit_range_high);
@@ -116,7 +117,11 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	f->FixParameter(4,f->GetParameter(4));
 	f->FixParameter(5,0);
 	f->ReleaseParameter(7);
+	f->ReleaseParameter(8);
 	f->SetParameter(7,setparam7);
+    f->SetParameter(8,setparam1);//mean for swapped candidates
+    //if want to fix parameter 8 to parameter 1
+    //f->FixParameter(8,f->GetParameter(1));
 
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
@@ -125,10 +130,11 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 
 	f->FixParameter(5,h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
 	f->FixParameter(7,f->GetParameter(7));
-	f->ReleaseParameter(8);
+	f->FixParameter(8,f->GetParameter(8));
 	f->ReleaseParameter(9);
 	f->ReleaseParameter(10);
 	f->ReleaseParameter(11);
+	f->ReleaseParameter(12);
 
 	f->SetLineColor(kRed);
 
@@ -145,9 +151,9 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	histo_massfit->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
 
 	//begin combine fit
-	TF1* fmass_combinemassvnfit = new TF1(Form("fmass_combinemassvnfit_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x", fit_range_low, fit_range_high);
+    TF1* fmass_combinemassvnfit = new TF1(Form("fmass_combinemassvnfit_%s_%d",cfgname.Data(),ipt),"[0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x", fit_range_low, fit_range_high);
 
-	TF1* fvn_combinemassvnfit = new TF1(Form("fvn_combinemassvnfit_%s_%d",cfgname.Data(),ipt), "( ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) ) / ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x ) ) * [12] + ( 1.0 - ( ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) ) / ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x ) ) ) * ( [13] + [14] * x)", fit_range_low, fit_range_high);
+	TF1* fvn_combinemassvnfit = new TF1(Form("fvn_combinemassvnfit_%s_%d",cfgname.Data(),ipt), "( ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) ) / ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x ) ) * [13] + ( 1.0 - ( ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) ) / ( [0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x ) ) ) * ( [14] + [15] * x)", fit_range_low, fit_range_high);
 
 	ROOT::Math::WrappedMultiTF1 wfmass_combinemassvnfit(*fmass_combinemassvnfit,1);
 	ROOT::Math::WrappedMultiTF1 wfvn_combinemassvnfit(*fvn_combinemassvnfit,1);
@@ -171,13 +177,13 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 
 	ROOT::Fit::Fitter fitter;
 
-	const int Npar = 15;
+	const int Npar = 16;
 	double par0[Npar];
 	for( int ipar = 0; ipar < f->GetNpar(); ipar++ )
 		par0[ipar] = f->GetParameter(ipar);
-	par0[12] = 0.01;
-	par0[13] = 0.10;
-	par0[14] = 0.05;
+	par0[13] = 0.01;
+	par0[14] = 0.10;
+	par0[15] = 0.05;
 
 	// create before the parameter settings in order to fix or set range on them
 	fitter.Config().SetParamsSettings(Npar,par0);
@@ -187,6 +193,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	fitter.Config().ParSettings(4).Fix();
 	fitter.Config().ParSettings(5).Fix();
 	fitter.Config().ParSettings(7).Fix();
+	fitter.Config().ParSettings(8).Fix();
 	// set limits on the third and 4-th parameter
 	fitter.Config().ParSettings(1).SetLimits(1.7, 2.0);
 	//fitter.Config().ParSettings(12).SetStepSize(0.005);
@@ -213,8 +220,8 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	fvn_combinemassvnfit->SetLineStyle(2);
 	h_vnvsmass->GetListOfFunctions()->Add(fvn_combinemassvnfit);
 
-	h_vnvspt->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(12));
-	h_vnvspt->SetBinError( ipt+1, fvn_combinemassvnfit->GetParError(12));
+	h_vnvspt->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13));
+	h_vnvspt->SetBinError( ipt+1, fvn_combinemassvnfit->GetParError(13));
 
 	//double x[2] = {1.73, 1.864};
 	//double error[2];
@@ -223,7 +230,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 
 	//h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13) + fvn_combinemassvnfit->GetParameter(14) * 1.864);
 	//h_vnvspt_bkg->SetBinError( ipt+1, error[0]);
-	h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(13) + fvn_combinemassvnfit->GetParameter(14) * 1.85);
+	h_vnvspt_bkg->SetBinContent( ipt+1, fvn_combinemassvnfit->GetParameter(14) + fvn_combinemassvnfit->GetParameter(15) * 1.864);
 	h_vnvspt_bkg->SetBinError( ipt+1, 0. );
 
 	TCanvas* cfg_massfit_combinemassvn = new TCanvas(Form("cfg_poly3bkg_floatwidth_combinemassvnfit_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),Form("cfg_poly3bkg_floatwidth_combinemassvnfit_massfit_combinemassvn_%s_%d_%s_%s",cfgname.Data(),ipt,vnorder.Data(),EPorSP.Data()),600,600);
@@ -257,10 +264,10 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	histo->Draw("e");
 	
 	TF1* background = new TF1(Form("background_%s_%d",cfgname.Data(),ipt),"[0]+[1]*x+[2]*x*x+[3]*x*x*x");
-	background->SetParameter(0,fmass_combinemassvnfit->GetParameter(8));
-	background->SetParameter(1,fmass_combinemassvnfit->GetParameter(9));
-	background->SetParameter(2,fmass_combinemassvnfit->GetParameter(10));
-	background->SetParameter(3,fmass_combinemassvnfit->GetParameter(11));
+	background->SetParameter(0,fmass_combinemassvnfit->GetParameter(9));
+	background->SetParameter(1,fmass_combinemassvnfit->GetParameter(10));
+	background->SetParameter(2,fmass_combinemassvnfit->GetParameter(11));
+	background->SetParameter(3,fmass_combinemassvnfit->GetParameter(12));
 	background->SetLineColor(4);
 	background->SetRange(fit_range_low,fit_range_high);
 	background->SetLineStyle(2);
@@ -280,12 +287,13 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
     mass->SetLineWidth(3);
     mass->SetLineStyle(2);
 
-	TF1* massSwap = new TF1(Form("fmassSwap_%s_%d",cfgname.Data(),ipt),"[0]*(1-[2])*Gaus(x,[1],[3])/(sqrt(2*3.14159)*[3])");
-	massSwap->SetParameters(fmass_combinemassvnfit->GetParameter(0),fmass_combinemassvnfit->GetParameter(1),fmass_combinemassvnfit->GetParameter(5),fmass_combinemassvnfit->GetParameter(7));
+	TF1* massSwap = new TF1(Form("fmassSwap_%s_%d",cfgname.Data(),ipt),"[0]*(1-[2])*Gaus(x,[1],[3]*(1.0 +[4]))/(sqrt(2*3.14159)*[3]*(1.0 +[4]))");
+	massSwap->SetParameters(fmass_combinemassvnfit->GetParameter(0),fmass_combinemassvnfit->GetParameter(8),fmass_combinemassvnfit->GetParameter(5),fmass_combinemassvnfit->GetParameter(7),fmass_combinemassvnfit->GetParameter(6));
 	massSwap->SetParError(0,fmass_combinemassvnfit->GetParError(0));
-	massSwap->SetParError(1,fmass_combinemassvnfit->GetParError(1));
+	massSwap->SetParError(1,fmass_combinemassvnfit->GetParError(8));
 	massSwap->SetParError(2,fmass_combinemassvnfit->GetParError(5));
 	massSwap->SetParError(3,fmass_combinemassvnfit->GetParError(7));
+	massSwap->SetParError(4,fmass_combinemassvnfit->GetParError(6));
 	massSwap->SetFillColor(kGreen+4);
 	massSwap->SetFillStyle(3005);
 	massSwap->SetLineColor(kGreen+4);
@@ -318,7 +326,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	Tl.SetTextAlign(12);
 	Tl.SetTextSize(0.05);
 	Tl.SetTextFont(42);
-	Tl.DrawLatex(0.18,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+	Tl.DrawLatex(0.18,0.965, "#font[61]{CMS}");
 	if( isPbPb )
 		Tl.DrawLatex(0.61,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 	else
@@ -354,7 +362,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 		tex->SetTextFont(42);
 		tex->SetTextSize(0.04);
 		tex->SetLineWidth(2);
-	//	tex->Draw();
+		tex->Draw();
 	}
 	else
 	{
@@ -377,7 +385,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 		tex->SetTextFont(42);
 		tex->SetTextSize(0.04);
 		tex->SetLineWidth(2);
-	//	tex->Draw();
+		tex->Draw();
 	}
 
 	histo_copy_nofitfun->Draw("esame");
@@ -424,8 +432,8 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 			Ratio_signal_foreground->SetBinError(ibin+1, ratioError);
 		}
 
-        TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[1],[7])/(sqrt(2*3.14159)*[7])) + [8] + [9]*x + [10]*x*x + [11]*x*x*x)", generalfitrange_masslow, generalfitrange_masshigh);
-        for( int ipar = 0; ipar < 12; ipar++ )
+		TF1* Func_Ratio_signal_foreground = new TF1(Form("Func_Ratio_signal_foreground_%s_%d",cfgname.Data(),ipt),"([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))))/([0]*([5]*([4]*TMath::Gaus(x,[1],[2]*(1.0 +[6]))/(sqrt(2*3.14159)*[2]*(1.0 +[6]))+(1-[4])*TMath::Gaus(x,[1],[3]*(1.0 +[6]))/(sqrt(2*3.14159)*[3]*(1.0 +[6])))+(1-[5])*TMath::Gaus(x,[8],[7]*(1.0 +[6]))/(sqrt(2*3.14159)*[7]*(1.0 +[6]))) + [9] + [10]*x + [11]*x*x + [12]*x*x*x)", generalfitrange_masslow, generalfitrange_masshigh);
+        for( int ipar = 0; ipar < 13; ipar++ )
         {
             Func_Ratio_signal_foreground->SetParameter( ipar, f->GetParameter(ipar));
             Func_Ratio_signal_foreground->SetParError(ipar, f->GetParError(ipar));
@@ -460,7 +468,7 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
     Tl2.SetTextAlign(12);
     Tl2.SetTextSize(0.05);
     Tl2.SetTextFont(42);
-    Tl2.DrawLatex(0.125,0.965, "#font[61]{CMS} #scale[0.8]{Preliminary}");
+    Tl2.DrawLatex(0.125,0.965, "#font[61]{CMS}");
     Tl2.DrawLatex(0.57,0.965, "#scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
     tex = new TLatex(0.18,0.83,"|y| < 1.0");
@@ -485,9 +493,9 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
     tex->Draw();
 
     if( vnorder == "v2" ) 
-        tex = new TLatex(0.55,0.83,Form("v_{2}^{sig} = %.3f #pm %.3f",fvn_combinemassvnfit->GetParameter(12), fvn_combinemassvnfit->GetParError(12)));
+        tex = new TLatex(0.55,0.83,Form("v_{2}^{sig} = %.3f #pm %.3f",fvn_combinemassvnfit->GetParameter(13), fvn_combinemassvnfit->GetParError(13)));
     else if( vnorder == "v3" )
-        tex = new TLatex(0.55,0.83,Form("v_{3}^{sig} = %.3f #pm %.3f",fvn_combinemassvnfit->GetParameter(12), fvn_combinemassvnfit->GetParError(12)));
+        tex = new TLatex(0.55,0.83,Form("v_{3}^{sig} = %.3f #pm %.3f",fvn_combinemassvnfit->GetParameter(13), fvn_combinemassvnfit->GetParError(13)));
 
     tex->SetNDC();
     tex->SetTextFont(42);

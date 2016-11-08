@@ -27,7 +27,7 @@
 #include <./FitFunction_expobkg_2nd_floatwidth_combinemassvnfit.C>
 
 #include <./FitFunction_poly3bkg_floatwidth_combinemassvnfit_poly2bkg.C>
-//#include <./../EP_resolution.h>
+////#include <./../EP_resolution.h>
 
 namespace fs = boost::filesystem;
 
@@ -36,8 +36,11 @@ const int Rebin_vnmass = 3;
 
 //#define Nvnmassbins 22
 //double massbin_rebinvnmass[Nvnmassbins+1] = { 1.7, 1.72, 1.74, 1.76, 1.78, 1.80, 1.81, 1.82, 1.83, 1.84, 1.85, 1.86, 1.865, 1.87, 1.88, 1.89, 1.90, 1.91, 1.92, 1.94, 1.96, 1.98, 2.00};
+
+//Preliminary results for Hard Probes
 #define Nvnmassbins 14
 double massbin_rebinvnmass[Nvnmassbins+1] = { 1.7, 1.74, 1.78, 1.80, 1.82, 1.84, 1.85, 1.86, 1.865, 1.87, 1.88, 1.90, 1.92, 1.96, 2.00};
+//
 //#define Nvnmassbins 11
 //double massbin_rebinvnmass[Nvnmassbins+1] = { 1.7, 1.75,  1.80, 1.83, 1.85, 1.86, 1.865, 1.87, 1.88, 1.90, 1.95, 2.00};
 
@@ -45,7 +48,8 @@ TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
 //void MassFit_combmassvnFit(string inputdatafilename = "./../anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent20to40.root", string inputmcfilename = "./../rootfiles_MCvn/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 11, bool isPbPb = true, int centlow=20, int centhigh=40, TString fitoption = "poly3bkg_floatwidth_poly2bkg", bool effcorrected = false)
 //void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_MCvn/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent5to20.root", string inputmcfilename = "./../rootfiles_MCvn/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 8, bool isPbPb = true, int centlow=5, int centhigh=20, TString fitoption = "poly3bkg_floatwidth_poly2bkg", bool effcorrected = false)/void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 6, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
-void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent30to50.root", string inputmcfilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 6, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
+//void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent30to50.root", string inputmcfilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 7, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth_poly2bkg", bool effcorrected = false)
+void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to11_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent30to50.root", string inputmcfilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 6, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
 {
 	TH1::SetDefaultSumw2();
 	gStyle->SetOptTitle(0);
@@ -178,20 +182,20 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_
 
 		if( fitoption == "poly2bkg_floatwidth")
 		{
-			signalfittedfunc = fit_histo_poly2bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
-			signalfittedfunc = fit_histo_poly2bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+			signalfittedfunc = fit_histo_poly2bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP, h_v2_pt_bkg);
+			signalfittedfunc = fit_histo_poly2bkg_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP, h_v3_pt_bkg);
 		}
 
 		if( fitoption == "expobkg_2nd_floatwidth")
 		{
-			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
-			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP, h_v2_pt_bkg);
+			signalfittedfunc = fit_histo_expobkg_2nd_floatwidth_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP, h_v3_pt_bkg);
 		}
 
 		if( fitoption == "poly3bkg_floatwidth_poly2bkg")
 		{
-			signalfittedfunc = fit_histo_poly3bkg_floatwidth_combinemassvnfit_poly2bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP);
-			signalfittedfunc = fit_histo_poly3bkg_floatwidth_combinemassvnfit_poly2bkg( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP);
+			signalfittedfunc = fit_histo_poly3bkg_floatwidth_poly2bkg_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv2_MBorDtrig[ipt], h_v2_pt, "v2", EPorSP, h_v2_pt_bkg);
+			signalfittedfunc = fit_histo_poly3bkg_floatwidth_poly2bkg_combinemassvnfit( isPbPb, centlow, centhigh, hmass_MBorDtrig[ipt], mc_matched_signal[iptmc], mc_matched_kpiswapped[iptmc], ipt, cfgname, Get_signal_bkg_ratio, Ratio_signal_foreground[ipt], h_mass_meanv3_MBorDtrig[ipt], h_v3_pt, "v3", EPorSP, h_v3_pt_bkg);
 		}
 
 		double histomassbinsize = hmass_MBorDtrig[ipt]->GetBinWidth(10);
