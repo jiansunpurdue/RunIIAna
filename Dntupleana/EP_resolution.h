@@ -46,11 +46,17 @@ double SP_EPp_resolution_v3_MC[NCentbin_MC] = { 71.055, 62.5361, 36.5589, 15.315
 
 int centbins[NCentbin+1] = { 0, 10, 30, 50, 70, 90, 100};
 
-//D candidate Q vector recenter
+////golden data, D candidate Q vector recenter
 double v2_meancosnphi[NCentbin] = { 0.00239109, 0.00428512, 0.00112981, 0.0128266, 0., 0.};
 double v2_meansinnphi[NCentbin] = { 0.00294925, 0.00937768, 0.01653460, 0.0214646, 0., 0.};
 double v3_meancosnphi[NCentbin] = { 0.00839557, 0.00429976, -0.0001893, -0.002187, 0., 0.};
 double v3_meansinnphi[NCentbin] = { -0.0171459, -0.0159969, -0.0157925, -0.023782, 0., 0.};
+
+////tracker+barrel data, D candidate Q vector recenter
+//double v2_meancosnphi[NCentbin] = {  0.0075231, 0.00865529, 0.0120846, 0.0190262, 0., 0.};
+//double v2_meansinnphi[NCentbin] = {  0.0093781, 0.01554140, 0.0189508, 0.0236537, 0., 0.};
+//double v3_meancosnphi[NCentbin] = {  0.0106649, 0.00713216, 0.0120853, -0.001336, 0., 0.};
+//double v3_meansinnphi[NCentbin] = {  -0.019160, -0.0184749, 0.0189516, -0.010818, 0., 0.};
 
 //for default EP list
 //errors are wrong
@@ -120,15 +126,15 @@ std::array<Row, 7> error_SP_EPp_resolution_v3_etagap;
 
 void Initiate_EPSPresolution()
 {
-	EPm_resolution_v2_etagap[0] = { 0.685732, 0.859684, 0.805492, 0.56693, 0.211378, 0.0307577};
-	EPp_resolution_v2_etagap[0] = { 0.685895, 0.859866, 0.805762, 0.567147, 0.210694, 0.0329058};
-	EPm_resolution_v3_etagap[0] = { 0.526727, 0.493562, 0.371182, 0.182194, 0.0346885, 99999.};
-	EPp_resolution_v3_etagap[0] = { 0.528257, 0.495857, 0.373729, 0.183724, 0.0316327, 99999.};
+	EPm_resolution_v2_etagap[0] = { 0.685817, 0.859628, 0.805405, 0.56675, 0.211166, 0.0369004};
+	EPp_resolution_v2_etagap[0] = { 0.686144, 0.859858, 0.805753, 0.567144, 0.210872, 0.0412922};
+	EPm_resolution_v3_etagap[0] = { 0.52681, 0.493418, 0.371146, 0.182531, 0.0395432, 0.0074026};
+	EPp_resolution_v3_etagap[0] = { 0.528266, 0.495583, 0.373695, 0.183742, 0.0354822, 0.0431808};
 
-	SP_EPm_resolution_v2_etagap[0] = { 2.20732, 4.50646, 5.36544, 3.85047, 1.16114, 0.121428};
-	SP_EPp_resolution_v2_etagap[0] = { 2.22527, 4.54705, 5.41751, 3.87233, 1.15763, 0.123545};
-	SP_EPm_resolution_v3_etagap[0] = { 1.1864, 1.44074, 1.42084, 0.878359, 0.164648, 99999.};
-	SP_EPp_resolution_v3_etagap[0] = { 1.19751, 1.45886, 1.4413, 0.889368, 0.16584, 99999.};
+	SP_EPm_resolution_v2_etagap[0] = { 2.20396, 4.49691, 5.35371, 3.84252, 1.15754, 0.143096};
+	SP_EPp_resolution_v2_etagap[0] = { 2.23117, 4.55791, 5.42984, 3.88098, 1.163, 0.148767};
+	SP_EPm_resolution_v3_etagap[0] = { 1.18413, 1.43716, 1.41791, 0.877962, 0.179012, 0.0589739};
+	SP_EPp_resolution_v3_etagap[0] = { 1.20041, 1.46178, 1.44465, 0.89159, 0.179256, 0.05101};
 
 	error_EPm_resolution_v2_etagap[0] = { 0.000179193, 6.76088e-05, 8.66034e-05, 0.000163765, 0.000425169, 0.0031662};
 	error_EPp_resolution_v2_etagap[0] = { 0.000179236, 6.76231e-05, 8.66325e-05, 0.000163828, 0.000423793, 0.00338732};

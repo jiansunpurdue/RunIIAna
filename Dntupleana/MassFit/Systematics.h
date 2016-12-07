@@ -163,8 +163,8 @@ void Calculatetotalsys( int cent_low, int cent_high, double ptstart, double pten
 	int arrayindextouse = vntypemethodtoindex[vntype];
 
     //histogram bin from 1
-	int ptbinstart = h_vn->FindBin( ptstart+0.5 ) - 1;
-	int ptbinend = h_vn->FindBin( ptend-0.5 );
+	int ptbinstart = h_vn->FindBin( ptstart+0.3 ) - 1;
+	int ptbinend = h_vn->FindBin( ptend-0.3 );
 
 	for( int ipt = ptbinstart; ipt < ptbinend; ipt++ )
 	{

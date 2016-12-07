@@ -79,8 +79,8 @@ void Calculate_EPreso_SP( TH1D * h_EPreso_SP, string EPname, TProfile * h_hiBin_
 		cout << h_EPreso_SP->GetBinContent( ibin+1 ) << ", ";
 	cout << endl;
 
-	cout << EPname<< " Resolution Error for SP: ";
-	for( int ibin = 0; ibin < NCentbins; ibin++  )
-		cout << h_EPreso_SP->GetBinError( ibin+1 ) << ", ";
-	cout << endl;
+//	cout << EPname<< " Resolution Error for SP: ";
+//	for( int ibin = 0; ibin < NCentbins; ibin++  )
+//		cout << h_EPreso_SP->GetBinError( ibin+1 ) << ", ";
+//	cout << endl;
 }

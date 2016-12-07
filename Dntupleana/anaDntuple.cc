@@ -6,6 +6,8 @@
 #include "HiEvtPlaneList.h"
 using namespace hi;
 
+//Attention, int range 2147483647
+
 //should be decided each time based on information in HiEvtPlaneList.h
 const int v2HFm = HFm2;
 const int v2HFp = HFp2;
@@ -978,6 +980,9 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		inhtree->GetEntry(entry);
 		if( entry % 1000000 == 0 )  cout << entry+1 << "st event" << endl;
 
+		//Just for test!!!!!!!, remove runs in tracker only json, but not in tracker + barrel calo json
+		//if( run == 263718 || run == 263728 || run == 263729 )  continue;
+
 		//centrality range
 		if( isPbPbCollision && (hiBin < hibin_cut_low || hiBin > hibin_cut_high) )  continue;
 
@@ -1236,10 +1241,13 @@ void anaDntuple::LoopOverDcandidates()
 
 			if( dcandiphiv1 < 0 || dcandiphiv2 < 0 || dcandiphiv3 < 0 || dcandiphiv4 < 0 || dcandiphiv2_morephibin < 0 || dcandiphiv3_morephibin < 0 )
 			{
+				//if( !isMC ) //comment out if want to check vn in MC
+				//{
 				cout << " dcandiphi is wrong!!!!!!" << "  icand: " << icand << endl;
 				cout << " dcandiphiv1: " << dcandiphiv1 << " dcandiphiv2: " << dcandiphiv2 << " dcandiphiv3: " << dcandiphiv3 << " dcandiphiv4: " << dcandiphiv4 << endl;
 				cout << " dcandiphiv2_morephibin: " << dcandiphiv2_morephibin << " dcandiphiv3_morephibin: " << dcandiphiv3_morephibin << endl;
 				exit(2);
+				//}
 			}
 		}
 
@@ -1506,7 +1514,7 @@ void anaDntuple::DecideEPSPresolutionandMeanQvector( int icand )
 				}
 			}
 		}
-/////for default event plane list, comment to here
+///for default event plane list, comment to here
 	}
 }
 

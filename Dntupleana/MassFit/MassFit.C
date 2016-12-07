@@ -26,7 +26,7 @@
 
 namespace fs = boost::filesystem;
 
-void MassFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPbMC_Pythia8_prompt_D0pt0p0_5020GeV_evtgen130_GEN_SIM_PU_20160229_tk0p7eta1p5_03132016_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", int iptstart = 1, int iptend = 11, bool isPbPb = 1, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth")
+void MassFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIHardProbes_tkpt6p0eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent-0to100.root", string inputmcfilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "Dtrig", int iptstart = 11, int iptend = 14, bool isPbPb = 1, int centlow=0, int centhigh=100, TString fitoption = "poly3bkg_floatwidth")
 {
 	TH1::SetDefaultSumw2();
 	Plotoption_massfit();

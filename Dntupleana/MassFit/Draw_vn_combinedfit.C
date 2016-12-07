@@ -40,8 +40,8 @@ void Draw_vn_combinedfit(TString inputfilename = "rootfiles_Data/Raw_spectrum_co
 
 	if( !isMC && EPorSP == "SP" && fitoption == "poly3bkg_floatwidth" && effcorrected == 0)
 	{
-		Calculatetotalsys( cent_low, cent_high, 1.0, 40.0, EPorSP, "v2", h_v2_pt, h_v2_pt_sys, h_v2_pt_relativesys);
-		Calculatetotalsys( cent_low, cent_high, 1.0, 40.0, EPorSP, "v3", h_v3_pt, h_v3_pt_sys, h_v3_pt_relativesys);
+		Calculatetotalsys( cent_low, cent_high, ptlow, pthigh, EPorSP, "v2", h_v2_pt, h_v2_pt_sys, h_v2_pt_relativesys);
+		Calculatetotalsys( cent_low, cent_high, ptlow, pthigh, EPorSP, "v3", h_v3_pt, h_v3_pt_sys, h_v3_pt_relativesys);
 	}
 
 	Draw_vn( h_v2_pt, h_v2_pt_sys, MBorDtrig, EPorSP, "v2_"+EPorSP, "v_{2}", cent_low, cent_high, ptlow, pthigh, fitoption, effcorrected);

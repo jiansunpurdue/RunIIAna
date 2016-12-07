@@ -28,7 +28,7 @@
 //1, 1, 0, 1
 //0, 0, 1, 0
 
-void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
+void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = false, bool Drawphibinmethod = false, bool Drawsysfromnonprompt = true)
 {
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -266,7 +266,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	}   
 
 	cfg_Dv2_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv2SP_charged%d_theory%d_phibin%d.pdf",Drawchargedparticle,Drawtheory, Drawphibinmethod));
-	cfg_Dv2_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv2SP_charged%d_theory%d_phibin%d.png",Drawchargedparticle,Drawtheory, Drawphibinmethod));
+//	cfg_Dv2_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv2SP_charged%d_theory%d_phibin%d.png",Drawchargedparticle,Drawtheory, Drawphibinmethod));
 
 	//v3
 	TH2F * hemptyv3 = ( TH2F *) hemptyv2->Clone("hemptyv3");
@@ -449,5 +449,5 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = true, bool
 	}   
 
 	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.pdf",Drawchargedparticle,Drawtheory,Drawphibinmethod));
-	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.png",Drawchargedparticle,Drawtheory,Drawphibinmethod));
+//	cfg_Dv3_charged_theory->SaveAs(Form("finalplotforPAS/cfg_Dv3SP_charged%d_theory%d_phibin%d.png",Drawchargedparticle,Drawtheory,Drawphibinmethod));
 }
