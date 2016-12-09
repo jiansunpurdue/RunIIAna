@@ -217,6 +217,14 @@ TProfile * h_mass_v2_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v3_SP_Dtrig_combined[Nptbin];
 TProfile * h_mass_v4_SP_Dtrig_combined[Nptbin];
 
+//SP, for random sampling to double check the statistical uncertainties
+//finally not used!!!!!!!!!!!
+//the histogram and TProfile are booked. The functions to book and read are in util.h
+#define Nsubsets 4
+TH1D * hmass_MB_HFandpart_trig_random[Nptbin][Nsubsets];
+TProfile * h_mass_v2_SP_MB_HFandpart_random[Nptbin][Nsubsets];
+TProfile * h_mass_v3_SP_MB_HFandpart_random[Nptbin][Nsubsets];
+
 ////for DCA cut sequence
 //TH1D * hmass_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];
 //TProfile * h_mass_v2_SP_MB_HFandpart_DCAsequence[NDCAcut][Nptbin];

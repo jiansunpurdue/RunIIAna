@@ -113,6 +113,58 @@ void get_TProfile_mass_vn(TFile * inputfile, TProfile * h[], int inputNptbin, st
 		h[i] = (TProfile *) inputfile->Get(Form("%s_%d", hname.c_str(), i));
 }
 
+void book_masshist_random(TH1D * h[][Nsubsets], float inputptbins[], int inputNptbin, string hname, int Nmassbin, float hmin, float hmax)
+{
+	TH1::SetDefaultSumw2();
+
+	char h_title[1000];
+	for(int i = 0; i<inputNptbin; i++)
+	{
+		float pt_low = inputptbins[i];
+		float pt_high = inputptbins[i+1];
+		sprintf(h_title, " %2.1f < p_{T} < %2.1f GeV/c", pt_low, pt_high);
+		for(int j = 0; j<Nsubsets; j++)
+		{
+			h[i][j] = new TH1D(Form("%s_%d_%d", hname.c_str(), i, j), h_title, Nmassbin, hmin, hmax);
+			h[i][j]->Sumw2();
+		}
+	}
+}
+
+void get_masshist_random(TFile * inputfile, TH1D * h[][Nsubsets], int inputNptbin, string hname)
+{
+	TH1::SetDefaultSumw2();
+
+	for(int i = 0; i<inputNptbin; i++)
+		for(int j = 0; j<Nsubsets; j++)
+			h[i][j] = (TH1D *) inputfile->Get(Form("%s_%d_%d", hname.c_str(), i, j));
+}
+
+void book_TProfile_mass_vn_random(TProfile * h[][Nsubsets], float inputptbins[], int inputNptbin, string hname, int Nmassbin, float hmin, float hmax)
+{
+	char h_title[1000];
+	for(int i = 0; i<inputNptbin; i++)
+	{
+		float pt_low = inputptbins[i];
+		float pt_high = inputptbins[i+1];
+		sprintf(h_title, " %2.1f < p_{T} < %2.1f GeV/c", pt_low, pt_high);
+		for(int j = 0; j<Nsubsets; j++)
+		{
+			h[i][j] = new TProfile(Form("%s_%d_%d", hname.c_str(), i, j), h_title, Nmassbin, hmin, hmax);
+			h[i][j]->Sumw2();
+		}
+	}
+}
+
+void get_TProfile_mass_vn_random(TFile * inputfile, TProfile * h[][Nsubsets], int inputNptbin, string hname)
+{
+	TH1::SetDefaultSumw2();
+
+	for(int i = 0; i<inputNptbin; i++)
+		for(int j = 0; j<Nsubsets; j++)
+			h[i][j] = (TProfile *) inputfile->Get(Form("%s_%d_%d", hname.c_str(), i, j));
+}
+
 void book_TH2D_mass_vn(TH2D * h[], float inputptbins[], int inputNptbin, string hname, int Nmassbin, float hmin, float hmax, int Nvnbin, float vnmin, float vnmax)
 {
 	TH2::SetDefaultSumw2();

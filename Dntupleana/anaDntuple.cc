@@ -147,6 +147,12 @@ void anaDntuple::Histobookforanalysis()
 		book_TProfile_mass_vn( h_mass_v2_SP_MB_HFandpart_effcorrected, ptbins, Nptbin, "h_mass_v2_SP_MB_HFandpart_effcorrected", Nmassbin, massmin, massmax);
 		book_TProfile_mass_vn( h_mass_v3_SP_MB_HFandpart_effcorrected, ptbins, Nptbin, "h_mass_v3_SP_MB_HFandpart_effcorrected", Nmassbin, massmin, massmax);
 
+		//random subsets for SP
+		book_masshist_random( hmass_MB_HFandpart_trig_random, ptbins, Nptbin, "hmass_MB_HFandpart_trig_random", Nmassbin, massmin, massmax);
+		book_TProfile_mass_vn_random( h_mass_v2_SP_MB_HFandpart_random, ptbins, Nptbin, "h_mass_v2_SP_MB_HFandpart_random", Nmassbin, massmin, massmax);
+		book_TProfile_mass_vn_random( h_mass_v3_SP_MB_HFandpart_random, ptbins, Nptbin, "h_mass_v3_SP_MB_HFandpart_random", Nmassbin, massmin, massmax);
+		//
+
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v1, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v1", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v2, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v2", Nmassbin, massmin, massmax);
 		book_hist_vn_inoutplane( hmass_Dtrig_combined_v3, ptbins, Nptbin, Nphibin, "hmass_Dtrig_combined_v3", Nmassbin, massmin, massmax);
