@@ -22,6 +22,8 @@
 #include "TF1.h"
 #include "TLorentzVector.h"
 #include <TCanvas.h>
+#include "TRandom3.h"
+#include "TRandom.h"
 
 #define MAX_XB       20000
 #define MAX_GEN      6000

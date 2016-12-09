@@ -16,6 +16,13 @@ const int v3HFp = HFp3;
 
 bool doDcandQvectorrecenter = true;
 
+//for random sampling
+TRandom3 * ran;
+bool doRandomsampling = false; //do random sampling or not
+const int SeedRandom = 976543210;
+const int Nsubsampling = 4;
+const int Subsampletotake = 0; //change this value to take different sub samples
+
 //
 anaDntuple::anaDntuple()
 {
@@ -37,6 +44,10 @@ void anaDntuple::Init(string outfilename)
 	ntHi = 0;
 	ntSkim = 0;
 	ntHlt = 0;
+
+	//for randome sampling
+	ran = new TRandom3();
+	ran->SetSeed(SeedRandom);
 }
 
 void anaDntuple::Histobookforanalysis()
@@ -1033,6 +1044,14 @@ void anaDntuple::LoopOverEvt( TTree * inhtree , int startevt, int endevt )
 		}
 		//vertex vz cut
 		if( TMath::Abs(vz) > vz_cut ) continue;
+
+		//for sub sampling
+		if( doRandomsampling )
+		{
+			int randomnumber = ran->Integer(Nsubsampling);
+			//cout << randomnumber << ", ";
+			if( randomnumber != Subsampletotake ) continue;
+		}
 
 		if( !isPbPbCollision ) hiBin = 1;
 
