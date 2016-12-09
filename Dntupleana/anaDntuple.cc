@@ -793,39 +793,66 @@ void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
 
 	divideBinWidth(Gen_D0_pt_noweight_forptreweight);
 
-	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
-	TGraphAsymmErrors* gaeFONLLD0Reference = (TGraphAsymmErrors*) FileFONLLD0->Get("gaeSigmaDzero");
+	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/rootfiles/FONLL_d0meson_5TeV_y1.root");
+	hFONLL = (TH1D *) FileFONLLD0->Get("hpt");
+	hFONLL->SetName("hFONLL");
 
-	TH1D * hFONLL = new TH1D( "hFONLL", "hFONLL", bins_reweight, ptmin_reweight, ptmax_reweight);
-	double x,y;
-	for( int i=0; i < bins_reweight; i++)
-	{
-		gaeFONLLD0Reference->GetPoint(i,x,y);
-		hFONLL->SetBinContent(i+1,y);
-	}
-
-	FONLL_over_GenD0Pt_forptreweight = ( TH1D *) hFONLL->Clone("FONLL_over_GenD0Pt_forptreweight");
-	FONLL_over_GenD0Pt_forptreweight->Divide(Gen_D0_pt_noweight_forptreweight);
-
-	//fit w/o draw
-	TF1 * fit_FONLL_over_GenD0Pt = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 150);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
-
-	//save fitted function
-	fit_FONLL_over_GenD0Pt->SetLineColor(4.0);
-	FONLL_over_GenD0Pt_forptreweight->GetListOfFunctions()->Add(fit_FONLL_over_GenD0Pt);
-
-	MCPtWeidhtFunction = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 300);
-	MCPtWeidhtFunction->SetParameter( 0, fit_FONLL_over_GenD0Pt->GetParameter(0));
-	MCPtWeidhtFunction->SetParameter( 1, fit_FONLL_over_GenD0Pt->GetParameter(1));
-	MCPtWeidhtFunction->SetParameter( 2, fit_FONLL_over_GenD0Pt->GetParameter(2));
-	MCPtWeidhtFunction->SetParameter( 3, fit_FONLL_over_GenD0Pt->GetParameter(3));
-	MCPtWeidhtFunction->SetParameter( 4, fit_FONLL_over_GenD0Pt->GetParameter(4));
-	MCPtWeidhtFunction->SetParameter( 5, fit_FONLL_over_GenD0Pt->GetParameter(5));
+	//Get FONLL pt to raw Gen pt ratio, which will be used as weight later
+	hRatio_FONLLtoRawGen = (TH1D *) hFONLL->Clone("hRatio_FONLLtoRawGen");
+	hRatio_FONLLtoRawGen->Divide(hFONLL,Gen_D0_pt_noweight_forptreweight,1.0,1.0);
 }
+
+//void anaDntuple::GetMCPtWeightFunction( TTree * GenDtree )
+//{
+//	for( int ientry = 0; ientry < GenDtree->GetEntries(); ientry++ )
+//	{
+//		GenDtree->GetEntry(ientry);
+//		for( int igend = 0; igend < Gsize; igend++ )
+//		{
+//			if( TMath::Abs( Gy[igend]) > Drapiditycut ) continue; //rapidity cut
+//			if( TMath::Abs( GpdgId[igend] ) != 421 ) continue; //D0 only
+//			if( GisSignal[igend] !=1 && GisSignal[igend] !=2 ) continue;
+//			if( GcollisionId[igend] > 0 ) continue;
+//
+//			Gen_D0_pt_noweight_forptreweight->Fill( Gpt[igend] );
+//		}
+//	}
+//
+//	divideBinWidth(Gen_D0_pt_noweight_forptreweight);
+//
+//	TFile * FileFONLLD0 = new TFile("/home/sun229/DmesonAna/Run2015Ana/CMSSW_7_5_8_patch3/src/RunIIAna/Dntupleana/rootfiles/output_pp_d0meson_5TeV_y1.root");
+//	TGraphAsymmErrors* gaeFONLLD0Reference = (TGraphAsymmErrors*) FileFONLLD0->Get("gaeSigmaDzero");
+//
+//	TH1D * hFONLL = new TH1D( "hFONLL", "hFONLL", bins_reweight, ptmin_reweight, ptmax_reweight);
+//	double x,y;
+//	for( int i=0; i < bins_reweight; i++)
+//	{
+//		gaeFONLLD0Reference->GetPoint(i,x,y);
+//		hFONLL->SetBinContent(i+1,y);
+//	}
+//
+//	FONLL_over_GenD0Pt_forptreweight = ( TH1D *) hFONLL->Clone("FONLL_over_GenD0Pt_forptreweight");
+//	FONLL_over_GenD0Pt_forptreweight->Divide(Gen_D0_pt_noweight_forptreweight);
+//
+//	//fit w/o draw
+//	TF1 * fit_FONLL_over_GenD0Pt = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 150);
+//	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+//	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+//	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+//	FONLL_over_GenD0Pt_forptreweight->Fit("fit_FONLL_over_GenD0Pt","0 q","",2,100);
+//
+//	//save fitted function
+//	fit_FONLL_over_GenD0Pt->SetLineColor(4.0);
+//	FONLL_over_GenD0Pt_forptreweight->GetListOfFunctions()->Add(fit_FONLL_over_GenD0Pt);
+//
+//	MCPtWeidhtFunction = new TF1("fit_FONLL_over_GenD0Pt","pow(10,[0]*x+[1]+x*x*[2])+pow(10,[3]*x+[4]+x*x*[5])", 0, 300);
+//	MCPtWeidhtFunction->SetParameter( 0, fit_FONLL_over_GenD0Pt->GetParameter(0));
+//	MCPtWeidhtFunction->SetParameter( 1, fit_FONLL_over_GenD0Pt->GetParameter(1));
+//	MCPtWeidhtFunction->SetParameter( 2, fit_FONLL_over_GenD0Pt->GetParameter(2));
+//	MCPtWeidhtFunction->SetParameter( 3, fit_FONLL_over_GenD0Pt->GetParameter(3));
+//	MCPtWeidhtFunction->SetParameter( 4, fit_FONLL_over_GenD0Pt->GetParameter(4));
+//	MCPtWeidhtFunction->SetParameter( 5, fit_FONLL_over_GenD0Pt->GetParameter(5));
+//}
 
 void anaDntuple::SetEfficiencyCurve()
 {
@@ -1153,7 +1180,8 @@ void anaDntuple::LoopOverGenDs()
 		Gen_D0_pt_noweight->Fill( Gpt[igend]);
 		Gen_D0_pt_pthatweight->Fill( Gpt[igend], pthatweight);
 
-		GenDptweight = MCPtWeidhtFunction->Eval( Gpt[igend] );
+		GenDptweight = hRatio_FONLLtoRawGen->GetBinContent(hRatio_FONLLtoRawGen->FindBin(Gpt[igend]));
+		//GenDptweight = MCPtWeidhtFunction->Eval( Gpt[igend] );
 		Gen_D0_pt_ptweight->Fill( Gpt[igend], GenDptweight);
 		Gen_D0_pt_ptweight_finebins->Fill( Gpt[igend], GenDptweight);
 	}
@@ -1787,7 +1815,8 @@ int anaDntuple::Decideinoutplane(float deltaphi, int floworder)
 
 void anaDntuple::FillMCMBhisto(int icand, int iptbin)
 {
-	double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
+	double Candptweight = hRatio_FONLLtoRawGen->GetBinContent(hRatio_FONLLtoRawGen->FindBin(Dpt[icand]));
+	//double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
 
 	if( MBtrig_part_combined && Dgen[icand] == 23333 && DgencollisionId[icand] == 0)
 	{
@@ -1874,7 +1903,8 @@ void anaDntuple::FillMBhisto(int icand, int iptbin)
 
 void anaDntuple::FillMCDtrighisto(int icand, int iptbin)
 {
-	double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
+	double Candptweight = hRatio_FONLLtoRawGen->GetBinContent(hRatio_FONLLtoRawGen->FindBin(Dpt[icand]));
+	//double Candptweight = MCPtWeidhtFunction->Eval( Dpt[icand]);
 
 	if( Dtrig_combined && Dgen[icand] == 23333 && DgencollisionId[icand] == 0)
 	{
@@ -2127,7 +2157,9 @@ void anaDntuple::Write()
 	if( isMC )
 	{
 		Gen_D0_pt_noweight_forptreweight->Write();
-		FONLL_over_GenD0Pt_forptreweight->Write();
+		hFONLL->Write();
+		hRatio_FONLLtoRawGen->Write();
+		//FONLL_over_GenD0Pt_forptreweight->Write();
 		Gen_D0_pt_pthatweight->Write();
 		Gen_D0_pt_ptweight->Write();
 		Gen_D0_pt_noweight->Write();

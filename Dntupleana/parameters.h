@@ -19,11 +19,18 @@ const double generalfitrange_masslow = 1.7;
 const double generalfitrange_masshigh = 2.00;
 
 //MC pt reweight parameters
-double ptmin_reweight = 0.0;
-double ptmax_reweight = 100.0;
-int bins_reweight = 50;
+double ptmin_reweight = 1.0;
+double ptmax_reweight = 300.0;
+int bins_reweight = 1196;
 TH1D * Gen_D0_pt_noweight_forptreweight = new TH1D( "Gen_D0_pt_noweight_forptreweight", "Gen_D0_pt_noweight_forptreweight", bins_reweight, ptmin_reweight, ptmax_reweight);
+TH1D * hFONLL;
+TH1D * hRatio_FONLLtoRawGen;
 TH1D * FONLL_over_GenD0Pt_forptreweight;
+TF1 * MCPtWeidhtFunction;
+
+//to check pt weight and fit efficiency curve
+TH1D * Gen_D0_pt_ptweight_finebins = new TH1D("Gen_D0_pt_ptweight_finebins","Gen_D0_pt_ptweight_finebins", bins_reweight, ptmin_reweight, ptmax_reweight);
+TH1D * MBmatched_allcuts_D0_pt_ptweight_finebins = new TH1D("MBmatched_allcuts_D0_pt_ptweight_finebins","MBmatched_allcuts_D0_pt_ptweight_finebins", bins_reweight, ptmin_reweight, ptmax_reweight);
 
 //mc histograms 
 TH1D * Gen_D0_pt_pthatweight = new TH1D("Gen_D0_pt_pthatweight","Gen_D0_pt_pthatweight",Nptbin,ptbins);
@@ -35,10 +42,6 @@ TH1D * MBmatched_allcuts_D0_pt_noweight = new TH1D("MBmatched_allcuts_D0_pt_nowe
 TH1D * Dtrigmatched_allcuts_D0_pt_pthatweight = new TH1D("Dtrigmatched_allcuts_D0_pt_pthatweight","Dtrigmatched_allcuts_D0_pt_pthatweight",Nptbin,ptbins);
 TH1D * Dtrigmatched_allcuts_D0_pt_ptweight = new TH1D("Dtrigmatched_allcuts_D0_pt_ptweight","Dtrigmatched_allcuts_D0_pt_ptweight",Nptbin,ptbins);
 TH1D * Dtrigmatched_allcuts_D0_pt_noweight = new TH1D("Dtrigmatched_allcuts_D0_pt_noweight","Dtrigmatched_allcuts_D0_pt_noweight",Nptbin,ptbins);
-
-//to fit efficiency curve
-TH1D * Gen_D0_pt_ptweight_finebins = new TH1D("Gen_D0_pt_ptweight_finebins","Gen_D0_pt_ptweight_finebins",100,0,100.);
-TH1D * MBmatched_allcuts_D0_pt_ptweight_finebins = new TH1D("MBmatched_allcuts_D0_pt_ptweight_finebins","MBmatched_allcuts_D0_pt_ptweight_finebins",100,0,100.);
 
 TH1D * mc_matched_signal_noweight[Nptbin];
 TH1D * mc_matched_kpiswapped_noweight[Nptbin];

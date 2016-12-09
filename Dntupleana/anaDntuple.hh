@@ -82,7 +82,6 @@ class anaDntuple
 		int cent_low;
 		int cent_high;
 		double Evt_weight; //use pthatweight or not
-		TF1 * MCPtWeidhtFunction;
 		TF1 * EfficiencyCurve;
 		float effcorrection;
 		bool isGoodforv2;
