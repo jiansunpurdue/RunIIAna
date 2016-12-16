@@ -139,5 +139,5 @@ void Draw_vn_ratio( TH1D * vn_default, TH1D * vn_effcorrected, TString vnname, T
     fun2->SetLineWidth(1);
     fun2->Draw("same");
 
-	cfg_vn_effcorrection->SaveAs(Form("Plots_vn/plots_effcorrection/cfg_vn_effcorrection_%s_cent%dto%d.pdf", (vnname+"_"+method+"_"+MBorDtrig).Data(), cent_low, cent_high));
+	cfg_vn_effcorrection->SaveAs(Form("plots_systematic/plots_effcorrection/cfg_vn_effcorrection_%s_cent%dto%d.pdf", (vnname+"_"+method+"_"+MBorDtrig).Data(), cent_low, cent_high));
 }

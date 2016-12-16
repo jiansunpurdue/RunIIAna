@@ -19,7 +19,7 @@
 
 using namespace std;
 
-void Draw_vn_etagap(TString trigname = "MBtrig", TString method = "SP", TString vnorder = "v3", TString histotoget = "h_v3_pt", int cent_low = 30, int cent_high = 50, TString infileeta2p0 = "rootfiles_EPa/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta2p5 = "rootfiles_EPb/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta3p0 = "rootfiles_EPdefault/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta3p5 = "rootfiles_EPd/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta4p0 = "rootfiles_EPe/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta4p5 = "rootfiles_EPf/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root")
+void Draw_vn_etagap(TString trigname = "MBtrig", TString method = "SP", TString vnorder = "v3", TString histotoget = "h_v3_pt", int cent_low = 30, int cent_high = 50, TString infileeta2p0 = "Files_etagapstudy/rootfiles_EPa/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta2p5 = "Files_etagapstudy/rootfiles_EPb/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta3p0 = "Files_etagapstudy/rootfiles_EPdefault/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta3p5 = "Files_etagapstudy/rootfiles_EPd/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta4p0 = "Files_etagapstudy/rootfiles_EPe/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root", TString infileeta4p5 = "Files_etagapstudy/rootfiles_EPf/vn_combinedfit_vnvsmass_MBtrig_SP_cent30to50_poly3bkg_floatwidth_effcorrected0.root")
 {
     TH1::SetDefaultSumw2();
     gStyle->SetOptTitle(0);
@@ -56,8 +56,8 @@ void Draw_vn_etagap(TString trigname = "MBtrig", TString method = "SP", TString 
 	histoeta2p5->Draw("same");
 	histoeta3p0->Draw("same");
 	histoeta3p5->Draw("same");
-	inputeta4p0->Draw("same");
-	inputeta4p5->Draw("same");
+	histoeta4p0->Draw("same");
+	histoeta4p5->Draw("same");
 
     TF1 * fun = new TF1("fun", "0.0", 0, 100);
     fun->SetLineColor(1.0);
@@ -80,7 +80,22 @@ void Draw_vn_etagap(TString trigname = "MBtrig", TString method = "SP", TString 
 	
 	leg->Draw();
 
-	cfg_vnetagap->SaveAs(Form("plots_etagap/cfg_vnetagap_%s_%s_%s_cent%dto%d.pdf",trigname.Data(),method.Data(),vnorder.Data(),cent_low,cent_high));
+    TLatex* tex;
+    tex = new TLatex(0.20,0.83,"|y| < 1.0");
+    tex->SetNDC();
+    tex->SetTextFont(42);
+    tex->SetTextSize(0.05);
+    tex->SetLineWidth(2);
+    tex->Draw();
+
+    tex = new TLatex(0.20,0.76,Form("Cent. %d-%d%%", cent_low, cent_high));
+    tex->SetNDC();
+    tex->SetTextFont(42);
+    tex->SetTextSize(0.05);
+    tex->SetLineWidth(2);
+    tex->Draw();
+
+	cfg_vnetagap->SaveAs(Form("plots_systematic/plots_etagap/cfg_vnetagap_%s_%s_%s_cent%dto%d.pdf",trigname.Data(),method.Data(),vnorder.Data(),cent_low,cent_high));
 
 	TH1D * histo_diff_eta2p0 = (TH1D *) histoeta2p0->Clone("histo_diff_eta2p0");
 	TH1D * histo_diff_eta2p5 = (TH1D *) histoeta2p5->Clone("histo_diff_eta2p5");
@@ -107,6 +122,20 @@ void Draw_vn_etagap(TString trigname = "MBtrig", TString method = "SP", TString 
 	histo_diff_eta4p5->Draw("same");
     
 	fun->Draw("same");
+    
+	tex = new TLatex(0.20,0.83,"|y| < 1.0");
+    tex->SetNDC();
+    tex->SetTextFont(42);
+    tex->SetTextSize(0.05);
+    tex->SetLineWidth(2);
+    tex->Draw();
+
+    tex = new TLatex(0.20,0.76,Form("Cent. %d-%d%%", cent_low, cent_high));
+    tex->SetNDC();
+    tex->SetTextFont(42);
+    tex->SetTextSize(0.05);
+    tex->SetLineWidth(2);
+    tex->Draw();
 	
-	cfg_diff_etagap->SaveAs(Form("plots_etagap/cfg_diff_vnetagap_%s_%s_%s_cent%dto%d.pdf",trigname.Data(),method.Data(),vnorder.Data(),cent_low,cent_high));
+	cfg_diff_etagap->SaveAs(Form("plots_systematic/plots_etagap/cfg_diff_vnetagap_%s_%s_%s_cent%dto%d.pdf",trigname.Data(),method.Data(),vnorder.Data(),cent_low,cent_high));
 }

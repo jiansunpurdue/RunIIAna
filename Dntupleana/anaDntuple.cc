@@ -20,7 +20,8 @@ bool doDcandQvectorrecenter = true;
 TRandom3 * ran;
 bool doRandomsampling = false; //do random sampling or not
 const int SeedRandom = 976543210;
-const int Nsubsampling = 4;
+//const int Nsubsampling = 4;
+const int Nsubsampling = 8;
 const int Subsampletotake = 0; //change this value to take different sub samples
 
 //
