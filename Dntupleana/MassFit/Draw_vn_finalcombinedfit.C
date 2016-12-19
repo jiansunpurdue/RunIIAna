@@ -50,10 +50,25 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 	h_v2_pt->SetName("h_v2_pt"); h_v2_pt->SetTitle("h_v2_pt");
 	h_v3_pt->SetName("h_v3_pt"); h_v3_pt->SetTitle("h_v3_pt");
 
-	TH1D * h_v2_pt_sys = (TH1D *) inputdata_vnvsmass_SP->Get("h_v2_pt_sys");
-	TH1D * h_v3_pt_sys = (TH1D *) inputdata_vnvsmass_SP->Get("h_v3_pt_sys");
+	//fill histogram for sys
+	TH1D * h_v2_pt_sys = (TH1D *) h_v2_pt->Clone("h_v2_pt_sys");
+	TH1D * h_v3_pt_sys = (TH1D *) h_v3_pt->Clone("h_v3_pt_sys");
 	h_v2_pt_sys->SetName("h_v2_pt_sys"); h_v2_pt_sys->SetTitle("h_v2_pt_sys");
 	h_v3_pt_sys->SetName("h_v3_pt_sys"); h_v3_pt_sys->SetTitle("h_v3_pt_sys");
+
+    TH1D * h_v2_pt_relativesys = new TH1D("h_v2_pt_relativesys", "h_v2_pt_relativesys", Nptbin, ptbins);
+    TH1D * h_v3_pt_relativesys = new TH1D("h_v3_pt_relativesys", "h_v3_pt_relativesys", Nptbin, ptbins);
+
+    if( fitoption == "poly3bkg_floatwidth" )
+    {   
+        Calculatetotalsys( cent_low, cent_high, ptlow, pthigh, "SP", "v2", h_v2_pt, h_v2_pt_sys, h_v2_pt_relativesys);
+        Calculatetotalsys( cent_low, cent_high, ptlow, pthigh, "SP", "v3", h_v3_pt, h_v3_pt_sys, h_v3_pt_relativesys);
+		h_v2_pt_sys->SetBinContent( 1, 3 );
+		h_v2_pt_sys->SetBinContent( 2, 3 );
+		h_v3_pt_sys->SetBinContent( 1, 3 );
+		h_v3_pt_sys->SetBinContent( 2, 3 );
+    }
+	//end fill histogram for sys
 
 	TGraphErrors * gr_v2_pt_sys = new TGraphErrors(h_v2_pt_sys); gr_v2_pt_sys->SetName("gr_v2_pt_sys");
 	TGraphErrors * gr_v3_pt_sys = new TGraphErrors(h_v3_pt_sys); gr_v3_pt_sys->SetName("gr_v3_pt_sys");
@@ -86,6 +101,8 @@ void Draw_vn_finalcombinedfit(TString input_vnvmass_SP = "rootfiles/vn_combinedf
 	gr_v3_pt_sys_Bfeeddown->Write();
 	h_v2_pt_sys->Write();
 	h_v3_pt_sys->Write();
+	h_v2_pt_relativesys->Write();
+	h_v3_pt_relativesys->Write();
 //	gv2Dmeson5TeV_CUJET3->Write();
 	grSteveSPv2_chargeparticle->Write();
 	grSteveSPv2_sys_chargeparticle->Write();
