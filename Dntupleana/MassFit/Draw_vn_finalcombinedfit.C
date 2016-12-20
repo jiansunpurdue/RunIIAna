@@ -142,10 +142,15 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 
 	vn_vnvsmass_SP->GetYaxis()->SetTitleOffset(1.2);
 	vn_vnvsmass_SP->GetYaxis()->SetRangeUser(-0.18,0.295);
+
+	vn_vnvsmass_SP->SetLineColor(kRed+1);
+	vn_vnvsmass_SP->SetMarkerColor(kRed+1);
+	vn_vnvsmass_SP->SetLineWidth(0);
+	vn_vnvsmass_SP->SetMarkerSize(0.8);
 	
 	vn_vnvsmass_SP->Draw();
 
-    gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerColor(2.0);
+    gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerColor(kRed+1);
     gr_vn_vnvsmass_sys_Bfeeddown->SetMarkerStyle(20);
     gr_vn_vnvsmass_sys_Bfeeddown->SetLineWidth(0);
     gr_vn_vnvsmass_sys_Bfeeddown->SetFillStyle(1001);
@@ -190,12 +195,12 @@ void Drawfinalcombinedfit(TH1D * vn_vnvsmass_SP, TGraphErrors * gr_vn_vnvsmass_S
 	for( int ibin = 0; ibin < gr_vn_vnvsmass_SP_sys->GetN(); ibin++)
 		gr_vn_vnvsmass_SP_sys->GetEX()[ibin] = 0.5;
 
-    gr_vn_vnvsmass_SP_sys->SetMarkerColor(2.0);
+    gr_vn_vnvsmass_SP_sys->SetMarkerColor(kRed+1);
     gr_vn_vnvsmass_SP_sys->SetMarkerStyle(20);
     //gr_vn_vnvsmass_SP_sys->SetLineWidth(1);
     gr_vn_vnvsmass_SP_sys->SetLineWidth(0);//hard probes
     gr_vn_vnvsmass_SP_sys->SetFillStyle(0);
-    gr_vn_vnvsmass_SP_sys->SetLineColor(2.0);
+    gr_vn_vnvsmass_SP_sys->SetLineColor(kRed+1);
 
 	gr_vn_vnvsmass_SP_sys->Draw("2same");
 	vn_vnvsmass_SP->Draw("same");

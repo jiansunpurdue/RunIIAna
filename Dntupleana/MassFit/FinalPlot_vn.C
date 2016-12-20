@@ -234,7 +234,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = false, boo
 	Tlv2.SetTextAlign(12);
 	Tlv2.SetTextSize(0.06);
 	Tlv2.SetTextFont(42);
-	Tlv2.DrawLatex(0.15,0.960, "#font[61]{CMS} #scale[0.8]{Preliminary PbPb #sqrt{s_{NN}} = 5.02 TeV}");
+	Tlv2.DrawLatex(0.15,0.960, "#font[61]{CMS} #scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	cfg_Dv2_charged_theory->cd(3);
 
@@ -427,7 +427,7 @@ void FinalPlot_vn( bool Drawchargedparticle = true, bool Drawtheory = false, boo
 	Tlv3.SetTextAlign(12);
 	Tlv3.SetTextSize(0.06);
 	Tlv3.SetTextFont(42);
-	Tlv3.DrawLatex(0.15,0.960, "#font[61]{CMS} #scale[0.8]{Preliminary PbPb #sqrt{s_{NN}} = 5.02 TeV}");
+	Tlv3.DrawLatex(0.15,0.960, "#font[61]{CMS} #scale[0.8]{PbPb #sqrt{s_{NN}} = 5.02 TeV}");
 
 	cfg_Dv3_charged_theory->cd(3);
 

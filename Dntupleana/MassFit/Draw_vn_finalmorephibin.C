@@ -130,6 +130,8 @@ void Drawmorephibinvn(TH1D * vn_morephibin, TGraphErrors * gr_vn_morephibin_sys,
 	gr_vn_morephibin_sys->SetLineColor(2.0);
 	gr_vn_morephibin_sys->SetMarkerSize(0);
 
+	vn_morephibin->SetLineWidth(0);
+	vn_morephibin->SetMarkerSize(0.8);
 	vn_morephibin->Draw();
 
 	for( int ibin = 0; ibin < gr_vn_morephibin_sys->GetN(); ibin++ )
