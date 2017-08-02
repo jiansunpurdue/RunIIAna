@@ -90,7 +90,8 @@ TF1* fit_histo_poly3bkg_floatwidth( bool isPbPb, int centlow, int centhigh, TH1D
 	
 	//cfg->SaveAs(Form("Massfitplots/PbPb/DMass_kpiswapped_isPbPb%d_%s_cent%dto%d_%d_poly3bkg_floatwidth.pdf", isPbPb, cfgname.Data(), centlow, centhigh, ipt));
 
-	f->FixParameter(5,h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
+	//f->FixParameter(5,h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
+	f->FixParameter(5,0.5);
 	f->FixParameter(7,f->GetParameter(7));
 	f->FixParameter(8,f->GetParameter(8));
 	f->ReleaseParameter(9);

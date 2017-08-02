@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <TFile.h>
-#include <TH1F.h>
+#include <TH1D.h>
 #include <TF1.h>
 #include <TNamed.h>
 #include <TNtuple.h>
@@ -23,6 +23,10 @@
 extern float ptbins[Nptbin+1];
 extern const double generalfitrange_masslow;
 extern const double generalfitrange_masshigh;
+
+extern TH1D * h_fitpvalue_v2;
+extern TH1D * h_fitpvalue_v3;
+extern TH1D * h_signal_to_signalswapped;
 
 int iparmassfit_poly3bkg_floatwidth[13] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 int iparvnfit_poly3bkg_floatwidth[16] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
@@ -65,12 +69,15 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	float ptmin = ptbins[ipt];
 	float ptmax = ptbins[ipt+1];
 
+	double Nsig_MC_fromfit = 0;
+	double Nsw_MC_fromfit = 0;
+
 	//remove the fit function from v2 fit when perform v3 fit
 	if( histo->GetListOfFunctions()->FindObject(Form("fmass_combinemassvnfit_%s_%d",cfgname.Data(),ipt)) )
 		histo->GetListOfFunctions()->Remove( histo->GetListOfFunctions()->FindObject(Form("fmass_combinemassvnfit_%s_%d",cfgname.Data(),ipt)) );
 
-	TH1F* histo_copy_nofitfun = ( TH1F * ) histo->Clone("histo_copy_nofitfun");
-	TH1F* histo_massfit = ( TH1F * ) histo->Clone("histo_massfit");
+	TH1D* histo_copy_nofitfun = ( TH1D * ) histo->Clone("histo_copy_nofitfun");
+	TH1D* histo_massfit = ( TH1D * ) histo->Clone("histo_massfit");
 
 	TCanvas* cfg= new TCanvas(Form("cfg_poly3bkg_floatwidth_combinemassvnfit_%s_%d",cfgname.Data(),ipt),Form("cfg_poly3bkg_floatwidth_combinemassvnfit_%s_%d",cfgname.Data(),ipt),600,600);
 
@@ -111,6 +118,10 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_signal->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
 
+	Nsig_MC_fromfit = f->GetParameter(0);
+
+	cfg->SaveAs(Form("Plots_vn/MCmassfit/DMass_signal_isPbPb%d_%d.pdf", isPbPb, ipt));
+
 	f->FixParameter(1,f->GetParameter(1));
 	f->FixParameter(2,f->GetParameter(2));
 	f->FixParameter(3,f->GetParameter(3));
@@ -127,8 +138,22 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L q","",fit_range_low,fit_range_high);
 	h_mc_matched_kpiswapped->Fit(Form("f_%s_%d",cfgname.Data(),ipt),"L m","",fit_range_low,fit_range_high);
+	
+	Nsw_MC_fromfit = f->GetParameter(0);
 
-	f->FixParameter(5,h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
+	cfg->SaveAs(Form("Plots_vn/MCmassfit/DMass_kpiswapped_isPbPb%d_%d.pdf", isPbPb, ipt));
+
+	//bug found by Hao on July 24th 2017, parameter should be 0.5 because the normalization of the function is done in the whole range
+	//f->FixParameter(5,h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
+	//f->FixParameter(5,0.5);
+	//second option, fix according to function interval
+	f->FixParameter(5,Nsig_MC_fromfit/(Nsig_MC_fromfit+Nsw_MC_fromfit));
+	//h_signal_to_signalswapped->SetBinContent(ipt+1, 0.5);
+	//h_signal_to_signalswapped->SetBinContent(ipt+1, h_mc_matched_signal->Integral(0,1000)/(h_mc_matched_kpiswapped->Integral(0,1000)+h_mc_matched_signal->Integral(0,1000)));
+	h_signal_to_signalswapped->SetBinContent(ipt+1, Nsig_MC_fromfit/(Nsig_MC_fromfit+Nsw_MC_fromfit));
+
+	h_signal_to_signalswapped->SetBinError(ipt+1, 0);
+
 	f->FixParameter(7,f->GetParameter(7));
 	f->FixParameter(8,f->GetParameter(8));
 	f->ReleaseParameter(9);
@@ -508,6 +533,131 @@ TF1* fit_histo_poly3bkg_floatwidth_combinemassvnfit( bool isPbPb, int centlow, i
 		cfg_vnfit_combinemassvn->SaveAs(Form("Plots_vn/combinemassvnfit/cfg_vnfit_combinemassvn_%s_cent%dto%d_%d_%s_%s_poly3bkg_floatwidth_combinemassvnfit.pdf",cfgname.Data(),centlow,centhigh,ipt,vnorder.Data(),EPorSP.Data()));
 		cfg_vnfit_combinemassvn->SaveAs(Form("Plots_vn/combinemassvnfit/cfg_vnfit_combinemassvn_%s_cent%dto%d_%d_%s_%s_poly3bkg_floatwidth_combinemassvnfit.png",cfgname.Data(),centlow,centhigh,ipt,vnorder.Data(),EPorSP.Data()));
 	}
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// Add pull distributions and get p value ////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////
+
+	cout <<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+	cout << "chi2/ndf: " << result.Chi2() << "/" << result.Ndf() << endl;
+	cout << "Prob: " << result.Prob() << " : " << TMath::Prob(result.Chi2(), result.Ndf()) << endl;
+	cout << "new chi2: " << histo_copy_nofitfun->Chisquare(fmass_combinemassvnfit) << " + " << h_vnvsmass->Chisquare(fvn_combinemassvnfit) << endl;
+	cout << "new Prob: " << TMath::Prob(histo_copy_nofitfun->Chisquare(fmass_combinemassvnfit), 53) << " : " << TMath::Prob( h_vnvsmass->Chisquare(fvn_combinemassvnfit), 11) << endl;
+	cout <<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+	if(vnorder == "v2")
+	{
+		h_fitpvalue_v2->SetBinContent(ipt+1, result.Prob());
+		h_fitpvalue_v2->SetBinError(ipt+1, 0);
+	}
+	else
+	{
+		h_fitpvalue_v3->SetBinContent(ipt+1, result.Prob());
+		h_fitpvalue_v3->SetBinError(ipt+1, 0);
+	}
+
+	TCanvas * cfg_pull = new TCanvas(Form("cfg_pull_%d_%s",ipt,vnorder.Data()),Form("cfg_pull_%d_%s",ipt,vnorder.Data()), 400, 750);
+
+    TPad *pad1 = new TPad("pad1","top pad",0.0,0.55,1.0,1.0);
+    pad1->SetTopMargin(0.08);
+    pad1->SetBottomMargin(0.0);
+    pad1->SetRightMargin(0.043);
+    pad1->SetLeftMargin(0.10);
+    pad1->Draw();
+    TPad *pad2 = new TPad("pad2","bottom pad",0.0,0.0,1.0,0.55);
+    pad2->SetTopMargin(0.0);
+    pad2->SetBottomMargin(0.13);
+    pad2->SetRightMargin(0.043);
+    pad2->SetLeftMargin(0.10);
+    pad2->Draw();
+
+    pad1->cd();
+
+    TF1 * fun = new TF1("fun", "0.0", 0, 100);
+    fun->SetLineColor(1.0);
+    fun->SetLineStyle(3);
+    fun->SetLineWidth(1);
+
+	TH1D * h_pull_massfit = (TH1D *) histo_copy_nofitfun->Clone("h_pull_massfit");
+	h_pull_massfit->Clear();
+	h_pull_massfit->GetYaxis()->SetRangeUser(-5, 5);
+	h_pull_massfit->GetYaxis()->SetTitle("Pull");
+	h_pull_massfit->GetXaxis()->CenterTitle();
+	h_pull_massfit->GetYaxis()->CenterTitle();
+	h_pull_massfit->GetYaxis()->SetTitleOffset(0.75);
+	for(int i=0;i<histo_copy_nofitfun->GetNbinsX();i++)
+	{
+		Float_t nfit = fmass_combinemassvnfit->Integral(histo_copy_nofitfun->GetBinLowEdge(i+1),histo_copy_nofitfun->GetBinLowEdge(i+1)+histo_copy_nofitfun->GetBinWidth(i+1))/histo_copy_nofitfun->GetBinWidth(i+1);
+		if(histo_copy_nofitfun->GetBinError(i+1)==0)
+			h_pull_massfit->SetBinContent(i+1,0.);
+		else 
+			h_pull_massfit->SetBinContent(i+1,(histo_copy_nofitfun->GetBinContent(i+1)-nfit)/histo_copy_nofitfun->GetBinError(i+1));
+		h_pull_massfit->SetBinError(i+1,0);
+    }
+	h_pull_massfit->Draw("p");
+	fun->Draw("same");
+    
+	tex = new TLatex(0.70,0.83,"mass fit");
+    tex->SetNDC();
+    tex->SetTextFont(43);
+    tex->SetTextSize(18);
+    tex->SetLineWidth(2);
+    tex->Draw();
+	
+	if( isPbPb )
+	{
+		tex = new TLatex(0.22,0.83,Form("Cent. %d-%d%%", centlow, centhigh));
+		tex->SetNDC();
+		tex->SetTextFont(43);
+		tex->SetTextSize(18);
+		tex->SetLineWidth(2);
+		tex->Draw();
+
+		tex = new TLatex(0.22,0.76,Form("%.1f < p_{T} < %.1f GeV/c",ptmin,ptmax));
+		tex->SetNDC();
+		tex->SetTextFont(43);
+		tex->SetTextSize(18);
+		tex->SetLineWidth(2);
+		tex->Draw();
+	}
+
+	pad2->cd();
+	
+	TH1D * h_pull_vnfit = (TH1D *) h_vnvsmass->Clone("h_pull_vnfit");
+	h_pull_vnfit->Clear();
+	if( h_pull_vnfit->GetListOfFunctions()->FindObject(Form("fvn_combinemassvnfit_%s_%d",cfgname.Data(),ipt)) )
+		h_pull_vnfit->GetListOfFunctions()->Remove( h_pull_vnfit->GetListOfFunctions()->FindObject(Form("fvn_combinemassvnfit_%s_%d",cfgname.Data(),ipt)) );
+	h_pull_vnfit->SetMarkerSize(1.0);
+	h_pull_vnfit->GetYaxis()->SetRangeUser(-5, 5);
+	h_pull_vnfit->GetYaxis()->SetTitle("Pull");
+	h_pull_vnfit->GetXaxis()->CenterTitle();
+	h_pull_vnfit->GetYaxis()->CenterTitle();
+	h_pull_vnfit->GetYaxis()->SetTitleOffset(0.75);
+	for(int i=0;i<h_vnvsmass->GetNbinsX();i++)
+	{
+		Float_t nfit = fvn_combinemassvnfit->Integral(h_vnvsmass->GetBinLowEdge(i+1),h_vnvsmass->GetBinLowEdge(i+1)+h_vnvsmass->GetBinWidth(i+1))/h_vnvsmass->GetBinWidth(i+1);
+		if(h_vnvsmass->GetBinError(i+1)==0)
+			h_pull_vnfit->SetBinContent(i+1,0.);
+		else 
+			h_pull_vnfit->SetBinContent(i+1,(h_vnvsmass->GetBinContent(i+1)-nfit)/h_vnvsmass->GetBinError(i+1));
+		h_pull_vnfit->SetBinError(i+1,0);
+    }
+	h_pull_vnfit->Draw("p");
+	fun->Draw("same");
+    
+	if( vnorder == "v2") tex = new TLatex(0.70,0.90,"v_{2} fit");
+	else tex = new TLatex(0.70,0.90,"v_{3} fit");
+    tex->SetNDC();
+    tex->SetTextFont(43);
+    tex->SetTextSize(18);
+    tex->SetLineWidth(2);
+    tex->Draw();
+	
+	cfg_pull->SaveAs(Form("Plots_vn/combinemassvnfit_Pull/cfg_Pull_combinemassvn_%s_cent%dto%d_%d_%s_%s_poly3bkg_floatwidth_combinemassvnfit.pdf",cfgname.Data(),centlow,centhigh,ipt,vnorder.Data(),EPorSP.Data()));
+	
+	
+	// ///////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////
 
 	return mass;
 }

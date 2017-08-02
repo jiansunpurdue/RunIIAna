@@ -46,6 +46,14 @@ double massbin_rebinvnmass[Nvnmassbins+1] = { 1.7, 1.74, 1.78, 1.80, 1.82, 1.84,
 
 TF1 *  Func_Ratio_signal_foreground[Nptbin];
 
+
+//To save the p value of the fit
+TH1D * h_fitpvalue_v2;
+TH1D * h_fitpvalue_v3;
+
+//Save Signal to (Signal + Swapped) ratio
+TH1D * h_signal_to_signalswapped;
+
 //void MassFit_combmassvnFit(string inputdatafilename = "./../anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent20to40.root", string inputmcfilename = "./../rootfiles_MCvn/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 11, bool isPbPb = true, int centlow=20, int centhigh=40, TString fitoption = "poly3bkg_floatwidth_poly2bkg", bool effcorrected = false)
 //void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_MCvn/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent5to20.root", string inputmcfilename = "./../rootfiles_MCvn/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 8, bool isPbPb = true, int centlow=5, int centhigh=20, TString fitoption = "poly3bkg_floatwidth_poly2bkg", bool effcorrected = false)/void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_ForestAOD_D0y1p1_tkpt0p7eta1p5_goldenjson_EvtPlaneCali_03182015_Cent30to50.root", string inputmcfilename = "./../rootfiles/anaDntuple_ntD_EvtBase_20160513_DfinderMC_PbPb_20160502_dPt1tkPt0p5_D0_prompt_Dpt2Dy1p1tkPt0p7tkEta2Decay2p9Dalpha0p14Skim_pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 6, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth", bool effcorrected = false)
 //void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_HIMinimumBias1to7_tkpt0p5eta1p5_Dy1p1_EvtPlaneCalibration_v2v3etagap_05142016_Cent30to50.root", string inputmcfilename = "./../rootfiles_v2v3etaEP_default_DCAcut0p008/anaDntuple_Dntuple_crab_PbPb_Pythia8_prompt_D0pt0p0_AllPthat_Hydjet_MB_tkpt0p5eta1p5_Dy1p1_06092016_Pthatweight_Cent-0to100_Evt0to-1.root", TString MBorDtrig = "MBtrig", TString EPorSP = "SP", int iptstart = 5, int iptend = 7, bool isPbPb = true, int centlow=30, int centhigh=50, TString fitoption = "poly3bkg_floatwidth_poly2bkg", bool effcorrected = false)
@@ -57,6 +65,12 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_
 	gStyle->SetTextFont(42);
 	gStyle->SetTextSize(0.05);
 	gStyle->SetTitleX(.0f);
+
+	//histogram to save p-value
+	h_fitpvalue_v2 = new TH1D("h_fitpvalue_v2","h_fitpvalue_v2", Nptbin, ptbins);
+	h_fitpvalue_v3 = new TH1D("h_fitpvalue_v3","h_fitpvalue_v3", Nptbin, ptbins);
+
+	h_signal_to_signalswapped = new TH1D("h_signal_to_signalswapped","h_signal_to_signalswapped", Nptbin, ptbins);
 
 	TH1D * mc_matched_signal[Nptbin];
 	TH1D * mc_matched_kpiswapped[Nptbin];
@@ -171,7 +185,7 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_
 //			iptmc = 3;
 
 		hmass_MBorDtrig[ipt]->SetAxisRange(0,hmass_MBorDtrig[ipt]->GetMaximum()*1.4*1.2,"Y");
-		
+	
 		TString cfgname = Form("%svn_effcorrected%d", MBorDtrig.Data(), effcorrected);
 
 		if( fitoption == "poly3bkg_floatwidth")
@@ -219,14 +233,18 @@ void MassFit_combmassvnFit(string inputdatafilename = "./../rootfiles_v2v3etaEP_
 	h_v2_pt->Write();
 	h_v3_pt->Write();
 
+	h_fitpvalue_v2->Write();
+	h_fitpvalue_v3->Write();
+
+	h_signal_to_signalswapped->Write();
+
 	h_v2_pt_bkg->Write();
 	h_v3_pt_bkg->Write();
 
 	for( int ipt = iptstart; ipt < iptend; ipt++)
 		Ratio_signal_foreground[ipt]->Write();
 
-	for( int ipt = iptstart; ipt < iptend; ipt++)
-	{
+	for( int ipt = iptstart; ipt < iptend; ipt++) {
 		h_mass_meanv2_MBorDtrig[ipt]->Write();
 		h_mass_meanv3_MBorDtrig[ipt]->Write();
 	}
